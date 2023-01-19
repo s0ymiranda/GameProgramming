@@ -117,6 +117,21 @@ void handle_input_pong(struct Pong* pong, ALLEGRO_KEYBOARD_STATE* state)
         }
 
     //LOGIC FOR IA FOR PADDLE 2
+        if(pong->ball.x /*+ pong->ball.width/2*/ >= TABLE_WIDTH / 2 - BALL_SIZE / 2 && pong->ball.vx > 0 )
+        {
+            if(pong->ball.y + BALL_SIZE/2 >= pong->player2.y + PADDLE_HEIGHT/2) 
+            {
+                pong->player2.vy = PADDLE_SPEED;       
+            }
+            else if (pong->ball.y + BALL_SIZE/2 < pong->player2.y + PADDLE_HEIGHT/2)
+            {
+                pong->player2.vy = -PADDLE_SPEED;
+            }
+        }
+        else
+        {
+            pong->player2.vy = 0;
+        }
     }
     else
     {
@@ -237,10 +252,6 @@ void update_pong(struct Pong* pong, double dt)
                 pong->ball.vy = rand() % 140 + 10;
             }
         }
-    }
-    else if(pong->state == PLAYSINGLE)
-    {
-        
     }
 
     if(pong->state == SERVE)

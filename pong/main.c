@@ -76,6 +76,11 @@ int main()
             handle_input_pong(&pong, &keyboard_state);
         }
         
+        /*
+            As in play single, we no longer have (for player 2) the events "key up" and "key down"
+            we add this condition for updating the inputs 
+            
+        */
         if(pong.state == PLAYSINGLE && pong.ball.x >= TABLE_WIDTH/2 - BALL_SIZE/2)
         {
             ALLEGRO_KEYBOARD_STATE keyboard_state;

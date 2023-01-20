@@ -117,7 +117,7 @@ void handle_input_pong(struct Pong* pong, ALLEGRO_KEYBOARD_STATE* state)
         }
 
     //LOGIC FOR IA FOR PADDLE 2
-        if(pong->ball.x /*+ pong->ball.width/2*/ >= TABLE_WIDTH / 2 - BALL_SIZE / 2 && pong->ball.vx > 0 )
+        if(pong->ball.x >= TABLE_WIDTH / 2 - BALL_SIZE / 2 && pong->ball.vx > 0 )
         {
             if(pong->ball.y + BALL_SIZE/2 >= pong->player2.y + PADDLE_HEIGHT/2) 
             {

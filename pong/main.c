@@ -46,8 +46,7 @@ int main()
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(display));
     al_register_event_source(queue, al_get_timer_event_source(timer));
-   // al_register_event_source(queue, al_get_display_flags(display));
-    //al_register_event_source(queue, al_get_bitmap_width);
+
     bool redraw = true;
     ALLEGRO_EVENT event;
 
@@ -64,26 +63,25 @@ int main()
 
         if (event.type == ALLEGRO_EVENT_TIMER)
         {
-            ALLEGRO_KEYBOARD_STATE keyboard_state;
-            al_get_keyboard_state(&keyboard_state);
-            handle_input_pong(&pong, &keyboard_state);
             redraw = true;
         }
         else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
         {
             break;
         }
-       /*else if (event.type == ALLEGRO_EVENT_KEY_DOWN || event.type == ALLEGRO_EVENT_KEY_UP)
+       else if (event.type == ALLEGRO_EVENT_KEY_DOWN || event.type == ALLEGRO_EVENT_KEY_UP)
         {
             ALLEGRO_KEYBOARD_STATE keyboard_state;
             al_get_keyboard_state(&keyboard_state);
             handle_input_pong(&pong, &keyboard_state);
         }
-        else if(pong.state == PLAYSINGLE && pong.ball.x >= TABLE_WIDTH/2){
+        
+        if(pong.state == PLAYSINGLE && pong.ball.x >= TABLE_WIDTH/2 - BALL_SIZE/2)
+        {
             ALLEGRO_KEYBOARD_STATE keyboard_state;
             al_get_keyboard_state(&keyboard_state);
             handle_input_pong(&pong, &keyboard_state);
-        }*/
+        }
 
         if (redraw && al_is_event_queue_empty(queue))
         {

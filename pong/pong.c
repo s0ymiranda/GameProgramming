@@ -286,7 +286,15 @@ void render_pong(struct Pong pong, struct Fonts fonts)
     else if (pong.state == DONE)
     {
         char winner_message[14];
-        sprintf(winner_message, "Player %d won!", pong.winning_player);
+        if (pong.game_option == 2 && pong.winning_player == 2) 
+        {
+            sprintf(winner_message, "CPU won!");
+        }
+        else
+        {
+           sprintf(winner_message, "Player %d won!", pong.winning_player);
+        }
+          
         al_draw_text(fonts.large_font, al_map_rgb(255, 255, 255), TABLE_WIDTH / 2, TABLE_HEIGHT / 3, ALLEGRO_ALIGN_CENTER, winner_message);
         al_draw_text(fonts.large_font, al_map_rgb(255, 255, 255), TABLE_WIDTH / 2, TABLE_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Press Enter to Go to the Menu");
     }

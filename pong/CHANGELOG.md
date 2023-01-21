@@ -29,6 +29,8 @@ New Features
 
     pong.c.274-278 - Now you can choose to play single or multiplayer mode.
 
+    pong.c.189-196 - Condition for thw winner message (CPU OR PLAYER 2)
+
     pong.c.292     - Changed the final message that is shown in the screen.
 
     Extra: Added a new font "big_font" for the title Pong.

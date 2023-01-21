@@ -15,6 +15,7 @@
 
 struct Fonts
 {
+    ALLEGRO_FONT* big_font;
     ALLEGRO_FONT* large_font;
     ALLEGRO_FONT* score_font;
 };

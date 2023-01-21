@@ -152,7 +152,6 @@ void handle_input_pong(struct Pong* pong, ALLEGRO_KEYBOARD_STATE* state)
 void update_pong(struct Pong* pong, double dt)
 {
 
- 
     if (pong->state == PLAYMULTI || pong->state == PLAYSINGLE)
     {
         update_paddle(&pong->player1, dt);
@@ -269,13 +268,13 @@ void render_pong(struct Pong pong, struct Fonts fonts)
         render_paddle(pong.player1);
         render_paddle(pong.player2);
         render_ball(pong.ball);
-    
     }
 
     if (pong.state == START)
     {
-        al_draw_text(fonts.large_font, al_map_rgb(255, 255, 255), TABLE_WIDTH / 2, TABLE_HEIGHT / 3, ALLEGRO_ALIGN_CENTER, "Press 1 Multiplayer ");
-        al_draw_text(fonts.large_font, al_map_rgb(255, 255, 255), TABLE_WIDTH / 2, TABLE_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Press 2 Singleplayer");
+        al_draw_text(fonts.big_font, al_map_rgb(255, 255, 255), TABLE_WIDTH / 2, TABLE_HEIGHT / 7, ALLEGRO_ALIGN_CENTER, "Pong");
+        al_draw_text(fonts.large_font, al_map_rgb(255, 255, 255), TABLE_WIDTH / 2, TABLE_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Press 1 Multiplayer ");
+        al_draw_text(fonts.large_font, al_map_rgb(255, 255, 255), TABLE_WIDTH / 2, TABLE_HEIGHT / 1 - 80, ALLEGRO_ALIGN_CENTER, "Press 2 Singleplayer");
     }
     else if (pong.state == SERVE)
     {

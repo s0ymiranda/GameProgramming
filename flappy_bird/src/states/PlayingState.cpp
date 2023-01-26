@@ -13,23 +13,21 @@
 #include <src/states/StateMachine.hpp>
 #include <src/states/PlayingState.hpp>
 
-PlayingState::PlayingState(StateMachine* sm) noexcept
+PlayingState::PlayingState(StateMachine *sm) noexcept
     : BaseState{sm}
 {
-
 }
 
 void PlayingState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _bird) noexcept
 {
     world = _world;
     world->reset(true);
-    
+
     if (_bird == nullptr)
     {
         bird = std::make_shared<Bird>(
             Settings::VIRTUAL_WIDTH / 2 - Settings::BIRD_WIDTH / 2, Settings::VIRTUAL_HEIGHT / 2 - Settings::BIRD_HEIGHT / 2,
-            Settings::BIRD_WIDTH, Settings::BIRD_HEIGHT
-        );
+            Settings::BIRD_WIDTH, Settings::BIRD_HEIGHT);
     }
     else
     {
@@ -37,11 +35,15 @@ void PlayingState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _b
     }
 }
 
-void PlayingState::handle_inputs(const sf::Event& event) noexcept
+void PlayingState::handle_inputs(const sf::Event &event) noexcept
 {
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
     {
         bird->jump();
+    }
+    if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
+    {
+        state_machine->change_state("pause");
     }
 }
 
@@ -64,7 +66,7 @@ void PlayingState::update(float dt) noexcept
     }
 }
 
-void PlayingState::render(sf::RenderTarget& target) const noexcept
+void PlayingState::render(sf::RenderTarget &target) const noexcept
 {
     world->render(target);
     bird->render(target);

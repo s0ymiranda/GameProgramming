@@ -9,6 +9,13 @@ PauseScreenState::PauseScreenState(StateMachine* sm) noexcept
 
 }
 
+void PauseScreenState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _bird) noexcept
+{
+    world = _world;
+   
+}
+
+
 void PauseScreenState::handle_inputs(const sf::Event& event) noexcept
 {
     if (event.key.code == sf::Keyboard::Enter)
@@ -19,12 +26,13 @@ void PauseScreenState::handle_inputs(const sf::Event& event) noexcept
 
 void PauseScreenState::update(float dt) noexcept
 {
-    world.update(dt);
+    bird->update(dt);
+    world->update(dt);
 }
 
 void PauseScreenState::render(sf::RenderTarget& target) const noexcept 
 {
-    world.render(target);
-    render_text(target, Settings::VIRTUAL_WIDTH / 2, Settings::VIRTUAL_HEIGHT / 3, "Flappy Bird", Settings::FLAPPY_TEXT_SIZE, "flappy", sf::Color::White, true);
+    world->render(target);
+    render_text(target, Settings::VIRTUAL_WIDTH / 2, Settings::VIRTUAL_HEIGHT / 3, "Pause", Settings::FLAPPY_TEXT_SIZE, "flappy", sf::Color::White, true);
     render_text(target, Settings::VIRTUAL_WIDTH / 2, 2 * Settings::VIRTUAL_HEIGHT / 3, "Press Enter to start", Settings::MEDIUM_TEXT_SIZE, "font", sf::Color::White, true);
 }

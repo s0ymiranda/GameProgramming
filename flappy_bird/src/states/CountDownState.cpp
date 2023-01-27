@@ -19,9 +19,14 @@ CountDownState::CountDownState(StateMachine* sm) noexcept
 
 }
 
-void CountDownState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _bird) noexcept
+void CountDownState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _bird, int _score) noexcept
 {
-    world = std::make_shared<World>(false);
+    if(_bird == nullptr)
+        world = std::make_shared<World>(false);
+    else 
+        world = _world;
+    score = _score;
+    bird = _bird;
 }
 
 void CountDownState::update(float dt) noexcept
@@ -35,15 +40,18 @@ void CountDownState::update(float dt) noexcept
 
         if (counter == 0)
         {
-            state_machine->change_state("playing", world);
+            state_machine->change_state("playing", world,bird,score);
         }
     }
 
-    world->update(dt);
+    if(bird == nullptr)
+        world->update(dt);
 }
 
 void CountDownState::render(sf::RenderTarget& target) const noexcept
 {
     world->render(target);
+    if(bird != nullptr)
+        bird->render(target);
     render_text(target, Settings::VIRTUAL_WIDTH / 2, Settings::VIRTUAL_HEIGHT / 2, std::to_string(counter), Settings::HUGE_TEXT_SIZE, "font", sf::Color::White, true);
 }

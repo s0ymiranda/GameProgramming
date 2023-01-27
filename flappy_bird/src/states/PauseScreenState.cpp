@@ -34,11 +34,6 @@ void PauseScreenState::handle_inputs(const sf::Event& event) noexcept
     }
 }
 
-void PauseScreenState::update(float dt) noexcept
-{
-    //world->update(dt);
-}
-
 void PauseScreenState::render(sf::RenderTarget& target) const noexcept 
 {
     world->render(target);

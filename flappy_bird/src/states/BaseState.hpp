@@ -17,6 +17,7 @@
 class StateMachine;
 class World;
 class Bird;
+class GameMode;
 
 class BaseState
 {
@@ -25,7 +26,7 @@ public:
 
     virtual ~BaseState() {}
 
-    virtual void enter(std::shared_ptr<World> world, std::shared_ptr<Bird> bird, int score) noexcept {}
+    virtual void enter(std::shared_ptr<World> world, std::shared_ptr<Bird> bird, std::shared_ptr<GameMode> gameMode, int score) noexcept {}
 
     virtual void exit() noexcept {}
 

@@ -4,7 +4,7 @@ INCLUDE = -I.
 
 BUILD_DIR = build
 
-OBJ_RULES = text_utilities.o Settings.o Game.o Bird.o Log.o LogPair.o World.o StateMachine.o TitleScreenState.o CountDownState.o PlayingState.o PauseScreenState.o
+OBJ_RULES = text_utilities.o Settings.o Game.o Bird.o Log.o LogPair.o World.o StateMachine.o TitleScreenState.o CountDownState.o PlayingState.o PauseScreenState.o MenuState.o GameModeNormal.o GameModeHard.o
 
 LIBS = -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system $(BUILD_DIR)/*.o
 
@@ -46,6 +46,15 @@ PlayingState.o: $(BUILD_DIR) src/states/PlayingState.hpp src/states/PlayingState
 
 PauseScreenState.o: $(BUILD_DIR) src/states/PauseScreenState.hpp src/states/PauseScreenState.cpp
 	$(CXX) -c $(INCLUDE) src/states/PauseScreenState.cpp -o $(BUILD_DIR)/$@
+
+MenuState.o: $(BUILD_DIR) src/states/MenuState.hpp src/states/MenuState.cpp
+	$(CXX) -c $(INCLUDE) src/states/MenuState.cpp -o $(BUILD_DIR)/$@
+
+GameModeNormal.o: $(BUILD_DIR) src/game_modes/GameModeNormal.hpp src/game_modes/GameModeNormal.cpp
+	$(CXX) -c $(INCLUDE) src/game_modes/GameModeNormal.cpp -o $(BUILD_DIR)/$@
+
+GameModeHard.o: $(BUILD_DIR) src/game_modes/GameModeHard.hpp src/game_modes/GameModeHard.cpp
+	$(CXX) -c $(INCLUDE) src/game_modes/GameModeHard.cpp -o $(BUILD_DIR)/$@
 
 
 $(BUILD_DIR):

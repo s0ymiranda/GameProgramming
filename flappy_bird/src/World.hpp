@@ -18,17 +18,21 @@
 
 #include <src/Factory.hpp>
 #include <src/LogPair.hpp>
+#include <src/game_modes/GameMode.hpp>
+#include <src/game_modes/GameModeHard.hpp>
+#include <src/game_modes/GameModeNormal.hpp>
 
 class World
 {
 public:
-    World(bool _generate_logs = false) noexcept;
+
+    World(std::shared_ptr<GameMode> _game_mode = nullptr, bool _generate_logs = false) noexcept;
 
     World(const World& world) = delete;
 
     World& operator = (World) = delete;
 
-    void reset(bool _generate_logs) noexcept;
+    void reset(std::shared_ptr<GameMode> _game_mode, bool _generate_logs) noexcept;
 
     bool collides(const sf::FloatRect& rect) const noexcept;
 
@@ -36,9 +40,13 @@ public:
 
     void update(float dt) noexcept;
 
+    //void set_gamemode(sha) noexcept;
+
     void render(sf::RenderTarget& target) const noexcept;
+    
 private:
     bool generate_logs;
+    std::shared_ptr<GameMode> game_mode;
 
     sf::Sprite background;
     sf::Sprite ground;

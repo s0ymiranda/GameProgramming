@@ -19,18 +19,19 @@ PauseScreenState::PauseScreenState(StateMachine* sm) noexcept
 
 }
 
-void PauseScreenState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _bird, int _score) noexcept
+void PauseScreenState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _bird, std::shared_ptr<GameMode> _gameMode, int _score) noexcept
 {
     world = _world;
     bird = _bird;
     score = _score;
+    game_mode = _gameMode;
 }
 
 void PauseScreenState::handle_inputs(const sf::Event& event) noexcept
 {
     if (event.key.code == sf::Keyboard::Enter)
     {
-        state_machine->change_state("count_down",world,bird,score);
+        state_machine->change_state("count_down",world,bird,game_mode,score);
     }
 }
 

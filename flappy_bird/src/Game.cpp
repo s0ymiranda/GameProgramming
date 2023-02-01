@@ -14,6 +14,7 @@
 #include <src/states/TitleScreenState.hpp>
 #include <src/states/PlayingState.hpp>
 #include <src/states/PauseScreenState.hpp>
+#include <src/states/MenuState.hpp>
 
 Game::Game()
     : render_window{sf::VideoMode{Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT}, "Flappy Bird", sf::Style::Close},
@@ -24,6 +25,7 @@ Game::Game()
         {"count_down", [](StateMachine* sm) { return std::make_shared<CountDownState>(sm); }},
         {"playing", [](StateMachine* sm) { return std::make_shared<PlayingState>(sm); }},
         {"pause", [](StateMachine* sm) { return std::make_shared<PauseScreenState>(sm); }},
+        {"menu", [](StateMachine* sm) { return std::make_shared<MenuState>(sm); }},
       }
 {
     render_texture.create(Settings::VIRTUAL_WIDTH, Settings::VIRTUAL_HEIGHT);

@@ -11,8 +11,8 @@
 #include <Settings.hpp>
 #include <src/World.hpp>
 
-World::World(bool _generate_logs) noexcept
-    : generate_logs{_generate_logs}, background{Settings::textures["background"]}, ground{Settings::textures["ground"]},
+World::World(std::shared_ptr<GameMode> _game_mode, bool _generate_logs) noexcept
+    : game_mode{_game_mode}, generate_logs{_generate_logs}, background{Settings::textures["background"]}, ground{Settings::textures["ground"]},
       logs{}, rng{std::default_random_engine{}()}
 {
     ground.setPosition(0, Settings::VIRTUAL_HEIGHT - Settings::GROUND_HEIGHT);
@@ -20,8 +20,9 @@ World::World(bool _generate_logs) noexcept
     last_log_y = -Settings::LOG_HEIGHT + dist(rng) + 20;
 }
 
-void World::reset(bool _generate_logs) noexcept
+void World::reset(std::shared_ptr<GameMode> _game_mode, bool _generate_logs) noexcept
 {
+    game_mode = _game_mode;
     generate_logs = _generate_logs;
 }
 

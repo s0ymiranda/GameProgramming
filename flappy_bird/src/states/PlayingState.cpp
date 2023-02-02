@@ -39,7 +39,12 @@ void PlayingState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _b
 
 void PlayingState::handle_inputs(const sf::Event &event) noexcept
 {
-    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+    /*if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+    {
+        bird->jump();
+    }*/
+    if ((event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+        || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space))
     {
         bird->jump();
     }
@@ -47,6 +52,8 @@ void PlayingState::handle_inputs(const sf::Event &event) noexcept
     {
         state_machine->change_state("pause",world,bird,game_mode,score);
     }
+    game_mode->handle_inputs(event);
+
 }
 
 void PlayingState::update(float dt) noexcept
@@ -58,7 +65,10 @@ void PlayingState::update(float dt) noexcept
     {
         Settings::sounds["explosion"].play();
         Settings::sounds["hurt"].play();
-        state_machine->change_state("count_down");
+        //std::shared_ptr<GameMode> game_mode_hard{std::make_shared<GameModeHard>()};
+        game_mode->reset();
+        state_machine->change_state("count_down",nullptr,nullptr,game_mode);
+        //state_machine->change_state("menu",nullptr,nullptr,game_mode);
     }
 
     if (world->update_scored(bird->get_collision_rect()))
@@ -66,6 +76,8 @@ void PlayingState::update(float dt) noexcept
         ++score;
         Settings::sounds["score"].play();
     }
+
+    game_mode->update(dt,bird);
 }
 
 void PlayingState::render(sf::RenderTarget &target) const noexcept

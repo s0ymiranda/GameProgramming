@@ -29,6 +29,8 @@ public:
 
     void render(sf::RenderTarget& target) const noexcept;
 
+    void move_on_x(float) noexcept;
+
 private:
     float x;
     float y;

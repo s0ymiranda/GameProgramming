@@ -72,7 +72,12 @@ void World::update(float dt) noexcept
 
             last_log_y = y;
 
-            logs.push_back(log_factory.create(Settings::VIRTUAL_WIDTH, y));
+            //std::uniform_int_distribution<int> dist2{0,5};
+
+            int random = rand() % 4;
+
+            logs.push_back(log_factory.create(Settings::VIRTUAL_WIDTH, y,game_mode,random));
+            //std::cout << random << std::endl;
         }
     }
 
@@ -99,6 +104,7 @@ void World::update(float dt) noexcept
         if ((*it)->is_out_of_game())
         {
             auto log_pair = *it;
+            log_pair->change_move_status();
             log_factory.remove(log_pair);
             it = logs.erase(it);
             
@@ -122,3 +128,8 @@ void World::render(sf::RenderTarget& target) const noexcept
 
     target.draw(ground);
 }
+
+/*std::list<std::shared_ptr<LogPair>> World::get_logs() noexcept
+{
+    return logs;
+}*/

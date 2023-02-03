@@ -18,6 +18,7 @@
 
 #include <src/Factory.hpp>
 #include <src/LogPair.hpp>
+
 #include <src/game_modes/GameMode.hpp>
 #include <src/game_modes/GameModeHard.hpp>
 #include <src/game_modes/GameModeNormal.hpp>
@@ -44,6 +45,8 @@ public:
 
     void render(sf::RenderTarget& target) const noexcept;
     
+    //std::list<std::shared_ptr<LogPair>> get_logs() noexcept;
+
 private:
     bool generate_logs;
     std::shared_ptr<GameMode> game_mode;
@@ -55,8 +58,15 @@ private:
     float ground_x{0.f};
 
     Factory<LogPair> log_factory;
+    //Factory<LogPairHard> log_hard_factory;
+    
+    //Factory<LogPair> log_hard_factory{std::make_shared<LogPairHard>()};
 
+    //std::shared_ptr<LogPair> logs_hard{std::make_shared<LogPairHard>()};
+
+    //std::list<std::shared_ptr<LogPairHard>> logs;
     std::list<std::shared_ptr<LogPair>> logs;
+    //std::list<std::shared_ptr<LogPairHard>> logs_hard;
 
     std::mt19937 rng;
 

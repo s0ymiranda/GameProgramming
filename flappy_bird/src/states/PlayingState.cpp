@@ -78,6 +78,8 @@ void PlayingState::update(float dt) noexcept
     }
 
     game_mode->update(dt,bird);
+    //game_mode->update_logs(dt,world->get_logs());
+    //game_mode->update_logs(dt,);
 }
 
 void PlayingState::render(sf::RenderTarget &target) const noexcept

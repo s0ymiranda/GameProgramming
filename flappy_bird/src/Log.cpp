@@ -30,10 +30,10 @@ sf::FloatRect Log::get_collision_rect() const noexcept
     return sf::FloatRect{x - Settings::LOG_WIDTH, y - Settings::LOG_HEIGHT, Settings::LOG_WIDTH, Settings::LOG_HEIGHT};
 }
 
-void Log::update(float _x) noexcept
+void Log::update(float _x, float _y) noexcept
 {
     x = _x;
-
+    y = _y;
     if (inverted)
     {
         x += Settings::LOG_WIDTH;

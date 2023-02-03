@@ -12,11 +12,12 @@
 
 #include <src/Bird.hpp>
 #include <src/Log.hpp>
+#include <src/game_modes/GameMode.hpp>
 
 class LogPair
 {
 public:
-    LogPair(float _x, float _y) noexcept;
+    LogPair(float _x, float _y, std::shared_ptr<GameMode> _game_mode = nullptr, int _move = 0) noexcept;
 
     bool collides(const sf::FloatRect& rect) const noexcept;
 
@@ -29,6 +30,17 @@ public:
     bool update_scored(const sf::FloatRect& rect) noexcept;
 
     void reset(float _x, float _y) noexcept;
+/*
+    float get_vy() const noexcept;
+
+    float get_y() const noexcept;
+
+    void set_vy(float) noexcept;
+    bool get_closing() const noexcept;
+
+    void set_closing(bool) noexcept;
+*/
+    void change_move_status() noexcept;
 
 private:
     float x;
@@ -37,4 +49,11 @@ private:
     Log bottom;
 
     bool scored{false};
+
+    std::shared_ptr<GameMode> game_mode;
+
+    //hard mode
+    float vy;
+    bool closing;
+    int move;
 };

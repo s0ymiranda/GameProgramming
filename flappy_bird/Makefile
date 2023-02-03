@@ -56,7 +56,6 @@ GameModeNormal.o: $(BUILD_DIR) src/game_modes/GameModeNormal.hpp src/game_modes/
 GameModeHard.o: $(BUILD_DIR) src/game_modes/GameModeHard.hpp src/game_modes/GameModeHard.cpp
 	$(CXX) -c $(INCLUDE) src/game_modes/GameModeHard.cpp -o $(BUILD_DIR)/$@
 
-
 $(BUILD_DIR):
 	mkdir -p $@
 

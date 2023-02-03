@@ -11,10 +11,11 @@
 #include <Settings.hpp>
 #include <src/LogPair.hpp>
 
-LogPair::LogPair(float _x, float _y) noexcept
-    : x{_x}, y{_y},
+LogPair::LogPair(float _x, float _y, std::shared_ptr<GameMode> _game_mode, int _move) noexcept
+    : x{_x}, y{_y}, game_mode{_game_mode},
       top{x, y + Settings::LOG_HEIGHT, true},
-      bottom{x, y + Settings::LOGS_GAP + Settings::LOG_HEIGHT, false}
+      bottom{x, y + Settings::LOGS_GAP + Settings::LOG_HEIGHT, false},
+      closing{true}, vy{0.f}, move{_move}
 {
 
 }
@@ -28,8 +29,13 @@ void LogPair::update(float dt) noexcept
 {
     x += -Settings::MAIN_SCROLL_SPEED * dt;
 
-    top.update(x);
-    bottom.update(x);
+//init hard
+    if(move == 2)
+        game_mode->update_logs(dt,&vy,&y,&closing);
+//end hard
+
+    top.update(x,y + Settings::LOG_HEIGHT + vy);
+    bottom.update(x,y + Settings::LOG_HEIGHT + Settings::LOGS_GAP - vy);
 }
 
 void LogPair::render(sf::RenderTarget& target) const noexcept
@@ -64,4 +70,36 @@ void LogPair::reset(float _x, float _y) noexcept
     x = _x;
     y = _y;
     scored = false;
+}
+
+/*
+float LogPair::get_vy() const noexcept
+{
+    return vy;
+}
+
+float LogPair::get_y() const noexcept
+{
+    return y;
+}
+
+
+void LogPair::set_vy(float _vy) noexcept
+{
+    vy = _vy;
+}
+bool LogPair::get_closing() const noexcept
+{
+    return closing;
+}
+void LogPair::set_closing(bool _closing) noexcept
+{
+    closing = _closing;
+}
+*/
+
+void LogPair::change_move_status() noexcept
+{
+    move = rand() % 4;
+    vy = 0;
 }

@@ -1,7 +1,5 @@
 #include <src/game_modes/GameModeHard.hpp>
 #include <Settings.hpp>
-//#include <iostream>
-//#include <cstdlib>
 
 float GameModeHard::get_logs_gap() noexcept
 {
@@ -30,15 +28,7 @@ void GameModeHard::handle_inputs(const sf::Event &event) noexcept
     {
         bird_moving_right = false;
         bird_moving_left = false;
-    }/*
-    if (moving_right)
-    {
-        x = x + 80*dt;
     }
-    else if(moving_left)
-    {
-        x = x - 80*dt;
-    }*/
 }
 
 
@@ -54,48 +44,30 @@ void GameModeHard::update(float dt, std::shared_ptr<Bird> bird) noexcept
     }
 }
 
-void GameModeHard::update_logs(float dt, float*vy, float* y, bool* closing) noexcept
+void GameModeHard::update_logs(float dt, float*vy, float* y, bool* closing, int move) noexcept
 {
 
-    if(*y + Settings::LOG_HEIGHT + *vy <= *y + Settings::LOG_HEIGHT + Settings::LOGS_GAP/2 && *closing)
+    if(move == 2)
     {
-        *vy += dt*20;
-    }
-    else if(*y + Settings::LOG_HEIGHT + *vy >= *y + Settings::LOG_HEIGHT)
-    {
-        *closing = false;
-        *vy += -dt*20;
-    }
-    else
-    {
-        *closing = true;
+        if(*y + Settings::LOG_HEIGHT + *vy <= *y + Settings::LOG_HEIGHT + Settings::LOGS_GAP/2 && *closing)
+        {
+            *vy += dt*20;
+        }
+        else if(*y + Settings::LOG_HEIGHT + *vy >= *y + Settings::LOG_HEIGHT)
+        {
+            *closing = false;
+            *vy += -dt*20;
+        }
+        else
+        {
+            *closing = true;
+        }
     }
 
 }
-/*
-void GameModeHard::set_generate_log_hard() noexcept
-{
-    std::uniform_int_distribution<int> dist{0, 3};
-    int random = dist(rng);
-    if(random == 0)
-    {
-        generate_log_hard = true;
-    }
-    else
-    {
-        generate_log_hard = false;
-    }
-}
 
-
-int GameModeHard::get_generate_log_hard() noexcept
-{
-    return generate_log_hard;
-}
-*/
 void GameModeHard::reset() noexcept
 {
     bird_moving_right = false;
-    bird_moving_left = false;
-       
+    bird_moving_left = false;      
 }

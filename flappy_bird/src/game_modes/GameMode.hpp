@@ -7,8 +7,6 @@
 
 #include <memory>
 
-//#include <SFML/Graphics.hpp>
-
 class Bird;
 class LogPair;
 
@@ -27,10 +25,7 @@ public:
 
     virtual void update(float dt, std::shared_ptr<Bird> bird) noexcept {};
 
-    //virtual int get_generate_log_hard() noexcept = 0;
-    //virtual void update_logs(float dt, float *vy, float *y, std::shared_ptr<LogPair> log_pair) noexcept {};
-    virtual void update_logs(float dt, float *vy, float *y, bool *closing) noexcept {};
-
+    virtual void update_logs(float dt, float *vy, float *y, bool *closing, int move) noexcept {};
 
     virtual void reset() noexcept {};
 

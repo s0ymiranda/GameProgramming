@@ -10,3 +10,26 @@ float GameModeNormal::get_time_for_next_log_pair() noexcept
 {
     return Settings::TIME_TO_SPAWN_LOGS;
 }
+
+void GameModeNormal::handle_inputs(const sf::Event &event) noexcept
+{
+
+}
+
+
+void GameModeNormal::update(float dt, std::shared_ptr<Bird> bird) noexcept
+{
+
+}
+
+void GameModeNormal::update_logs(float dt, float*vy, float* y, bool* closing, int move) noexcept
+{
+
+    *vy = 0;
+
+}
+
+void GameModeNormal::reset() noexcept
+{
+   
+}

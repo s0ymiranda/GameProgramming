@@ -34,42 +34,26 @@ public:
     World& operator = (World) = delete;
 
     void reset(std::shared_ptr<GameMode> _game_mode, bool _generate_logs) noexcept;
-
-    bool collides(const sf::FloatRect& rect) const noexcept;
-
-    bool update_scored(const sf::FloatRect& rect) noexcept;
-
-    void update(float dt) noexcept;
-
-    //void set_gamemode(sha) noexcept;
-
-    void render(sf::RenderTarget& target) const noexcept;
     
-    //std::list<std::shared_ptr<LogPair>> get_logs() noexcept;
+    bool collides(const sf::FloatRect& rect) const noexcept;
+    
+    bool update_scored(const sf::FloatRect& rect) noexcept;
+    
+    void update(float dt) noexcept;
+    
+    void render(sf::RenderTarget& target) const noexcept;
 
 private:
+
     bool generate_logs;
     std::shared_ptr<GameMode> game_mode;
-
     sf::Sprite background;
     sf::Sprite ground;
-
     float background_x{0.f};
     float ground_x{0.f};
-
     Factory<LogPair> log_factory;
-    //Factory<LogPairHard> log_hard_factory;
-    
-    //Factory<LogPair> log_hard_factory{std::make_shared<LogPairHard>()};
-
-    //std::shared_ptr<LogPair> logs_hard{std::make_shared<LogPairHard>()};
-
-    //std::list<std::shared_ptr<LogPairHard>> logs;
     std::list<std::shared_ptr<LogPair>> logs;
-    //std::list<std::shared_ptr<LogPairHard>> logs_hard;
-
     std::mt19937 rng;
-
     float logs_spawn_timer{0.f};
     float last_log_y{0.f};
 };

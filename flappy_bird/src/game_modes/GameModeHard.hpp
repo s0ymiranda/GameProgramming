@@ -17,16 +17,10 @@ public:
 
     void update(float dt, std::shared_ptr<Bird> bird = nullptr) noexcept override;
 
-    //void set_generate_log_hard() noexcept override;
-
-    //int get_generate_log_hard() noexcept override;
-
-//    void update_logs(float dt, float *vy, float *y, std::shared_ptr<LogPair> log_pair = nullptr) noexcept override;
-
-    void update_logs(float dt, float *vy, float *y, bool *closing) noexcept override;
-
+    void update_logs(float dt, float *vy, float *y, bool *closing, int move) noexcept override;
 
     void reset() noexcept override;
+
 private:
 
     bool bird_moving_right = false;

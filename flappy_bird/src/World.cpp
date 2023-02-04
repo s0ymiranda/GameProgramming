@@ -128,8 +128,3 @@ void World::render(sf::RenderTarget& target) const noexcept
 
     target.draw(ground);
 }
-
-/*std::list<std::shared_ptr<LogPair>> World::get_logs() noexcept
-{
-    return logs;
-}*/

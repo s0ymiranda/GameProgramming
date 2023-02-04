@@ -29,9 +29,13 @@ void PauseScreenState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird
 
 void PauseScreenState::handle_inputs(const sf::Event& event) noexcept
 {
-    if (event.key.code == sf::Keyboard::Enter)
+    if (event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Escape)
     {
         state_machine->change_state("count_down",world,bird,game_mode,score);
+    }
+    if (event.key.code == sf::Keyboard::M)
+    {
+        state_machine->change_state("menu");
     }
 }
 
@@ -41,4 +45,5 @@ void PauseScreenState::render(sf::RenderTarget& target) const noexcept
     bird->render(target);
     render_text(target, Settings::VIRTUAL_WIDTH / 2, Settings::VIRTUAL_HEIGHT / 3, "Pause", Settings::FLAPPY_TEXT_SIZE, "flappy", sf::Color::White, true);
     render_text(target, Settings::VIRTUAL_WIDTH / 2, 2 * Settings::VIRTUAL_HEIGHT / 3, "Press Enter to start", Settings::MEDIUM_TEXT_SIZE, "font", sf::Color::White, true);
+    render_text(target, Settings::VIRTUAL_WIDTH / 2, 2 * Settings::VIRTUAL_HEIGHT / 2.5, "Press M to go to the Menu", Settings::MEDIUM_TEXT_SIZE, "font", sf::Color::White, true);
 }

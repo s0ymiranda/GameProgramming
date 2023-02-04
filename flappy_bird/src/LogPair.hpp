@@ -30,16 +30,7 @@ public:
     bool update_scored(const sf::FloatRect& rect) noexcept;
 
     void reset(float _x, float _y) noexcept;
-/*
-    float get_vy() const noexcept;
 
-    float get_y() const noexcept;
-
-    void set_vy(float) noexcept;
-    bool get_closing() const noexcept;
-
-    void set_closing(bool) noexcept;
-*/
     void change_move_status() noexcept;
 
 private:

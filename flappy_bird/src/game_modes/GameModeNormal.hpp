@@ -11,4 +11,13 @@ public:
 
     float get_time_for_next_log_pair() noexcept override;
 
+    void handle_inputs(const sf::Event& event) noexcept override;
+
+    void update(float dt, std::shared_ptr<Bird> bird = nullptr) noexcept override;
+
+    void update_logs(float dt, float *vy, float *y, bool *closing, int move) noexcept override;
+
+    void reset() noexcept override;
+
+
 };

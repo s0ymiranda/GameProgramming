@@ -29,10 +29,7 @@ void LogPair::update(float dt) noexcept
 {
     x += -Settings::MAIN_SCROLL_SPEED * dt;
 
-//init hard
-    if(move == 2)
-        game_mode->update_logs(dt,&vy,&y,&closing);
-//end hard
+    game_mode->update_logs(dt,&vy,&y,&closing,move);
 
     top.update(x,y + Settings::LOG_HEIGHT + vy);
     bottom.update(x,y + Settings::LOG_HEIGHT + Settings::LOGS_GAP - vy);
@@ -71,32 +68,6 @@ void LogPair::reset(float _x, float _y) noexcept
     y = _y;
     scored = false;
 }
-
-/*
-float LogPair::get_vy() const noexcept
-{
-    return vy;
-}
-
-float LogPair::get_y() const noexcept
-{
-    return y;
-}
-
-
-void LogPair::set_vy(float _vy) noexcept
-{
-    vy = _vy;
-}
-bool LogPair::get_closing() const noexcept
-{
-    return closing;
-}
-void LogPair::set_closing(bool _closing) noexcept
-{
-    closing = _closing;
-}
-*/
 
 void LogPair::change_move_status() noexcept
 {

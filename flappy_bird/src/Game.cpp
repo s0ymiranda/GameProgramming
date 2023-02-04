@@ -42,6 +42,7 @@ Game::Game()
 
     Settings::music.setLoop(true);
     Settings::music.play();
+
 }
 
 sf::RenderWindow& Game::get_window() noexcept
@@ -70,3 +71,8 @@ void Game::render() noexcept
     render_window.draw(render_sprite);
     render_window.display();
 }
+
+/*StateMachine* Game::get_state_machine()
+{
+    return &state_machine;
+}*/

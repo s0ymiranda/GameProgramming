@@ -32,6 +32,8 @@ public:
 
     void render() noexcept;
 
+    //StateMachine* get_state_machine();
+
 private:
     sf::RenderWindow render_window;
     sf::RenderTexture render_texture;

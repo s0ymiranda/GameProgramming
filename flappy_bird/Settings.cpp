@@ -27,6 +27,7 @@ std::unordered_map<std::string, sf::Sound> Settings::sounds{};
 std::unordered_map<std::string, sf::Font> Settings::fonts{};
 
 sf::Music Settings::music{};
+sf::Music Settings::music_ghost{};
 
 void Settings::init()
 {
@@ -116,6 +117,11 @@ void Settings::load_sounds()
     if (!Settings::music.openFromFile(Settings::SOUNDS_PATH / "marios_way.ogg"))
     {
         throw std::runtime_error{"Error loading music sounds/marios_way.ogg"};
+    }
+
+    if (!Settings::music_ghost.openFromFile(Settings::SOUNDS_PATH / "power_up.ogg"))
+    {
+        throw std::runtime_error{"Error loading music sounds/power_up.ogg"};
     }
 
     if (!buffer.loadFromFile(Settings::SOUNDS_PATH / "logs_crash.wav"))

@@ -44,6 +44,6 @@ void PauseScreenState::render(sf::RenderTarget& target) const noexcept
     world->render(target);
     bird->render(target);
     render_text(target, Settings::VIRTUAL_WIDTH / 2, Settings::VIRTUAL_HEIGHT / 3, "Pause", Settings::FLAPPY_TEXT_SIZE, "flappy", sf::Color::White, true);
-    render_text(target, Settings::VIRTUAL_WIDTH / 2, 2 * Settings::VIRTUAL_HEIGHT / 3, "Press Enter to start", Settings::MEDIUM_TEXT_SIZE, "font", sf::Color::White, true);
-    render_text(target, Settings::VIRTUAL_WIDTH / 2, 2 * Settings::VIRTUAL_HEIGHT / 2.5, "Press M to go to the Menu", Settings::MEDIUM_TEXT_SIZE, "font", sf::Color::White, true);
+    render_text(target, Settings::VIRTUAL_WIDTH / 2, 2 * Settings::VIRTUAL_HEIGHT / 3, "Press Enter to resume game", Settings::MEDIUM_TEXT_SIZE, "font", sf::Color::White, true);
+    render_text(target, Settings::VIRTUAL_WIDTH / 2, 2.3 * Settings::VIRTUAL_HEIGHT / 3, "Press M to go to menu", Settings::MEDIUM_TEXT_SIZE, "font", sf::Color::White, true);
 }

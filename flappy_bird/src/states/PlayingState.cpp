@@ -39,10 +39,6 @@ void PlayingState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _b
 
 void PlayingState::handle_inputs(const sf::Event &event) noexcept
 {
-    /*if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
-    {
-        bird->jump();
-    }*/
     if ((event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
         || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space))
     {
@@ -65,10 +61,8 @@ void PlayingState::update(float dt) noexcept
     {
         Settings::sounds["explosion"].play();
         Settings::sounds["hurt"].play();
-        //std::shared_ptr<GameMode> game_mode_hard{std::make_shared<GameModeHard>()};
         game_mode->reset();
         state_machine->change_state("count_down",nullptr,nullptr,game_mode);
-        //state_machine->change_state("menu",nullptr,nullptr,game_mode);
     }
 
     if (world->update_scored(bird->get_collision_rect()))
@@ -78,8 +72,6 @@ void PlayingState::update(float dt) noexcept
     }
 
     game_mode->update(dt,bird);
-    //game_mode->update_logs(dt,world->get_logs());
-    //game_mode->update_logs(dt,);
 }
 
 void PlayingState::render(sf::RenderTarget &target) const noexcept

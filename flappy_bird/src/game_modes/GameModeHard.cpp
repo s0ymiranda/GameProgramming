@@ -55,6 +55,10 @@ void GameModeHard::update_logs(float dt, float*vy, float* y, bool* closing, int 
         }
         else if(*y + Settings::LOG_HEIGHT + *vy >= *y + Settings::LOG_HEIGHT)
         {
+            if(*closing)
+            {
+                Settings::sounds["logs_crash"].play();
+            }
             *closing = false;
             *vy += -dt*20;
         }

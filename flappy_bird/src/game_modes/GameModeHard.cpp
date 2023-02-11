@@ -28,12 +28,12 @@ bool GameModeHard::ghost_bird_colission() noexcept
 void GameModeHard::handle_inputs(const sf::Event &event) noexcept
 {
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         bird_moving_left = true;
         bird_moving_right = false;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
         bird_moving_right = true;
         bird_moving_left = false;

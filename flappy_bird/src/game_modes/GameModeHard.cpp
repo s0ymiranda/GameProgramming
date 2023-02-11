@@ -3,8 +3,8 @@
 
 float GameModeHard::get_logs_y() noexcept
 {
-    std::uniform_int_distribution<int> dist{-20 - int(last_generate_log_time)*10, 20 + int(last_generate_log_time)*10};
-    float y = std::max( -Settings::LOG_HEIGHT + 10, std::min(last_log_y - 10 + dist(rgn), Settings::VIRTUAL_HEIGHT - Settings::LOG_HEIGHT - 100 - Settings::GROUND_HEIGHT));
+    std::uniform_int_distribution<int> dist{-20 - int(last_generate_log_time)*12, 20 + int(last_generate_log_time)*12};
+    float y = std::max( -Settings::LOG_HEIGHT + 10, std::min(last_log_y + dist(rgn), Settings::VIRTUAL_HEIGHT - Settings::LOG_HEIGHT - 100 - Settings::GROUND_HEIGHT));
     last_log_y = y;
     return y;
 }

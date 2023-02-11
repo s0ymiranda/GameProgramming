@@ -13,7 +13,7 @@ void MenuState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _bird
 {
     
     if(_bird == nullptr)
-        world = std::make_shared<World>(nullptr,false);
+        world = std::make_shared<World>(nullptr, false, false);
     else 
         world = _world;
     score = _score;

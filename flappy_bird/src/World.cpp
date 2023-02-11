@@ -11,29 +11,33 @@
 #include <Settings.hpp>
 #include <src/World.hpp>
 
-World::World(std::shared_ptr<GameMode> _game_mode, bool _generate_logs) noexcept
-    : game_mode{_game_mode}, generate_logs{_generate_logs}, background{Settings::textures["background"]}, ground{Settings::textures["ground"]},
+World::World(std::shared_ptr<GameMode> _game_mode, bool _generate_logs, bool _generate_powerUps) noexcept
+    : game_mode{_game_mode}, generate_logs{_generate_logs}, generate_powerUps{_generate_powerUps}, background{Settings::textures["background"]}, ground{Settings::textures["ground"]},
       logs{}, rng{std::default_random_engine{}()}
 {
     ground.setPosition(0, Settings::VIRTUAL_HEIGHT - Settings::GROUND_HEIGHT);
-    std::uniform_int_distribution<int> dist(0, 80);
-    last_log_y = -Settings::LOG_HEIGHT + dist(rng) + 20;
+    time_to_spawn_logs = Settings::TIME_TO_SPAWN_LOGS;
 }
 
-void World::reset(std::shared_ptr<GameMode> _game_mode, bool _generate_logs) noexcept
+void World::reset(std::shared_ptr<GameMode> _game_mode, bool _generate_logs, bool _generate_powerUps) noexcept
 {
     game_mode = _game_mode;
     generate_logs = _generate_logs;
+    generate_powerUps = _generate_powerUps;
 }
 
-bool World::collides(const sf::FloatRect& rect) const noexcept
+bool World::collides(const sf::FloatRect &rect) const noexcept
 {
+    if (game_mode->ghost_bird_colission())
+    {
+        return false;
+    }
     if (rect.top + rect.height >= Settings::VIRTUAL_HEIGHT)
     {
         return true;
     }
-    
-    for (auto log_pair: logs)
+
+    for (auto log_pair : logs)
     {
         if (log_pair->collides(rect))
         {
@@ -43,10 +47,37 @@ bool World::collides(const sf::FloatRect& rect) const noexcept
 
     return false;
 }
-
-bool World::update_scored(const sf::FloatRect& rect) noexcept
+bool World::powerUp_collides(const sf::FloatRect &rect) noexcept
 {
-    for (auto log_pair: logs)
+
+    power = false;
+    for (auto it2 = powerUps.begin(); it2 != powerUps.end();)
+    {
+        if ((*it2)->get_collision_rect().intersects(rect))
+        {
+            power = true;
+            auto powerup = *it2;
+            powerUp_factory.remove(powerup);
+            it2 = powerUps.erase(it2);
+        }
+        else
+        {
+            ++it2;
+        }
+    }
+    if (power)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool World::update_scored(const sf::FloatRect &rect) noexcept
+{
+    for (auto log_pair : logs)
     {
         if (log_pair->update_scored(rect))
         {
@@ -63,21 +94,34 @@ void World::update(float dt) noexcept
     {
         logs_spawn_timer += dt;
 
-        if (logs_spawn_timer >= Settings::TIME_TO_SPAWN_LOGS)
+        if (logs_spawn_timer >= time_to_spawn_logs)
         {
             logs_spawn_timer = 0.f;
 
-            std::uniform_int_distribution<int> dist{-20, 20};
-            float y = std::max(-Settings::LOG_HEIGHT + 10, std::min(last_log_y + dist(rng), Settings::VIRTUAL_HEIGHT + 90 - Settings::LOG_HEIGHT));
-
-            last_log_y = y;
-
-            //std::uniform_int_distribution<int> dist2{0,5};
+            float new_log_y = game_mode->get_logs_y();
 
             int random = rand() % 4;
 
-            logs.push_back(log_factory.create(Settings::VIRTUAL_WIDTH, y,game_mode,random));
-            //std::cout << random << std::endl;
+            logs.push_back(log_factory.create(Settings::VIRTUAL_WIDTH, new_log_y, game_mode, random));
+
+            time_to_spawn_logs = game_mode->get_time_for_next_log_pair();
+        }
+    }
+    if (generate_powerUps)
+    {
+        powerUps_spawn_timer += dt;
+
+        std::uniform_int_distribution<int> spawn{10, 15};
+        float powerupSpawn = spawn(rng);
+
+        if (powerUps_spawn_timer >= powerupSpawn)
+        {
+            powerUps_spawn_timer = 0.f;
+
+            std::uniform_int_distribution<int> dist{50, static_cast<int>(Settings::VIRTUAL_HEIGHT - 60)};
+            float y = dist(rng);
+
+            powerUps.push_back(powerUp_factory.create(Settings::VIRTUAL_WIDTH, game_mode->get_logs_y() + Settings::LOG_HEIGHT ));
         }
     }
 
@@ -99,7 +143,7 @@ void World::update(float dt) noexcept
 
     ground.setPosition(ground_x, Settings::VIRTUAL_HEIGHT - Settings::GROUND_HEIGHT);
 
-    for (auto it = logs.begin(); it != logs.end(); )
+    for (auto it = logs.begin(); it != logs.end();)
     {
         if ((*it)->is_out_of_game())
         {
@@ -107,7 +151,6 @@ void World::update(float dt) noexcept
             log_pair->change_move_status();
             log_factory.remove(log_pair);
             it = logs.erase(it);
-            
         }
         else
         {
@@ -115,13 +158,31 @@ void World::update(float dt) noexcept
             ++it;
         }
     }
+    for (auto it2 = powerUps.begin(); it2 != powerUps.end();)
+    {
+        if ((*it2)->is_out_of_game())
+        {
+            auto powerup = *it2;
+            powerUp_factory.remove(powerup);
+            it2 = powerUps.erase(it2);
+        }
+        else
+        {
+            (*it2)->update(dt);
+            ++it2;
+        }
+    }
 }
 
-void World::render(sf::RenderTarget& target) const noexcept
+void World::render(sf::RenderTarget &target) const noexcept
 {
     target.draw(background);
 
-    for (const auto& log_pair: logs)
+    for (const auto &powerup : powerUps)
+    {
+        powerup->render(target);
+    }
+    for (const auto &log_pair : logs)
     {
         log_pair->render(target);
     }

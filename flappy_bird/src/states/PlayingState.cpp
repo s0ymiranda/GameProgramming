@@ -22,7 +22,7 @@ void PlayingState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _b
 {
     world = _world;
     game_mode = _gameMode;
-    world->reset(game_mode, true);
+    world->reset(game_mode, true, game_mode->generate_powerups());
     score = _score;
 
     if (_bird == nullptr)
@@ -63,6 +63,11 @@ void PlayingState::update(float dt) noexcept
         Settings::sounds["hurt"].play();
         game_mode->reset();
         state_machine->change_state("count_down",nullptr,nullptr,game_mode);
+    }
+    
+    if(world->powerUp_collides(bird->get_collision_rect()) && game_mode->generate_powerups())
+    {
+        game_mode->change_bird_texture(bird);
     }
 
     if (world->update_scored(bird->get_collision_rect()))

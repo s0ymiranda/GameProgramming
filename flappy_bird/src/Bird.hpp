@@ -31,6 +31,8 @@ public:
 
     void move_on_x(float) noexcept;
 
+    sf::Sprite* get_sprite() noexcept;
+
 private:
     float x;
     float y;

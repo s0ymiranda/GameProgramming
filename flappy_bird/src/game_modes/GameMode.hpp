@@ -17,9 +17,13 @@ public:
 
     virtual void set_generate_log_hard() noexcept {};
     
-    virtual float get_logs_gap() noexcept = 0 ;
+    virtual float get_logs_y() noexcept = 0 ;
 
     virtual float get_time_for_next_log_pair() noexcept = 0;
+
+    virtual bool generate_powerups() noexcept = 0 ;
+
+    virtual bool ghost_bird_colission() noexcept = 0 ;
  
     virtual void handle_inputs(const sf::Event& event) noexcept {};
 
@@ -28,5 +32,8 @@ public:
     virtual void update_logs(float dt, float *vy, float *y, bool *closing, int move) noexcept {};
 
     virtual void reset() noexcept {};
+
+   virtual void change_bird_texture(std::shared_ptr<Bird> bird) noexcept {}
+
 
 };

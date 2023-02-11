@@ -32,14 +32,22 @@ void Bird::jump() noexcept
 
 void Bird::move_on_x(float _x) noexcept
 {
-    x += _x;
+    if( x > 0)
+        x += _x;
+    else 
+        x = 1;
 }
 
 void Bird::update(float dt) noexcept
 {
     vy += Settings::GRAVITY * dt;
 
-    if (jumping)
+    if (y > Settings::VIRTUAL_HEIGHT)
+    {
+        y -= 20;
+        return;
+    }
+    if (jumping && y > 0 )
     {
         Settings::sounds["jump"].play();
         vy = -Settings::JUMP_TAKEOFF_SPEED;
@@ -52,4 +60,9 @@ void Bird::update(float dt) noexcept
 void Bird::render(sf::RenderTarget& target) const noexcept
 {
     target.draw(sprite);
+}
+
+sf::Sprite* Bird::get_sprite() noexcept
+{
+    return &sprite;
 }

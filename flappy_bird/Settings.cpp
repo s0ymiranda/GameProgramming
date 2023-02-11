@@ -67,6 +67,20 @@ void Settings::load_textures()
     }
 
     Settings::textures["Log"] = texture;
+
+    if (!texture.loadFromFile(Settings::GRAPHICS_PATH / "powerup.png"))
+    {
+        throw std::runtime_error{"Error loading texture graphics/log.png"};
+    }
+
+    Settings::textures["powerup"] = texture;
+
+    if (!texture.loadFromFile(Settings::GRAPHICS_PATH / "ghost_bird.png"))
+    {
+        throw std::runtime_error{"Error loading texture graphics/log.png"};
+    }
+
+    Settings::textures["ghost_bird"] = texture;
 }
 
 void Settings::load_sounds()

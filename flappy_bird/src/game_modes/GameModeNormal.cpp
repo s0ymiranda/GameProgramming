@@ -4,7 +4,7 @@
 float GameModeNormal::get_logs_y() noexcept
 {
     std::uniform_int_distribution<int> dist{-20, 20};
-    float y = std::max(-Settings::LOG_HEIGHT + 10, std::min(last_log_y + dist(rng), Settings::VIRTUAL_HEIGHT + 90 - Settings::LOG_HEIGHT));
+    float y = std::max(-Settings::LOG_HEIGHT + 10, std::min(last_log_y + dist(rng), Settings::VIRTUAL_HEIGHT - Settings::LOG_HEIGHT - 100 - Settings::GROUND_HEIGHT));
     last_log_y = y;
     return y;
 }

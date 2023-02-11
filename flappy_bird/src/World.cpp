@@ -114,14 +114,14 @@ void World::update(float dt) noexcept
         std::uniform_int_distribution<int> spawn{10, 15};
         float powerupSpawn = spawn(rng);
 
-        if (powerUps_spawn_timer >= powerupSpawn)
+        if (powerUps_spawn_timer >= powerupSpawn + game_mode->get_time_for_next_log_pair())
         {
             powerUps_spawn_timer = 0.f;
 
             std::uniform_int_distribution<int> dist{50, static_cast<int>(Settings::VIRTUAL_HEIGHT - 60)};
             float y = dist(rng);
 
-            powerUps.push_back(powerUp_factory.create(Settings::VIRTUAL_WIDTH, game_mode->get_logs_y() + Settings::LOG_HEIGHT ));
+            powerUps.push_back(powerUp_factory.create(Settings::VIRTUAL_WIDTH , game_mode->get_logs_y() + Settings::LOG_HEIGHT ));
         }
     }
 

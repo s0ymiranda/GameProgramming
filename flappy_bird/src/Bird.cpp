@@ -44,7 +44,8 @@ void Bird::update(float dt) noexcept
 
     if (y > Settings::VIRTUAL_HEIGHT)
     {
-        y -= 20;
+        y -= Settings::BIRD_HEIGHT + Settings::GROUND_HEIGHT;
+
         return;
     }
     if (jumping && y > 0 )

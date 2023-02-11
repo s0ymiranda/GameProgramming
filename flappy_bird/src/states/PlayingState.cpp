@@ -63,12 +63,7 @@ void PlayingState::update(float dt) noexcept
         Settings::sounds["hurt"].play();
         game_mode->reset();
         state_machine->change_state("count_down",nullptr,nullptr,game_mode);
-    }
-    
-    if(world->powerUp_collides(bird->get_collision_rect()) && game_mode->generate_powerups())
-    {
-        game_mode->change_bird_texture(bird);
-    }
+    }    
 
     if (world->update_scored(bird->get_collision_rect()))
     {
@@ -76,6 +71,7 @@ void PlayingState::update(float dt) noexcept
         Settings::sounds["score"].play();
     }
 
+    game_mode->powerup_collides(bird,world);
     game_mode->update(dt,bird);
 }
 

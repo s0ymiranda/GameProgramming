@@ -76,6 +76,14 @@ void GameModeHard::update(float dt, std::shared_ptr<Bird> bird) noexcept
     }
 }
 
+void GameModeHard::powerup_collides(std::shared_ptr<Bird> bird, std::shared_ptr<World> world) noexcept
+{
+    if(world->powerUp_collides(bird->get_collision_rect()))
+    {
+        change_bird_texture(bird);
+    }
+}
+
 void GameModeHard::update_logs(float dt, float*vy, float* y, bool* closing, int move) noexcept
 {
 

@@ -5,10 +5,13 @@
 #include <Settings.hpp>
 #include <src/Bird.hpp>
 #include <src/LogPair.hpp>
+#include <src/World.hpp>
 
 class GameModeHard: public GameMode 
 {
+
 public: 
+
     float get_logs_y() noexcept override;
 
     float get_time_for_next_log_pair() noexcept override;
@@ -21,12 +24,13 @@ public:
 
     void update(float dt, std::shared_ptr<Bird> bird = nullptr) noexcept override;
 
+    void powerup_collides(std::shared_ptr<Bird> bird, std::shared_ptr<World> world) noexcept override;
+
     void update_logs(float dt, float *vy, float *y, bool *closing, int move) noexcept override;
 
     void reset() noexcept override;
 
     void change_bird_texture(std::shared_ptr<Bird> bird) noexcept override;
-
 
 private:
 

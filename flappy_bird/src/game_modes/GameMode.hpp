@@ -3,19 +3,17 @@
 
 #include <SFML/Window/Event.hpp>
 #include <Settings.hpp>
-#include <src/Bird.hpp>
 
 #include <memory>
 
 class Bird;
 class LogPair;
+class World;
 
 class GameMode 
 {
 
 public:
-
-    virtual void set_generate_log_hard() noexcept {};
     
     virtual float get_logs_y() noexcept = 0 ;
 
@@ -29,11 +27,12 @@ public:
 
     virtual void update(float dt, std::shared_ptr<Bird> bird) noexcept {};
 
+    virtual void powerup_collides(std::shared_ptr<Bird> bird, std::shared_ptr<World> world) noexcept {};
+
     virtual void update_logs(float dt, float *vy, float *y, bool *closing, int move) noexcept {};
 
     virtual void reset() noexcept {};
 
-   virtual void change_bird_texture(std::shared_ptr<Bird> bird) noexcept {}
-
+    virtual void change_bird_texture(std::shared_ptr<Bird> bird) noexcept {}
 
 };

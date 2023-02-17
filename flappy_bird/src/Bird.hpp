@@ -34,11 +34,14 @@ public:
     sf::Sprite* get_sprite() noexcept;
 
 private:
+
     float x;
     float y;
     float width;
     float height;
     float vy;
+
     sf::Sprite sprite;
+    
     bool jumping{false};
 };

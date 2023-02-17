@@ -36,15 +36,16 @@ public:
 private:
     float x;
     float y;
+    float vy;
+
+    bool scored{false};
+    bool closing;
+
+    int move;
+    
     Log top;
     Log bottom;
 
-    bool scored{false};
-
     std::shared_ptr<GameMode> game_mode;
 
-    //hard mode
-    float vy;
-    bool closing;
-    int move;
 };

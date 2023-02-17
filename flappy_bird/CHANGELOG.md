@@ -23,7 +23,7 @@ New Features
     
     In the "World" class it can be found the logic for generate the PowerUps in the world (this only will happen if the current Game Mode its hard), that works very similar to the logic for generate logs, in here is added ass well a new method to validate if there is any colission whit the powerups render in the world, in here as well we get some values from the game_mode (for example the time for generate a new log).
 
-    In the "Bird" class it is added a new method to get the sprite that is currenty in use, this is because in Game Mode Hard if the bird collide whit a powerUp it should change its texture, this new texture can be found in the graphics folder.
+    In the "Bird" class it is added a new method to get the sprite that is currenty in use, this is because in Game Mode Hard if the bird collide whit a powerUp it should change its texture, this new texture can be found in the graphics folder, now the bird can't go up until the limits of the window, as wel no either the left part of the window.
     
     In the state PlayingState there is some call to the game_mode, that reacts different depending on the current Game Mode, for example in the method Update there is a call to update from the game_mode, in Hard Mode this update several things (like the movement of the bird to the right or left), in Normal Mode it does not do anything new.
 

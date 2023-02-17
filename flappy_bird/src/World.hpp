@@ -59,6 +59,10 @@ private:
    
     float background_x{0.f};
     float ground_x{0.f};
+    float time_to_spawn_logs{0.f};
+    float logs_spawn_timer{0.f};
+    float powerUps_spawn_timer{0.f};
+    float new__log_y{0.f};
     
     Factory<LogPair> log_factory;
     Factory<PowerUp> powerUp_factory;
@@ -68,8 +72,4 @@ private:
 
     std::mt19937 rng;
 
-    float time_to_spawn_logs{0.f};
-    float logs_spawn_timer{0.f};
-    float powerUps_spawn_timer{0.f};
-    float new__log_y{0.f};
 };

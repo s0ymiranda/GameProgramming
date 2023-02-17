@@ -15,7 +15,9 @@
 
 class PauseScreenState: public BaseState
 {
+
 public:
+
     PauseScreenState(StateMachine* sm) noexcept;
 
     void enter(std::shared_ptr<World> _world = nullptr, std::shared_ptr<Bird> _bird = nullptr, std::shared_ptr<GameMode> _gameMode = nullptr, int _score = 0) noexcept override;
@@ -25,8 +27,10 @@ public:
     void render(sf::RenderTarget& target) const noexcept override;
 
 private:
+
     std::shared_ptr<GameMode> game_mode;
     std::shared_ptr<Bird> bird;
     std::shared_ptr<World> world;
     int score;
+    
 };

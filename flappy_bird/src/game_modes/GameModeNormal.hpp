@@ -6,7 +6,9 @@
 
 class GameModeNormal: public GameMode 
 {
+    
 public: 
+
     float get_logs_y() noexcept override;
 
     float get_time_for_next_log_pair() noexcept override;
@@ -19,6 +21,8 @@ public:
 
     void update(float dt, std::shared_ptr<Bird> bird = nullptr) noexcept override;
 
+    void powerup_collides(std::shared_ptr<Bird> bird, std::shared_ptr<World> world) noexcept override;
+
     void update_logs(float dt, float *vy, float *y, bool *closing, int move) noexcept override;
 
     void reset() noexcept override;
@@ -26,6 +30,7 @@ public:
     void change_bird_texture(std::shared_ptr<Bird> bird) noexcept override;
 
 private:
+
     std::mt19937 rng{std::default_random_engine{}()};
     std::uniform_int_distribution<int> dist{0, 80};
     float last_log_y = -Settings::LOG_HEIGHT + dist(rng) + 20;

@@ -34,6 +34,10 @@ void GameModeNormal::update(float dt, std::shared_ptr<Bird> bird) noexcept
 {
 
 }
+void GameModeNormal::powerup_collides(std::shared_ptr<Bird> bird, std::shared_ptr<World> world) noexcept
+{
+
+}
 
 void GameModeNormal::update_logs(float dt, float*vy, float* y, bool* closing, int move) noexcept
 {

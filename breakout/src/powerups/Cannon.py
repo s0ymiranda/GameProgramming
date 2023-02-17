@@ -11,7 +11,7 @@ from src.powerups.PowerUp import PowerUp
 class Cannon(PowerUp):
 
     def __init__(self, x: int, y: int) -> None:
-        super().__init__(x, y, 6)
+        super().__init__(x, y, 3)
         self.test_factory = Factory(Cannon_Fire)
 
     def take(self, play_state: TypeVar("PlayState")) -> None:

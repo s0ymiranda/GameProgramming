@@ -19,6 +19,9 @@ class PauseState(BaseState):
         self.points_to_next_live = params["points_to_next_live"]
         self.powerups = params["powerups"]
         self.cannons_fire = params["cannons_fire"]
+        self.sticky = params["sticky"]
+        self.sticky_timer = params["sticky_timer"]
+        self.counter = params["counter"] 
         settings.SOUNDS["pause"].play()
         InputHandler.register_listener(self)
 
@@ -81,5 +84,8 @@ class PauseState(BaseState):
                 live_factor=self.live_factor,
                 powerups=self.powerups,
                 cannons_fire = self.cannons_fire,
+                sticky = self.sticky,
+                sticky_timer = self.sticky_timer,
+                counter = self.counter,
                 resume=True,
             )

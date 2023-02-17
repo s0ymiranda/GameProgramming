@@ -35,10 +35,9 @@ class PlayState(BaseState):
         )
         self.powerups = params.get("powerups", [])
         self.cannons_fire = params.get("cannons_fire", [])
-        self.sticky = False
-        self.sticky_timer = 5
-        self.counter = 0
-
+        self.sticky = params.get("sticky",False)
+        self.sticky_timer = params.get("sticky_timer",5)
+        self.counter = params.get("counter",0)        
         if not params.get("resume", False):
             self.balls[0].vx = random.randint(-80, 80)
             self.balls[0].vy = random.randint(-170, -100)
@@ -239,6 +238,16 @@ class PlayState(BaseState):
         for cannon_fire in self.cannons_fire:
             cannon_fire.render(surface)
 
+        if self.sticky:
+            render_text(
+                surface,
+                f"Sticky time: {int(6 - self.counter)}",
+                settings.FONTS["tiny"],
+                20,
+                5,
+                (255, 255, 255),
+            )
+
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "move_left" or input_id == "move_left_v2":
             if input_data.pressed:
@@ -277,4 +286,7 @@ class PlayState(BaseState):
                 live_factor=self.live_factor,
                 powerups=self.powerups,
                 cannons_fire = self.cannons_fire,
+                sticky = self.sticky,
+                sticky_timer = self.sticky_timer,
+                counter = self.counter,
             )

@@ -15,7 +15,7 @@ class StickyPaddle(PowerUp):
     """
 
     def __init__(self, x: int, y: int) -> None:
-        super().__init__(x, y, 8)
+        super().__init__(x, y, 2)
 
 
     def take(self, play_state: TypeVar("PlayState")) -> None:

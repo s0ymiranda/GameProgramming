@@ -127,27 +127,21 @@ class PlayState(BaseState):
                 )
                 self.paddle.inc_size()
 
-            # Chance to generate two more balls
+            #Chance to generate a powerup
             if random.random() < 0.3:
                 r = brick.get_collision_rect()
+                random_number = random.random()
+                if random_number <= 1/3:
+                    #Chance to generate two more balls
+                    create = "TwoMoreBall"
+                elif random_number > 1/3 and random_number <= 2/3:
+                    #chance to get Sticky paddle
+                    create = "StickyPaddle"
+                else:
+                    #chance to generate cannons
+                    create = "Cannon"
                 self.powerups.append(
-                    self.powerups_abstract_factory.get_factory("TwoMoreBall").create(
-                        r.centerx - 8, r.centery - 8
-                    )
-                )
-            #chance to generate cannons
-            if random.random() < 0.3:
-                r = brick.get_collision_rect()
-                self.powerups.append(
-                    self.powerups_abstract_factory.get_factory("Cannon").create(
-                        r.centerx - 8, r.centery - 8
-                    )
-                )
-            #chance to get Sticky paddle
-            if random.random() < 0.3:
-                r = brick.get_collision_rect()
-                self.powerups.append(
-                    self.powerups_abstract_factory.get_factory("StickyPaddle").create(
+                    self.powerups_abstract_factory.get_factory(create).create(
                         r.centerx - 8, r.centery - 8
                     )
                 )
@@ -258,6 +252,7 @@ class PlayState(BaseState):
                 self.paddle.vx = 0
         elif input_id == "shoot" and len(self.cannons_fire) != 0:
             for cannon_fire in self.cannons_fire:
+                cannon_fire.texture = settings.TEXTURES["cannon_fire"]
                 cannon_fire.vy = -140
         elif input_id == "release_balls" and self.sticky and input_data.pressed:
             for ball in self.balls:

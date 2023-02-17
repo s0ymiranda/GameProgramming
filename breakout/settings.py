@@ -80,6 +80,7 @@ TEXTURES = {
     "hearts": pygame.image.load(BASE_DIR / "graphics" / "hearts.png"),
     "arrows": pygame.image.load(BASE_DIR / "graphics" / "arrows.png"),
     "cannon_fire": pygame.image.load(BASE_DIR / "graphics" / "cannons_fire.png"),
+    "cannon": pygame.image.load(BASE_DIR / "graphics" / "cannon.png"),
 }
 
 FRAMES = {

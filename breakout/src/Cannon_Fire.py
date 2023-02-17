@@ -16,7 +16,7 @@ class Cannon_Fire:
         self.vx = 0
         self.vy = 0
 
-        self.texture = settings.TEXTURES["cannon_fire"]
+        self.texture = settings.TEXTURES["cannon"]
         self.frame = 0
         self.in_play = True
         #self.actioned = False

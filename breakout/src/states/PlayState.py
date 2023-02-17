@@ -34,6 +34,7 @@ class PlayState(BaseState):
             + settings.PADDLE_GROW_UP_POINTS * (self.paddle.size + 1) * self.level
         )
         self.powerups = params.get("powerups", [])
+        self.cannons_fire = params.get("cannons_fire", [])
 
         if not params.get("resume", False):
             self.balls[0].vx = random.randint(-80, 80)
@@ -49,6 +50,22 @@ class PlayState(BaseState):
 
     def update(self, dt: float) -> None:
         self.paddle.update(dt)
+
+        for cannon_fire in self.cannons_fire:
+            cannon_fire.update(dt,self)
+            cannon_fire.solve_world_boundaries()
+            # Check collision with brickset
+            if not cannon_fire.collides(self.brickset):
+                continue
+            
+            while True:
+                brick = self.brickset.get_colliding_brick(cannon_fire.get_collision_rect())
+
+                if brick is None:
+                    break           
+                
+                brick.hit()
+                self.score += brick.score()
 
         for ball in self.balls:
             ball.update(dt)
@@ -90,10 +107,18 @@ class PlayState(BaseState):
                 self.paddle.inc_size()
 
             # Chance to generate two more balls
-            if random.random() < 0.7:
+            if random.random() < 0.3:
                 r = brick.get_collision_rect()
                 self.powerups.append(
                     self.powerups_abstract_factory.get_factory("TwoMoreBall").create(
+                        r.centerx - 8, r.centery - 8
+                    )
+                )
+
+            if random.random() < 0.3:
+                r = brick.get_collision_rect()
+                self.powerups.append(
+                    self.powerups_abstract_factory.get_factory("Cannon").create(
                         r.centerx - 8, r.centery - 8
                     )
                 )
@@ -129,6 +154,9 @@ class PlayState(BaseState):
 
         # Remove powerups that are not in play
         self.powerups = [p for p in self.powerups if p.in_play]
+
+        #remove cannons fire that are not in play
+        self.cannons_fire = [p for p in self.cannons_fire if p.in_play]
 
         # Check victory
         if self.brickset.size == 1 and next(
@@ -184,13 +212,17 @@ class PlayState(BaseState):
         for powerup in self.powerups:
             powerup.render(surface)
 
+        #render cannons fire
+        for cannon_fire in self.cannons_fire:
+            cannon_fire.render(surface)
+
     def on_input(self, input_id: str, input_data: InputData) -> None:
-        if input_id == "move_left":
+        if input_id == "move_left" or input_id == "move_left_v2":
             if input_data.pressed:
                 self.paddle.vx = -settings.PADDLE_SPEED
             elif input_data.released and self.paddle.vx < 0:
                 self.paddle.vx = 0
-        elif input_id == "move_right":
+        elif input_id == "move_right" or input_id == "move_right_v2":
             if input_data.pressed:
                 self.paddle.vx = settings.PADDLE_SPEED
             elif input_data.released and self.paddle.vx > 0:
@@ -207,4 +239,8 @@ class PlayState(BaseState):
                 points_to_next_live=self.points_to_next_live,
                 live_factor=self.live_factor,
                 powerups=self.powerups,
+                cannons_fire = self.cannons_fire,
             )
+        elif input_id == "shoot" and len(self.cannons_fire) != 0:
+            for cannon_fire in self.cannons_fire:
+                cannon_fire.vy = -140

@@ -82,3 +82,14 @@ def generate_powerups_frames() -> List[pygame.Rect]:
         frames.append(pygame.Rect(j * 16, y, 16, 16))
 
     return frames
+
+def generate_cannons_fire_frames() -> List[pygame.Rect]:
+    fire_size = 8
+    x = 0
+    y = 0
+
+    frames = []
+
+    frames.append(pygame.Rect(x, y, fire_size, fire_size))
+
+    return frames

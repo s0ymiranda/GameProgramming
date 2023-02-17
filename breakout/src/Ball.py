@@ -26,6 +26,8 @@ class Ball:
         self.vx = 0
         self.vy = 0
 
+        self.sticked_on_paddle = False
+        self.sticked_position = 0
         self.texture = settings.TEXTURES["spritesheet"]
         self.frame = random.randint(0, 6)
         self.in_play = True
@@ -112,6 +114,13 @@ class Ball:
             # Collision happened from top or bottom
             self.y += shift_y
             self.vy *= -1
+
+    def sticky(self, paddle: Paddle) -> None:
+        if  not self.sticked_on_paddle: 
+            self.vy = 0
+            self.vx = 0
+            self.sticked_position = self.x - paddle.x
+            self.sticked_on_paddle = True
 
     def push(self, paddle: Paddle) -> None:
         """

@@ -35,6 +35,7 @@ input_handler.InputHandler.set_keyboard_action(input_handler.KEY_SPACE, "pause")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_d, "move_right_v2")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_a, "move_left_v2")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_f, "shoot")
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_r, "release_balls")
 
 # Size of our actual window
 WINDOW_WIDTH = 1280

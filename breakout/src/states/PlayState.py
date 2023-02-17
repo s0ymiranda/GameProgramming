@@ -35,6 +35,9 @@ class PlayState(BaseState):
         )
         self.powerups = params.get("powerups", [])
         self.cannons_fire = params.get("cannons_fire", [])
+        self.sticky = False
+        self.sticky_timer = 5
+        self.counter = 0
 
         if not params.get("resume", False):
             self.balls[0].vx = random.randint(-80, 80)
@@ -67,16 +70,34 @@ class PlayState(BaseState):
                 brick.hit()
                 self.score += brick.score()
 
+        #Counter for sticky powerup        
+        if self.sticky:
+            self.counter += dt
+        if self.counter >= self.sticky_timer: 
+            for ball in self.balls:
+                if ball.sticked_on_paddle:
+                    ball.vx = random.randint(-80, 80)
+                    ball.vy = random.randint(-170, -100)
+                    ball.sticked_on_paddle = False
+            self.counter = 0
+            self.sticky = False
+
         for ball in self.balls:
             ball.update(dt)
             ball.solve_world_boundaries()
 
             # Check collision with the paddle
             if ball.collides(self.paddle):
-                settings.SOUNDS["paddle_hit"].stop()
-                settings.SOUNDS["paddle_hit"].play()
-                ball.rebound(self.paddle)
-                ball.push(self.paddle)
+                if self.sticky:
+                    if not ball.sticked_on_paddle and ball.vy > 0:
+                        ball.sticky(self.paddle)
+                else:
+                    settings.SOUNDS["paddle_hit"].stop()
+                    settings.SOUNDS["paddle_hit"].play()
+                    ball.rebound(self.paddle)
+                    ball.push(self.paddle)
+            if(ball.sticked_on_paddle):
+                ball.x = self.paddle.x + ball.sticked_position
 
             # Check collision with brickset
             if not ball.collides(self.brickset):
@@ -114,11 +135,19 @@ class PlayState(BaseState):
                         r.centerx - 8, r.centery - 8
                     )
                 )
-
+            #chance to generate cannons
             if random.random() < 0.3:
                 r = brick.get_collision_rect()
                 self.powerups.append(
                     self.powerups_abstract_factory.get_factory("Cannon").create(
+                        r.centerx - 8, r.centery - 8
+                    )
+                )
+            #chance to get Sticky paddle
+            if random.random() < 0.3:
+                r = brick.get_collision_rect()
+                self.powerups.append(
+                    self.powerups_abstract_factory.get_factory("StickyPaddle").create(
                         r.centerx - 8, r.centery - 8
                     )
                 )
@@ -227,6 +256,19 @@ class PlayState(BaseState):
                 self.paddle.vx = settings.PADDLE_SPEED
             elif input_data.released and self.paddle.vx > 0:
                 self.paddle.vx = 0
+        elif input_id == "shoot" and len(self.cannons_fire) != 0:
+            for cannon_fire in self.cannons_fire:
+                cannon_fire.vy = -140
+        elif input_id == "release_balls" and self.sticky and input_data.pressed:
+            for ball in self.balls:
+                if ball.sticked_on_paddle:    
+                    ball.vx = random.randint(-80, 80)
+                    ball.vy = random.randint(-170, -100)
+                    settings.SOUNDS["paddle_hit"].play()
+                    ball.sticked_on_paddle = False
+
+
+
         elif input_id == "pause" and input_data.pressed:
             self.state_machine.change(
                 "pause",
@@ -241,6 +283,3 @@ class PlayState(BaseState):
                 powerups=self.powerups,
                 cannons_fire = self.cannons_fire,
             )
-        elif input_id == "shoot" and len(self.cannons_fire) != 0:
-            for cannon_fire in self.cannons_fire:
-                cannon_fire.vy = -140

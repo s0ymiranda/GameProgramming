@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/gerardo/Desktop/Semestre A2023/Videogame Programming/GameProgramming/breakout/.venv"
+VIRTUAL_ENV="/home/miranda/Escritorio/GitHubPrVideojuegos/GameProgramming/breakout/.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

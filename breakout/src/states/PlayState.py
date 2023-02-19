@@ -127,7 +127,7 @@ class PlayState(BaseState):
                 self.paddle.inc_size()
 
             #Chance to generate a powerup
-            if random.random() < 0.3:
+            if random.random() < 0.4:
                 r = brick.get_collision_rect()
                 random_number = random.random()
                 if random_number <= 1/3:
@@ -144,7 +144,7 @@ class PlayState(BaseState):
                         r.centerx - 8, r.centery - 8
                     )
                 )
-            elif self.lives == 1 and random.random() < 0.2:
+            elif self.lives == 1 and random.random() < 0.1:
                 r = brick.get_collision_rect()
                 self.powerups.append(
                     self.powerups_abstract_factory.get_factory("OneMoreLife").create(

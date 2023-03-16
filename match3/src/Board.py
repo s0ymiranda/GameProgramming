@@ -299,7 +299,7 @@ class Board:
 
     def CanMove(self, tile, i,j)-> bool:
         #tile is original tile, and i,j are coord to move that tile
-        if j < 0 or j > 8 or i < 0 or i > 8:
+        if j < 0 or j >= 8 or i < 0 or i >= 8:
             return False
 
         return self.WillThereBeAMatch(tile,i,j) or self.WillThereBeAMatch(self.tiles[i][j],tile.i,tile.j)
@@ -333,4 +333,7 @@ class Board:
         for i in range(7):
             for j in range(7):
                 tile = self.tiles[i][j]
-                test = self.CanMove(tile, i - 1, j) or self.CanMove(tile, i + 1, j) or self.CanMove(tile, i, j - 1) or self.CanMove(tile, i, j + 1)
+                self.CanMove(tile, i - 1, j)
+                self.CanMove(tile, i + 1, j)
+                self.CanMove(tile, i, j - 1)
+                self.CanMove(tile, i, j + 1)

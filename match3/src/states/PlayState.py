@@ -151,6 +151,7 @@ class PlayState(BaseState):
         )
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
+
         if not self.active:
             return
 
@@ -239,6 +240,16 @@ class PlayState(BaseState):
 
         if input_id == "click" and input_data.released:
 
+            # if self.tile1 == None:
+            #     for index in range(8):
+            #         for jndex in range(8):
+            #             print(self.board.tiles[index][jndex].color,end=' ')
+            #         print()
+
+            if self.tile1 == None:
+                #self.on_motion = False
+                return
+
             if self.already_moving == "none":
                 if self.tile1.variety == 7:
                     self.cross_power_up()
@@ -289,7 +300,7 @@ class PlayState(BaseState):
             x1,y1 = self.original_x_and_y_tile1
             x2,y2 = self.original_x_and_y_tile2
 
-            flag = self.board.CanMove(self.tile1,self.tile2.i,self.tile2.j)
+            flag = True#self.board.CanMove(self.tile1,self.tile2.i,self.tile2.j)
 
             if self.already_moving == "left":
                 if self.tile1.x < self.tile2.x and flag:
@@ -322,12 +333,15 @@ class PlayState(BaseState):
             pos_y = pos_y * settings.VIRTUAL_HEIGHT // settings.WINDOW_HEIGHT
             i = (pos_y - self.board.y) // settings.TILE_SIZE
             j = (pos_x - self.board.x) // settings.TILE_SIZE    
-            self.selected_tile_i = i 
-            self.selected_tile_j = j    
-            self.tile1 = self.board.tiles[self.selected_tile_i][self.selected_tile_j]
-            self.original_x_and_y_tile1 = self.tile1.x, self.tile1.y
-            
-            self.time_waiting = 0
+            if i >= 0 and i < 8 and j >= 0 and j < 8:
+                self.selected_tile_i = i 
+                self.selected_tile_j = j    
+                self.tile1 = self.board.tiles[self.selected_tile_i][self.selected_tile_j]
+                self.original_x_and_y_tile1 = self.tile1.x, self.tile1.y  
+                self.time_waiting = 0
+            else:
+                self.tile1 = None
+                self.on_motion = False
 
     def cross_power_up(self):
         settings.SOUNDS["match"].stop()
@@ -384,16 +398,39 @@ class PlayState(BaseState):
 
         self.board.remove_matches()
         
-        if num == 4:
-            self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
-                self.tile1.i, self.tile1.j, self.tile1.color,7
-            )
-        elif num > 4:
-            self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
-                self.tile1.i, self.tile1.j, self.tile1.color,8
-            )
-        
+        # if num == 4:
+        #     self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
+        #         self.tile1.i, self.tile1.j, self.tile1.color,7
+        #     )
+        # elif num > 4:
+        #     self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
+        #         self.tile1.i, self.tile1.j, self.tile1.color,8
+        #     )
+
         falling_tiles = self.board.get_falling_tiles()
+
+        if num >= 4:
+            for index in range(len(falling_tiles)):
+                t,comp = falling_tiles[index]
+                if t.i == self.tile1.i and t.j == self.tile1.j:
+                    falling_tiles.pop(index)
+                    break
+            if num == 4:
+                self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
+                    self.tile1.i, self.tile1.j, self.tile1.color,7
+                )
+            elif num > 4:
+                self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
+                    self.tile1.i, self.tile1.j, self.tile1.color,8
+                )
+
+            for index in range(8):
+                for jndex in range(8):
+                    print(self.board.tiles[index][jndex].variety,end=' ')
+                print()
+        # for t in falling_tiles:
+        #     t2,xd = t
+        #     print( t2.i,t2.j)
 
         Timer.tween(
             0.25,

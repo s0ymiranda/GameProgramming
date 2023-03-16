@@ -98,7 +98,7 @@ class PlayState(BaseState):
 
         while not self.board.ExistMatch():
             self.board.RecreateBoard()
-            self.board.MarkMatches()
+            #self.board.MarkMatches()
 
     def render(self, surface: pygame.Surface) -> None:
         self.board.render(surface)
@@ -324,7 +324,7 @@ class PlayState(BaseState):
                     not_exchange(x1,y1,x2,y2)
             self.already_moving = "none"
 
-            self.board.MarkMatches()
+            #self.board.MarkMatches()
             
         if input_id == "click" and input_data.pressed:
             self.on_motion = True
@@ -424,10 +424,10 @@ class PlayState(BaseState):
                     self.tile1.i, self.tile1.j, self.tile1.color,8
                 )
 
-            for index in range(8):
-                for jndex in range(8):
-                    print(self.board.tiles[index][jndex].variety,end=' ')
-                print()
+            # for index in range(8):
+            #     for jndex in range(8):
+            #         print(self.board.tiles[index][jndex].variety,end=' ')
+            #     print()
         # for t in falling_tiles:
         #     t2,xd = t
         #     print( t2.i,t2.j)
@@ -440,4 +440,4 @@ class PlayState(BaseState):
             ),
         )
 
-        self.board.MarkMatches()
+        #self.board.MarkMatches()

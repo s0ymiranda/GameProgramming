@@ -298,24 +298,33 @@ class Board:
         return any(same_color)
 
     def CanMove(self, tile, i,j)-> bool:
-        #tile is original tile, and i,j are coord to move that tile
+        #tile is original tile, and i,j are coords to move that tile
         if j < 0 or j >= 8 or i < 0 or i >= 8:
             return False
 
         return self.WillThereBeAMatch(tile,i,j) or self.WillThereBeAMatch(self.tiles[i][j],tile.i,tile.j)
 
     def ExistMatch(self):
+        # for i in range(8):
+        #     for j in range(8):
+        #         tile = self.tiles[i][j]
+        #         if tile.variety >= 7:
+        #             return True
+        it_exist = False
+        for i in range(8):
+            for j in range(8):
+                self.tiles[i][j].can_match = False
         for i in range(8):
             for j in range(8):
                 tile = self.tiles[i][j]
                 if tile.variety >= 7:
-                    return True
-        for i in range(7):
-            for j in range(7):
-                tile = self.tiles[i][j]
+                    #return True
+                    it_exist = True
                 if self.CanMove(tile, i - 1, j) or self.CanMove(tile, i + 1, j) or self.CanMove(tile, i, j - 1) or self.CanMove(tile, i, j + 1):
-                    return True
-        return False
+                    #return True
+                    it_exist = True
+            #Note, we keep it going so then it can mark all the existing matches
+        return it_exist
 
     def swap_tiles(self,i1,j1,i2,j2):
         (
@@ -326,14 +335,14 @@ class Board:
             self.tiles[i1][j1],
         )
 
-    def MarkMatches(self):
-        for i in range(8):
-            for j in range(8):
-                self.tiles[i][j].can_match = False
-        for i in range(7):
-            for j in range(7):
-                tile = self.tiles[i][j]
-                self.CanMove(tile, i - 1, j)
-                self.CanMove(tile, i + 1, j)
-                self.CanMove(tile, i, j - 1)
-                self.CanMove(tile, i, j + 1)
+    # def MarkMatches(self):
+    #     for i in range(8):
+    #         for j in range(8):
+    #             self.tiles[i][j].can_match = False
+    #     for i in range(8):
+    #         for j in range(8):
+    #             tile = self.tiles[i][j]
+    #             self.CanMove(tile, i - 1, j)
+    #             self.CanMove(tile, i + 1, j)
+    #             self.CanMove(tile, i, j - 1)
+    #             self.CanMove(tile, i, j + 1)

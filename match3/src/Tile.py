@@ -30,11 +30,6 @@ class Tile:
 
     def render(self, surface: pygame.Surface, offset_x: int, offset_y: int) -> None:
         if self.variety == 7:
-            # surface.blit(
-            #     settings.TEXTURES["power_tiles"],
-            #     (0, 0),
-            #     settings.FRAMES["power_tiles"][0],
-            # )
             pygame.draw.rect(
                 self.tile_alpha_surface,
                 (255, 255, 255, 96),
@@ -48,16 +43,11 @@ class Tile:
                 settings.FRAMES["power_tiles"][0],
             )
         elif self.variety == 8:
-            # surface.blit(
-            #     settings.TEXTURES["power_color_tiles"],
-            #     (0, 0),
-            #     settings.FRAMES["power_tiles"][0],
-            # )
             pygame.draw.rect(
-                self.tile_alpha_surface,
-                (255, 255, 255, 96),
-                pygame.Rect(0, 0, settings.TILE_SIZE, settings.TILE_SIZE),
-                border_radius=7,
+                 self.tile_alpha_surface,
+                 (255, 255, 255, 96),
+                 pygame.Rect(0, 0, settings.TILE_SIZE, settings.TILE_SIZE),
+                 border_radius=7,
             )
             surface.blit(self.tile_alpha_surface, (self.x + 2 + offset_x, self.y + 2 + offset_y))
             surface.blit(

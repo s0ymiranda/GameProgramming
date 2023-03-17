@@ -305,11 +305,6 @@ class Board:
         return self.WillThereBeAMatch(tile,i,j) or self.WillThereBeAMatch(self.tiles[i][j],tile.i,tile.j)
 
     def ExistMatch(self):
-        # for i in range(8):
-        #     for j in range(8):
-        #         tile = self.tiles[i][j]
-        #         if tile.variety >= 7:
-        #             return True
         it_exist = False
         for i in range(8):
             for j in range(8):
@@ -318,10 +313,8 @@ class Board:
             for j in range(8):
                 tile = self.tiles[i][j]
                 if tile.variety >= 7:
-                    #return True
                     it_exist = True
                 if self.CanMove(tile, i - 1, j) or self.CanMove(tile, i + 1, j) or self.CanMove(tile, i, j - 1) or self.CanMove(tile, i, j + 1):
-                    #return True
                     it_exist = True
             #Note, we keep it going so then it can mark all the existing matches
         return it_exist
@@ -334,15 +327,3 @@ class Board:
             self.tiles[i2][j2],
             self.tiles[i1][j1],
         )
-
-    # def MarkMatches(self):
-    #     for i in range(8):
-    #         for j in range(8):
-    #             self.tiles[i][j].can_match = False
-    #     for i in range(8):
-    #         for j in range(8):
-    #             tile = self.tiles[i][j]
-    #             self.CanMove(tile, i - 1, j)
-    #             self.CanMove(tile, i + 1, j)
-    #             self.CanMove(tile, i, j - 1)
-    #             self.CanMove(tile, i, j + 1)

@@ -25,8 +25,6 @@ class PlayState(BaseState):
         self.level = enter_params["level"]
         self.board = enter_params["board"]
         self.score = enter_params["score"]
-
-        #start testing
         self.on_motion = False
         self.selected_tile_i = 0
         self.selected_tile_j = 0
@@ -37,15 +35,6 @@ class PlayState(BaseState):
         self.original_x_and_y_tile2 = None
 
         self.time_waiting = 0
-        #end testing
-
-        # Position in the grid which we are highlighting
-        self.board_highlight_i1 = -1
-        self.board_highlight_j1 = -1
-        self.board_highlight_i2 = -1
-        self.board_highlight_j2 = -1
-
-        self.highlighted_tile = False
 
         self.active = True
 
@@ -53,7 +42,7 @@ class PlayState(BaseState):
 
         self.goal_score = self.level * 1.25 * 1000
 
-        # A surface that supports alpha to highlight a selected tile
+        # A surface that supports alpha to highlight the posible matches tile
         self.tile_alpha_surface = pygame.Surface(
             (settings.TILE_SIZE, settings.TILE_SIZE), pygame.SRCALPHA
         )
@@ -98,12 +87,12 @@ class PlayState(BaseState):
 
         while not self.board.ExistMatch():
             self.board.RecreateBoard()
-            #self.board.MarkMatches()
+            
 
     def render(self, surface: pygame.Surface) -> None:
         self.board.render(surface)
 
-        if not self.on_motion and self.time_waiting >= 1:
+        if not self.on_motion and self.time_waiting >= 20:
             for g in range(8):
                 for a in range(8):
                     tile = self.board.tiles[g][a]
@@ -240,14 +229,7 @@ class PlayState(BaseState):
 
         if input_id == "click" and input_data.released:
 
-            # if self.tile1 == None:
-            #     for index in range(8):
-            #         for jndex in range(8):
-            #             print(self.board.tiles[index][jndex].color,end=' ')
-            #         print()
-
             if self.tile1 == None:
-                #self.on_motion = False
                 return
 
             if self.already_moving == "none":
@@ -300,7 +282,7 @@ class PlayState(BaseState):
             x1,y1 = self.original_x_and_y_tile1
             x2,y2 = self.original_x_and_y_tile2
 
-            flag = True#self.board.CanMove(self.tile1,self.tile2.i,self.tile2.j)
+            flag = self.board.CanMove(self.tile1,self.tile2.i,self.tile2.j)
 
             if self.already_moving == "left":
                 if self.tile1.x < self.tile2.x and flag:
@@ -324,7 +306,6 @@ class PlayState(BaseState):
                     not_exchange(x1,y1,x2,y2)
             self.already_moving = "none"
 
-            #self.board.MarkMatches()
             
         if input_id == "click" and input_data.pressed:
             self.on_motion = True
@@ -397,15 +378,6 @@ class PlayState(BaseState):
                     self.color_power_up()
 
         self.board.remove_matches()
-        
-        # if num == 4:
-        #     self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
-        #         self.tile1.i, self.tile1.j, self.tile1.color,7
-        #     )
-        # elif num > 4:
-        #     self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
-        #         self.tile1.i, self.tile1.j, self.tile1.color,8
-        #     )
 
         falling_tiles = self.board.get_falling_tiles()
 
@@ -424,13 +396,7 @@ class PlayState(BaseState):
                     self.tile1.i, self.tile1.j, self.tile1.color,8
                 )
 
-            # for index in range(8):
-            #     for jndex in range(8):
-            #         print(self.board.tiles[index][jndex].variety,end=' ')
-            #     print()
-        # for t in falling_tiles:
-        #     t2,xd = t
-        #     print( t2.i,t2.j)
+
 
         Timer.tween(
             0.25,
@@ -440,4 +406,3 @@ class PlayState(BaseState):
             ),
         )
 
-        #self.board.MarkMatches()

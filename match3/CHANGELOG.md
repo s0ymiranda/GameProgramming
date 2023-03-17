@@ -1,5 +1,6 @@
 New Features 
 Tile.py
+
     Added the property can_match to the tiles.
 
     The tile that have variety 7 it means that it is a croos powerUp, it have its proper texture.
@@ -8,6 +9,7 @@ Tile.py
 
 
 Board.py 
+
     Function RecreateBoard: This functions calls the initialize_tiles function
 
     Function cross_power_up: This function works for when a cross power up its activated it will remove from the board the proper tiles.
@@ -23,6 +25,7 @@ Board.py
     Function swap_tiles: This Function swap the position of two tiles.
 
 PlayState.py
+
     On Update function, it is use the ExistMatch and the recreateBorad  functions from the board, they are used for if there is no matches in the board, it will recreate the board.
 
     On render function, it is implemented a helper, after 20 seconds if the user havent done anything it will highlight the tiles that have the property can-match on true.

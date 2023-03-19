@@ -92,7 +92,7 @@ class PlayState(BaseState):
     def render(self, surface: pygame.Surface) -> None:
         self.board.render(surface)
 
-        if not self.on_motion and self.time_waiting >= 20:
+        if not self.on_motion and self.time_waiting >= 2:
             for g in range(8):
                 for a in range(8):
                     tile = self.board.tiles[g][a]
@@ -373,9 +373,12 @@ class PlayState(BaseState):
         for match in matches:
             for t in match:
                 if t.variety == 7:
-                    self.cross_power_up()
+                    self.board.remove_matches()
+                    self.tile1 = t
+                    self.cross_power_up()    
                 elif t.variety == 8:
                     self.color_power_up()
+                    self.board.matches = []
 
         self.board.remove_matches()
 

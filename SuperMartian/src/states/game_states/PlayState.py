@@ -35,15 +35,23 @@ class PlayState(BaseState):
             if self.level == 1:
                 pygame.mixer.music.load(settings.BASE_DIR / "sounds/music_grassland.ogg")
             else:
-                pygame.mixer.music.load(settings.BASE_DIR / "sounds/Resting_Grounds.mp3")
+                pygame.mixer.music.load(settings.BASE_DIR / "sounds/Soul_Sanctum.mp3")
                 
             pygame.mixer.music.play(loops=-1)
 
         self.tilemap = self.game_level.tilemap
         self.player = enter_params.get("player")
+        self.next_level = enter_params.get("next_level")
+        
+
         if self.player is None:
             self.player = Player(0, settings.VIRTUAL_HEIGHT - 66, self.game_level)
             self.player.change_state("idle")
+        elif self.next_level:
+            (data_score,data_coins) = (self.player.score,self.player.coins_counter)
+            self.player = Player(0, settings.VIRTUAL_HEIGHT - 66, self.game_level)
+            self.player.change_state("idle")
+            (self.player.score,self.player.coins_counter) = (data_score,data_coins)
 
         if self.level == 1:
             self.timer = enter_params.get("timer", 30)
@@ -59,7 +67,6 @@ class PlayState(BaseState):
         Timer.every(1, countdown_timer)
         InputHandler.register_listener(self)
 
-        #own try
         self.index_save = []
 
     def exit(self) -> None:
@@ -103,7 +110,7 @@ class PlayState(BaseState):
                 item.on_collide(self.player)
                 item.on_consume(self.player)
 
-        if self.player.score >= 100 and self.level == 1:
+        if self.player.score >= 250 and self.level == 1:
             
             for item in self.game_level.items:
                 if item.frame_index == 71:
@@ -114,12 +121,14 @@ class PlayState(BaseState):
             if self.player.key_taken:
                 if self.level == 1:
                     self.player.key_taken = False
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.unload()
                     self.state_machine.change("begin",self.level,self.player)
 
             if len(self.index_save) == 0:
                 settings.SOUNDS["secret_discovered"].stop()
                 settings.SOUNDS["secret_discovered"].play()
-                pygame.mixer.music.pause()
+                pygame.mixer.music.stop()
                 pygame.mixer.music.unload()
                 pygame.mixer.music.load(settings.BASE_DIR / "sounds" / "Resting_Grounds.mp3")
                 Timer.clear()
@@ -141,7 +150,6 @@ class PlayState(BaseState):
                     self.tilemap.layers[self.index_save[0]][self.index_save[1]][self.index_save[2]].frame_index = 75
 
     def play_music(self):
-        pygame.mixer.music.play()
         pygame.mixer.music.play(loops=-1)
 
     def render(self, surface: pygame.Surface) -> None:

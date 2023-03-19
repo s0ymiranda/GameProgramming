@@ -21,14 +21,13 @@ class GameOverState(BaseState):
         self.player = player
         InputHandler.register_listener(self)
         InputHandler.unregister_listener(self.player.state_machine.current)
-        self.level = 1
 
     def exit(self) -> None:
         InputHandler.unregister_listener(self)
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "enter" and input_data.pressed:
-            self.state_machine.change("play", level = self.level)
+            self.state_machine.change("begin", level = 0, player = None)
 
     def render(self, surface: pygame.Surface) -> None:
         surface.fill((25, 130, 196))

@@ -43,7 +43,7 @@ def pickup_red_coin(coin: GameItem, player: Player):
 def pickup_yellow_coin(coin: GameItem, player: Player):
     pickup_coin(coin, player, 50, 54, random.uniform(20, 25))
 
-def spawn_kay(key: GameItem, player: Player):
+def spawn_key(key: GameItem, player: Player):
     if player.y >= key.y + 14 and (player.x >= key.x-8 and player.x < key.x+16):
         key.visible = True
         Timer.tween(
@@ -100,7 +100,7 @@ ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
             "solidness": dict(top=True, right=True, bottom=True, left=True),
             "consumable": False,
             "collidable": True,
-            "on_collide": spawn_kay,
+            "on_collide": spawn_key,
             "on_consume": go_to_next_level,
         },
     }

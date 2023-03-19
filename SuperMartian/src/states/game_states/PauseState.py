@@ -70,4 +70,5 @@ class PauseState(BaseState):
                 game_level=self.game_level,
                 player=self.player,
                 timer=self.timer,
+                next_level = False
             )

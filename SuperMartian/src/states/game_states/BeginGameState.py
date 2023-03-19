@@ -20,6 +20,8 @@ class BeginGameState(BaseState):
         self.screen_alpha_surface = pygame.Surface(
             (settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT), pygame.SRCALPHA
         )
+        settings.SOUNDS["turn_off"].stop()
+        settings.SOUNDS["turn_off"].play()
         Timer.tween(
             0.50,
             [(self, {"transition_alpha": 0})],
@@ -27,7 +29,7 @@ class BeginGameState(BaseState):
                 0.50,
                 [(self, {"transition_alpha": 255})],
                 on_finish=lambda: self.state_machine.change(
-                    "play", level=self.level+1, player = self.player
+                    "play", level=self.level+1, player = self.player, next_level = True
                 )
             ),
         ),

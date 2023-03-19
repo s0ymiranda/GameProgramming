@@ -69,6 +69,7 @@ SOUNDS = {
     "timer": pygame.mixer.Sound(BASE_DIR / "sounds" / "timer.wav"),
     "count": pygame.mixer.Sound(BASE_DIR / "sounds" / "count.wav"),
     "secret_discovered": pygame.mixer.Sound(BASE_DIR / "sounds" / "Secret_Area_Discovered.mp3"),
+    "turn_off": pygame.mixer.Sound(BASE_DIR / "sounds" / "turn_off.mp3"),
 }
 
 SOUNDS["pickup_coin"].set_volume(0.5)

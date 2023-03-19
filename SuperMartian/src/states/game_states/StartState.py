@@ -32,7 +32,6 @@ class StartState(BaseState):
             (197, 195, 198),
             shadowed=True,
         )
-        self.level = 1
         self.title_end_x = settings.VIRTUAL_WIDTH // 2 - self.title.rect.width // 2
         self.martian_x = -16
         self.martian_end_x = settings.VIRTUAL_WIDTH // 2 - 8
@@ -90,4 +89,4 @@ class StartState(BaseState):
                 self.martian_x = self.martian_end_x
                 self.arrive()
             else:
-                self.state_machine.change("play", level = self.level)
+                self.state_machine.change("begin", level = 0, player = None)

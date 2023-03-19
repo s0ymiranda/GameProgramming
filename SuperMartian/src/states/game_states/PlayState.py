@@ -116,7 +116,7 @@ class PlayState(BaseState):
             if self.player.key_taken:
                 if self.level == 1:
                     self.player.key_taken = False
-                    self.state_machine.change("begin",self.level)
+                    self.state_machine.change("begin",self.level,self.player)
 
             if len(self.index_save) == 0:
                 settings.SOUNDS["secret_discovered"].stop()

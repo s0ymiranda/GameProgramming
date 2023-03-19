@@ -103,8 +103,6 @@ class PlayState(BaseState):
                 item.on_collide(self.player)
                 item.on_consume(self.player)
 
-        #New
-
         if self.player.score >= 100 and self.level == 1:
             
             for item in self.game_level.items:

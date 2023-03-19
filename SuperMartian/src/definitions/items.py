@@ -45,7 +45,6 @@ def pickup_yellow_coin(coin: GameItem, player: Player):
 
 def spawn_kay(key: GameItem, player: Player):
     if player.y >= key.y + 14 and (player.x >= key.x-8 and player.x < key.x+16):
-        #print(key)
         key.visible = True
         Timer.tween(
             1.75,

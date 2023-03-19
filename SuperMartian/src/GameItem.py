@@ -28,6 +28,7 @@ class GameItem(GameObject):
         self._on_collide = on_collide
         self._on_consume = on_consume
         self.in_play = True
+        self.visible = True
 
     def respawn(self, x: Optional[float] = None, y: Optional[float] = None) -> None:
         if x is not None:

@@ -20,6 +20,7 @@ import settings
 from src.Camera import Camera
 from src.GameLevel import GameLevel
 from src.Player import Player
+from src.Tile import Tile
 
 
 class PlayState(BaseState):
@@ -31,7 +32,11 @@ class PlayState(BaseState):
         self.game_level = enter_params.get("game_level")
         if self.game_level is None:
             self.game_level = GameLevel(self.level, self.camera)
-            pygame.mixer.music.load(settings.BASE_DIR / "sounds/music_grassland.ogg")
+            if self.level == 1:
+                pygame.mixer.music.load(settings.BASE_DIR / "sounds/music_grassland.ogg")
+            else:
+                pygame.mixer.music.load(settings.BASE_DIR / "sounds/Resting_Grounds.mp3")
+                
             pygame.mixer.music.play(loops=-1)
 
         self.tilemap = self.game_level.tilemap
@@ -40,7 +45,10 @@ class PlayState(BaseState):
             self.player = Player(0, settings.VIRTUAL_HEIGHT - 66, self.game_level)
             self.player.change_state("idle")
 
-        self.timer = enter_params.get("timer", 30)
+        if self.level == 1:
+            self.timer = enter_params.get("timer", 30)
+        elif self.level == 2:
+            self.timer = enter_params.get("timer", 60)
 
         def countdown_timer():
             self.timer -= 1
@@ -50,10 +58,9 @@ class PlayState(BaseState):
 
         Timer.every(1, countdown_timer)
         InputHandler.register_listener(self)
-        self.transition_alpha = 255
-        self.screen_alpha_surface = pygame.Surface(
-            (settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT), pygame.SRCALPHA
-        )
+
+        #own try
+        self.index_save = []
 
     def exit(self) -> None:
         InputHandler.unregister_listener(self)
@@ -95,34 +102,49 @@ class PlayState(BaseState):
             if self.player.collides(item):
                 item.on_collide(self.player)
                 item.on_consume(self.player)
-        
-        if self.player.score >= 2:
-            if self.level == 1:
-                self.state_machine.change("begin",self.level)
-            # Timer.tween(
-            #     1,
-            #     [(self, {"transition_alpha": 255})],
-            # # once that is finished, start a transition of our text label to
-            # # center of the screen over 0.25 seconds
-            #     on_finish=lambda: Timer.tween(
-            #         0.25,
-            #         [(self, {"level": settings.VIRTUAL_HEIGHT // 2 - 30})],
-            #     # after that, pause for 1.5 second with Timer.after
-            #         on_finish=lambda: Timer.after(
-            #             1.5,
-            #         # Then, animate the label going down past the bottom edge
-            #             lambda: Timer.tween(
-            #                 0.25,
-            #                 [(self, {"level": settings.VIRTUAL_HEIGHT + 30})],
-            #             # We are ready to play
-            #                 on_finish=lambda: self.state_machine.change(
-            #                     "play", game_level = self.level + 1),
-            #             ),
-            #         ),
-            #     ),
-            # )
 
-       
+        #New
+
+        if self.player.score >= 100 and self.level == 1:
+            
+            for item in self.game_level.items:
+                if item.frame_index == 71:
+                    item.in_play = True
+                else:
+                    item.in_play = False
+            
+            if self.player.key_taken:
+                if self.level == 1:
+                    self.player.key_taken = False
+                    self.state_machine.change("begin",self.level)
+
+            if len(self.index_save) == 0:
+                settings.SOUNDS["secret_discovered"].stop()
+                settings.SOUNDS["secret_discovered"].play()
+                pygame.mixer.music.pause()
+                pygame.mixer.music.unload()
+                pygame.mixer.music.load(settings.BASE_DIR / "sounds" / "Resting_Grounds.mp3")
+                Timer.clear()
+                Timer.after(2.0,lambda: self.play_music())
+
+            for g in range(len(self.tilemap.layers)):
+                for i in range(len(self.tilemap.layers[g])):
+                    for j in range(len(self.tilemap.layers[g][i])):
+                        if not self.tilemap.layers[g][i][j].in_play:
+                            self.tilemap.layers[g][i][j].solidness = {"top":True,"right":True,"bottom":True,"left":True}
+                            self.tilemap.layers[g][i][j].in_play = True
+                            self.index_save.append(g)
+                            self.index_save.append(i)
+                            self.index_save.append(j)
+                            break
+
+            for item in self.game_level.items:
+                if item.frame_index == 71 and item.visible:
+                    self.tilemap.layers[self.index_save[0]][self.index_save[1]][self.index_save[2]].frame_index = 75
+
+    def play_music(self):
+        pygame.mixer.music.play()
+        pygame.mixer.music.play(loops=-1)
 
     def render(self, surface: pygame.Surface) -> None:
         world_surface = pygame.Surface((self.tilemap.width, self.tilemap.height))

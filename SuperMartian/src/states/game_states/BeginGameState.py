@@ -33,7 +33,7 @@ class BeginGameState(BaseState):
                 1,
                 [(self, {"transition_alpha": 255})],
                 on_finish=lambda: self.state_machine.change(
-                    "play", level=2
+                    "play", level=self.level+1
                 )
             ),
         ),

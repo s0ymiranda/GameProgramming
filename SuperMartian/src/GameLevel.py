@@ -32,6 +32,9 @@ class GameLevel:
         definition = items.ITEMS[item_name][item_data["frame_index"]]
         definition.update(item_data)
         self.items.append(GameItem(**definition))
+        if item_name == "next_level":
+            self.items[-1].in_play = False
+            self.items[-1].visible = False
 
     def add_creature(self, creature_data: Dict[str, Any]) -> None:
         definition = creatures.CREATURES[creature_data["tile_index"]]
@@ -62,5 +65,5 @@ class GameLevel:
         for creature in self.creatures:
             creature.render(surface)
         for item in self.items:
-            if item.in_play:
+            if item.in_play and item.visible:
                 item.render(surface)

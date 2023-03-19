@@ -36,6 +36,7 @@ class Tilemap:
         """
         Set a new tile in the position (i, j) of the current (the last added) layer
         """
+
         tile_def = tiles.TILES.get(frame_index)
         solidness = (
             tile_def["solidness"] if tile_def is not None else Tile.DEFAULT_SOLIDNESS
@@ -43,6 +44,9 @@ class Tilemap:
         self.layers[-1][i][j] = Tile(
             i, j, self.tilewidth, self.tileheight, frame_index, solidness
         )
+        if frame_index == 70:
+            self.layers[-1][i][j].in_play = False
+
 
     def set_render_boundaries(self, render_rect: pygame.Rect) -> None:
         self.render_rows_range = (
@@ -76,7 +80,8 @@ class Tilemap:
         for layer in self.layers:
             for i in range(*self.render_rows_range):
                 for j in range(*self.render_cols_range):
-                    layer[i][j].render(surface)
+                    if(layer[i][j]).in_play:
+                        layer[i][j].render(surface)
 
     def collides_tile_on(
         self, i: int, j: int, another: mixins.CollidableMixin, side: str

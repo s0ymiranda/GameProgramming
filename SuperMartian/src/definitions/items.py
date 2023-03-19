@@ -43,12 +43,31 @@ def pickup_red_coin(coin: GameItem, player: Player):
 def pickup_yellow_coin(coin: GameItem, player: Player):
     pickup_coin(coin, player, 50, 54, random.uniform(20, 25))
 
+def spawn_kay(key: GameItem, player: Player):
+    if player.y >= key.y + 14 and (player.x >= key.x-8 and player.x < key.x+16):
+        #print(key)
+        key.visible = True
+        Timer.tween(
+            1.75,
+            [
+                (key, {"x": key.x, "y": key.y-16}),
+            ],
+            on_finish = lambda: make_consumable(key),
+        )
+
+def make_consumable(key: GameItem):
+    key.consumable = True
+
+def go_to_next_level(key: GameItem, player: Player):
+    player.key_taken = True
+    key.in_play = False
+
 
 ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
     "coins": {
         62: {
             "texture_id": "tiles",
-            "solidness": dict(top=False, right=False, bottom=False, left=False),
+            "solidness": dict(top=True, right=False, bottom=False, left=False),
             "consumable": True,
             "collidable": True,
             "on_consume": pickup_green_coin,
@@ -75,4 +94,16 @@ ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
             "on_consume": pickup_yellow_coin,
         },
     }
+    ,
+    "next_level": {
+        71: {
+            "texture_id": "tiles",
+            "solidness": dict(top=True, right=True, bottom=True, left=True),
+            "consumable": False,
+            "collidable": True,
+            "on_collide": spawn_kay,
+            "on_consume": go_to_next_level,
+        },
+    }
+
 }

@@ -30,8 +30,8 @@ input_handler.InputHandler.set_keyboard_action(input_handler.KEY_SPACE, "jump")
 input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "jump")
 
 # Size we want to emulate
-VIRTUAL_WIDTH = 400
-VIRTUAL_HEIGHT = 192
+VIRTUAL_WIDTH = 325
+VIRTUAL_HEIGHT = 190
 
 # Size of our actual window
 WINDOW_WIDTH = VIRTUAL_WIDTH * 4
@@ -68,6 +68,7 @@ SOUNDS = {
     "jump": pygame.mixer.Sound(BASE_DIR / "sounds" / "jump.wav"),
     "timer": pygame.mixer.Sound(BASE_DIR / "sounds" / "timer.wav"),
     "count": pygame.mixer.Sound(BASE_DIR / "sounds" / "count.wav"),
+    "secret_discovered": pygame.mixer.Sound(BASE_DIR / "sounds" / "Secret_Area_Discovered.mp3"),
 }
 
 SOUNDS["pickup_coin"].set_volume(0.5)

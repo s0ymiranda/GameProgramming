@@ -24,6 +24,7 @@ class Tile(GameObject):
     ) -> None:
         self.i = i
         self.j = j
+        self.in_play = True
         super().__init__(
             self.j * width,
             self.i * height,

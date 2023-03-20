@@ -26,6 +26,7 @@ class PauseState(BaseState):
         self.tilemap = self.game_level.tilemap
         self.player = enter_params["player"]
         self.timer = enter_params["timer"]
+        self.index_save = enter_params["index_save"]
         InputHandler.unregister_listener(self.player.state_machine.current)
         InputHandler.register_listener(self)
         pygame.mixer.music.pause()
@@ -70,5 +71,6 @@ class PauseState(BaseState):
                 game_level=self.game_level,
                 player=self.player,
                 timer=self.timer,
-                next_level = False
+                next_level = False,
+                index_save = self.index_save,
             )

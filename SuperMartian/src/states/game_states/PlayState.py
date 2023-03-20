@@ -64,10 +64,14 @@ class PlayState(BaseState):
             if 0 < self.timer <= 5:
                 settings.SOUNDS["timer"].play()
 
-        Timer.every(1, countdown_timer)
+        self.index_save = enter_params.get("index_save")
+        if self.index_save is None:
+            self.index_save = []
+            
+        if len(self.index_save) == 0:
+            Timer.every(1, countdown_timer)
         InputHandler.register_listener(self)
 
-        self.index_save = []
 
     def exit(self) -> None:
         InputHandler.unregister_listener(self)
@@ -187,4 +191,5 @@ class PlayState(BaseState):
                 game_level=self.game_level,
                 player=self.player,
                 timer=self.timer,
+                index_save = self.index_save,
             )

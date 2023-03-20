@@ -19,8 +19,9 @@ end
 
 function PlayerIdleState:update(dt)
     EntityIdleState.update(self, dt)
-    if love.keyboard.isDown('left') or love.keyboard.isDown('right') or
-       love.keyboard.isDown('up') or love.keyboard.isDown('down') then
+    -- if love.keyboard.isDown('left') or love.keyboard.isDown('right') or
+    --    love.keyboard.isDown('up') or love.keyboard.isDown('down') then
+    if love.keyboard.isDown('left','a','right','d','up','w','down','s') then
         self.entity:changeState('walk')
     end
 

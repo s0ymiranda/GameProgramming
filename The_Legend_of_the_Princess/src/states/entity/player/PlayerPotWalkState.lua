@@ -23,16 +23,16 @@ function PlayerPotWalkState:enter(params)
 end
 
 function PlayerPotWalkState:update(dt)
-    if love.keyboard.isDown('left') then
+    if love.keyboard.isDown('left','a')  then
         self.entity.direction = 'left'
         self.entity:changeAnimation('pot-walk-left')
-    elseif love.keyboard.isDown('right') then
+    elseif love.keyboard.isDown('right','d') then
         self.entity.direction = 'right'
         self.entity:changeAnimation('pot-walk-right')
-    elseif love.keyboard.isDown('up') then
+    elseif love.keyboard.isDown('up','w') then
         self.entity.direction = 'up'
         self.entity:changeAnimation('pot-walk-up')
-    elseif love.keyboard.isDown('down') then
+    elseif love.keyboard.isDown('down','s') then
         self.entity.direction = 'down'
         self.entity:changeAnimation('pot-walk-down')
     else

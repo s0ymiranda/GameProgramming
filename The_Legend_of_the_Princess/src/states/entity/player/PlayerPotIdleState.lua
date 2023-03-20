@@ -20,8 +20,8 @@ function PlayerPotIdleState:enter(params)
 end
 
 function PlayerPotIdleState:update(dt)
-    if love.keyboard.isDown('left') or love.keyboard.isDown('right') or
-       love.keyboard.isDown('up') or love.keyboard.isDown('down') then
+    if love.keyboard.isDown('left','a') or love.keyboard.isDown('right','d') or
+       love.keyboard.isDown('up','w') or love.keyboard.isDown('down','s') then
         self.player:changeState('pot-walk', {
             pot = self.pot
         })

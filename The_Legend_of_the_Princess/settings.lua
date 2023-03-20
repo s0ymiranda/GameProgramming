@@ -95,7 +95,8 @@ TEXTURES = {
     ['switches'] = love.graphics.newImage('graphics/switches.png'),
     ['entities'] = love.graphics.newImage('graphics/entities.png'),
     ['character-pot-lift'] = love.graphics.newImage('graphics/character_pot_lift.png'),
-    ['character-pot-walk'] = love.graphics.newImage('graphics/character_pot_walk.png')
+    ['character-pot-walk'] = love.graphics.newImage('graphics/character_pot_walk.png'),
+    ['rotbow'] = love.graphics.newImage('graphics/rotbow_w_string.png')
 }
 
 FRAMES = {
@@ -106,7 +107,8 @@ FRAMES = {
     ['switches'] = generateQuads(TEXTURES['switches'], 16, 18),
     ['entities'] = generateQuads(TEXTURES['entities'], 16, 16),
     ['character-pot-lift'] = generateQuads(TEXTURES['character-pot-lift'], 16, 32),
-    ['character-pot-walk'] = generateQuads(TEXTURES['character-pot-walk'], 16, 32)
+    ['character-pot-walk'] = generateQuads(TEXTURES['character-pot-walk'], 16, 32),
+    ['rotbow'] = generateQuads(TEXTURES['rotbow'], 20, 20)
 }
 
 FONTS = {

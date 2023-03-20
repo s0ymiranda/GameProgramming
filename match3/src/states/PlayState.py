@@ -92,7 +92,7 @@ class PlayState(BaseState):
     def render(self, surface: pygame.Surface) -> None:
         self.board.render(surface)
 
-        if not self.on_motion and self.time_waiting >= 2:
+        if not self.on_motion and self.time_waiting >= 15:
             for g in range(8):
                 for a in range(8):
                     tile = self.board.tiles[g][a]
@@ -201,9 +201,9 @@ class PlayState(BaseState):
             x, y = input_data.position
             y = y * settings.VIRTUAL_HEIGHT // settings.WINDOW_HEIGHT - self.board.y - 16
             dif = self.tile1.y - y
-            if (self.tile1.x,self.tile1.y) <= (self.original_x_and_y_tile2):
-                self.tile1.y = self.tile1.y - dif
-                self.tile2.y = self.tile2.y + dif
+            #if (self.tile1.x,self.tile1.y) <= (self.original_x_and_y_tile2):
+            self.tile1.y = self.tile1.y - dif
+            self.tile2.y = self.tile2.y + dif
             
 
         if input_id == "motion_up" and self.on_motion:
@@ -223,9 +223,9 @@ class PlayState(BaseState):
             x, y = input_data.position
             y = y * settings.VIRTUAL_HEIGHT // settings.WINDOW_HEIGHT - self.board.y - 16
             dif = self.tile1.y - y
-            if (self.tile1.x,self.tile1.y) >= (self.original_x_and_y_tile2):
-                self.tile1.y = self.tile1.y - dif
-                self.tile2.y = self.tile2.y + dif
+            #if (self.tile1.x,self.tile1.y) >= (self.original_x_and_y_tile2):
+            self.tile1.y = self.tile1.y - dif
+            self.tile2.y = self.tile2.y + dif
 
         if input_id == "click" and input_data.released:
 
@@ -382,24 +382,19 @@ class PlayState(BaseState):
 
         self.board.remove_matches()
 
+        if num == 4:
+            self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
+                self.tile1.i, self.tile1.j, self.tile1.color,7
+            )
+        elif num > 4:
+            self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
+                self.tile1.i, self.tile1.j, self.tile1.color,8
+            )
+
         falling_tiles = self.board.get_falling_tiles()
 
-        if num >= 4:
-            for index in range(len(falling_tiles)):
-                t,comp = falling_tiles[index]
-                if t.i == self.tile1.i and t.j == self.tile1.j:
-                    falling_tiles.pop(index)
-                    break
-            if num == 4:
-                self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
-                    self.tile1.i, self.tile1.j, self.tile1.color,7
-                )
-            elif num > 4:
-                self.board.tiles[self.tile1.i][self.tile1.j] = Tile(
-                    self.tile1.i, self.tile1.j, self.tile1.color,8
-                )
-
-
+        if not self.board.ExistMatch():
+            return
 
         Timer.tween(
             0.25,

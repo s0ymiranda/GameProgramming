@@ -1,3 +1,5 @@
+Note: If the player unpress the tile that is holding in less than half the way, even if in the moving direction were a match the tile returns to its original position. 
+
 New Features 
 Tile.py
 

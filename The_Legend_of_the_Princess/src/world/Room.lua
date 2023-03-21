@@ -239,6 +239,33 @@ function Room:generateObjects()
         end
     end
 
+    --Adding the chest
+    if math.random(100) < 50 then  
+        table.insert(self.objects, GameObject(
+            GAME_OBJECT_DEFS['chest'],
+            math.random(MAP_RENDER_OFFSET_X + TILE_SIZE,
+                        VIRTUAL_WIDTH - TILE_SIZE * 2 - 32),
+            math.random(MAP_RENDER_OFFSET_Y + TILE_SIZE,
+                        VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE - 32)
+        ))
+
+        local chest = self.objects[2]
+
+        chest.onCollide = function()
+            if chest.state == 'closed' then
+                chest.state = 'open'
+                table.insert(self.objects, GameObject(
+                    GAME_OBJECT_DEFS['bow'],
+                    math.random(MAP_RENDER_OFFSET_X + TILE_SIZE,
+                                VIRTUAL_WIDTH - TILE_SIZE * 2 - 32),
+                    math.random(MAP_RENDER_OFFSET_Y + TILE_SIZE,
+                                VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE - 32)
+                ))
+            end
+        end
+    end
+
+
     for y = 2, self.height -1 do
         for x = 2, self.width - 1 do
             -- change to spawn a pot

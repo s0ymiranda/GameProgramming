@@ -27,6 +27,23 @@ GAME_OBJECT_DEFS = {
             }
         }
     },
+    ['chest'] = {
+        type = 'chest',
+        texture = 'chest2',
+        frame = 2,
+        width = 32,
+        height = 32,
+        solid = true,
+        defaultState = 'closed',
+        states = {
+            ['closed'] = {
+                frame = 1
+            },
+            ['open'] = {
+                frame = 2
+            }
+        }
+    },
     ['pot'] = {
         type = 'pot',
         texture = 'tiles',
@@ -72,8 +89,8 @@ GAME_OBJECT_DEFS = {
         frame = 11,
         width = 20,
         height = 20,
-        solid = true,
-        consumable = false,
+        solid = false,
+        consumable = true,
         defaultState = 'left',
         takeable = true,
         states = {
@@ -101,56 +118,12 @@ GAME_OBJECT_DEFS = {
             ['throw-up'] = {
                 frame = 12
             }
-        }
+        },
+        onConsume = function(player)
+            player:heal(2)
+            SOUNDS['heart-taken']:play()
+        end
     }
-    -- ,
-    -- ['bow-right'] = {
-    --     type = 'bow',
-    --     texture = 'rotbow',
-    --     frame = 3,
-    --     width = 20,
-    --     height = 20,
-    --     solid = false,
-    --     consumable = false,
-    --     defaultState = 'default',
-    --     takeable = true,
-    --     states = {
-    --         ['default'] = {
-    --             frame = 10
-    --         }
-    --     }
-    -- },
-    -- ['bow-down'] = {
-    --     type = 'bow',
-    --     texture = 'rotbow',
-    --     frame = 15,
-    --     width = 20,
-    --     height = 20,
-    --     solid = false,
-    --     consumable = false,
-    --     defaultState = 'default',
-    --     takeable = true,
-    --     states = {
-    --         ['default'] = {
-    --             frame = 10
-    --         }
-    --     }
-    -- },
-    -- ['bow-up'] = {
-    --     type = 'bow',
-    --     texture = 'rotbow',
-    --     frame = 8,
-    --     width = 20,
-    --     height = 20,
-    --     solid = false,
-    --     consumable = false,
-    --     defaultState = 'default',
-    --     takeable = true,
-    --     states = {
-    --         ['default'] = {
-    --             frame = 10
-    --         }
-    --     }
-    -- }
+    
 
 }

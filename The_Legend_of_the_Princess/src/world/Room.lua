@@ -240,7 +240,12 @@ function Room:generateObjects()
     end
 
     --Adding the chest
-    if math.random(100) < 150 and not self.player.have_bow then 
+    local is_there_a_chest = false
+
+    if math.random(100) < 30 and not self.player.have_bow then
+        
+        is_there_a_chest = true
+        
         local x = math.random(MAP_RENDER_OFFSET_X*2 + TILE_SIZE, VIRTUAL_WIDTH - TILE_SIZE * 2 * 2 - 32)
         local y = math.random(MAP_RENDER_OFFSET_Y*2 + TILE_SIZE, VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE * 2 - 32 * 2)
 
@@ -261,8 +266,8 @@ function Room:generateObjects()
                 chest.state = 'open'
                 table.insert(self.objects, GameObject(
                     GAME_OBJECT_DEFS['bow'],
-                    self.player.x+20,
-                    self.player.y+20
+                    chest.x+6,
+                    chest.y+32+14
                 ))
             end
         end
@@ -274,7 +279,11 @@ function Room:generateObjects()
             -- change to spawn a pot
             local random = math.random(20)
             local chest = self.objects[2]
-            if random == 1 and (x*16 < chest.x-16 or x*16 > chest.x+32 or y*16 < chest.y-16 or y*16 > chest.y + 32) then
+            if not is_there_a_chest and random == 1 then
+                table.insert(self.objects, GameObject(
+                    GAME_OBJECT_DEFS['pot'], x*16, y*16
+                ))
+            elseif random == 1 and (x*16 < chest.x-16 or x*16 > chest.x+32 or y*16 < chest.y-16 or y*16 > chest.y + 32) then
                 table.insert(self.objects, GameObject(
                     GAME_OBJECT_DEFS['pot'], x*16, y*16
                 ))

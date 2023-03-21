@@ -240,27 +240,29 @@ function Room:generateObjects()
     end
 
     --Adding the chest
-    if math.random(100) < 50 and not self.player.have_bow then 
-        --print(table) 
+    if math.random(100) < 150 and not self.player.have_bow then 
+        local x = math.random(MAP_RENDER_OFFSET_X*2 + TILE_SIZE, VIRTUAL_WIDTH - TILE_SIZE * 2 * 2 - 32)
+        local y = math.random(MAP_RENDER_OFFSET_Y*2 + TILE_SIZE, VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE * 2 - 32 * 2)
+
+        while (x > switch.x-32 and x < switch.x+16 and y > switch.y-32 and y < switch.y + 18) do
+            x = math.random(MAP_RENDER_OFFSET_X*2 + TILE_SIZE, VIRTUAL_WIDTH - TILE_SIZE * 2 * 2 - 32)
+            y = math.random(MAP_RENDER_OFFSET_Y*2 + TILE_SIZE, VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE * 2 - 32 * 2)
+        end
+
         table.insert(self.objects, GameObject(
             GAME_OBJECT_DEFS['chest'],
-            math.random(MAP_RENDER_OFFSET_X + TILE_SIZE,
-                        VIRTUAL_WIDTH - TILE_SIZE * 2 - 32),
-            math.random(MAP_RENDER_OFFSET_Y + TILE_SIZE,
-                        VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE - 32)
+            x,y
         ))
 
         local chest = self.objects[2]
 
         chest.onCollide = function()
-            if chest.state == 'closed' then
+            if chest.state == 'closed' and self.player.y >= chest.y+21 then
                 chest.state = 'open'
                 table.insert(self.objects, GameObject(
                     GAME_OBJECT_DEFS['bow'],
-                    math.random(MAP_RENDER_OFFSET_X + TILE_SIZE,
-                                VIRTUAL_WIDTH - TILE_SIZE * 2 - 32),
-                    math.random(MAP_RENDER_OFFSET_Y + TILE_SIZE,
-                                VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE - 32)
+                    self.player.x+20,
+                    self.player.y+20
                 ))
             end
         end
@@ -270,7 +272,9 @@ function Room:generateObjects()
     for y = 2, self.height -1 do
         for x = 2, self.width - 1 do
             -- change to spawn a pot
-            if math.random(20) == 1 then
+            local random = math.random(20)
+            local chest = self.objects[2]
+            if random == 1 and (x*16 < chest.x-16 or x*16 > chest.x+32 or y*16 < chest.y-16 or y*16 > chest.y + 32) then
                 table.insert(self.objects, GameObject(
                     GAME_OBJECT_DEFS['pot'], x*16, y*16
                 ))

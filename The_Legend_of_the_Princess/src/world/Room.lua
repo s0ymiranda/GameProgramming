@@ -240,7 +240,8 @@ function Room:generateObjects()
     end
 
     --Adding the chest
-    if math.random(100) < 50 then  
+    if math.random(100) < 50 and not self.player.have_bow then 
+        --print(table) 
         table.insert(self.objects, GameObject(
             GAME_OBJECT_DEFS['chest'],
             math.random(MAP_RENDER_OFFSET_X + TILE_SIZE,

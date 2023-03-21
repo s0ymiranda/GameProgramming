@@ -91,7 +91,7 @@ function PlayerWalkState:update(dt)
                 pot = takenPot
             })
         end
-    elseif love.keyboard.wasPressed('p') then
+    elseif love.keyboard.wasPressed('p') and self.entity.have_bow then
         self.entity:changeState('shoot-arrow')
     end
 

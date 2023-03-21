@@ -13,6 +13,11 @@ Player = Class{__includes = Entity}
 
 function Player:init(def)
     Entity.init(self, def)
+    self.have_bow = false
+end
+
+function Player:take_bow() 
+    self.have_bow = true
 end
 
 function Player:update(dt)

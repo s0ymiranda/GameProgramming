@@ -86,14 +86,17 @@ GAME_OBJECT_DEFS = {
     ['bow'] = {
         type = 'bow',
         texture = 'rotbow',
-        frame = 11,
+        frame = 16,
         width = 20,
         height = 20,
         solid = false,
         consumable = true,
-        defaultState = 'left',
+        defaultState = 'default',
         takeable = true,
         states = {
+            ['default'] = {
+                frame = 5
+            },
             ['left'] = {
                 frame = 11
             },
@@ -120,7 +123,8 @@ GAME_OBJECT_DEFS = {
             }
         },
         onConsume = function(player)
-            player:heal(2)
+            --player:heal(2)
+            player:take_bow()
             SOUNDS['heart-taken']:play()
         end
     }

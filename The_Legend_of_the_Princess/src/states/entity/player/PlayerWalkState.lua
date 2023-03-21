@@ -91,6 +91,8 @@ function PlayerWalkState:update(dt)
                 pot = takenPot
             })
         end
+    elseif love.keyboard.wasPressed('p') then
+        self.entity:changeState('shoot-arrow')
     end
 
     -- perform base collision detection against walls

@@ -63,4 +63,94 @@ GAME_OBJECT_DEFS = {
             SOUNDS['heart-taken']:play()
         end
     }
+
+    --own try
+    ,
+    ['bow'] = {
+        type = 'bow',
+        texture = 'rotbow',
+        frame = 11,
+        width = 20,
+        height = 20,
+        solid = true,
+        consumable = false,
+        defaultState = 'left',
+        takeable = true,
+        states = {
+            ['left'] = {
+                frame = 11
+            },
+            ['right'] = {
+                frame = 3
+            },
+            ['down'] = {
+                frame = 15
+            },
+            ['up'] = {
+                frame = 7
+            },
+            ['throw-left'] = {
+                frame = 13
+            },
+            ['throw-right'] = {
+                frame = 16
+            },
+            ['throw-down'] = {
+                frame = 14
+            },
+            ['throw-up'] = {
+                frame = 12
+            }
+        }
+    }
+    -- ,
+    -- ['bow-right'] = {
+    --     type = 'bow',
+    --     texture = 'rotbow',
+    --     frame = 3,
+    --     width = 20,
+    --     height = 20,
+    --     solid = false,
+    --     consumable = false,
+    --     defaultState = 'default',
+    --     takeable = true,
+    --     states = {
+    --         ['default'] = {
+    --             frame = 10
+    --         }
+    --     }
+    -- },
+    -- ['bow-down'] = {
+    --     type = 'bow',
+    --     texture = 'rotbow',
+    --     frame = 15,
+    --     width = 20,
+    --     height = 20,
+    --     solid = false,
+    --     consumable = false,
+    --     defaultState = 'default',
+    --     takeable = true,
+    --     states = {
+    --         ['default'] = {
+    --             frame = 10
+    --         }
+    --     }
+    -- },
+    -- ['bow-up'] = {
+    --     type = 'bow',
+    --     texture = 'rotbow',
+    --     frame = 8,
+    --     width = 20,
+    --     height = 20,
+    --     solid = false,
+    --     consumable = false,
+    --     defaultState = 'default',
+    --     takeable = true,
+    --     states = {
+    --         ['default'] = {
+    --             frame = 10
+    --         }
+    --     }
+    -- }
+
 }

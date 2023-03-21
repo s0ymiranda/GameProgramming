@@ -25,6 +25,10 @@ function PlayerIdleState:update(dt)
         self.entity:changeState('walk')
     end
 
+    -- if love.keyboard.wasPressed('p') then
+    --     self.entity:changeState('shoot-arrow')
+    -- end
+
     if love.keyboard.wasPressed('space') then
         self.entity:changeState('swing-sword')
     elseif love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
@@ -78,5 +82,7 @@ function PlayerIdleState:update(dt)
                 pot = takenPot
             })
         end
+    elseif love.keyboard.wasPressed('p') then
+        self.entity:changeState('shoot-arrow')
     end
 end

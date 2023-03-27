@@ -48,8 +48,12 @@ end
 ]]
 function Dungeon:beginShifting(shiftX, shiftY)
     self.shifting = true
-    self.nextRoom = Room(self.player)
-
+    if self.player.have_bow and math.random(10) < 15 then
+        self.nextRoom = Boss_Room(self.player)
+        -- self.nextRoom = self.currentRoom
+    else
+        self.nextRoom = Room(self.player)
+    end
     -- start all doors in next room as open until we get in
     for k, doorway in pairs(self.nextRoom.doorways) do
         doorway.open = true

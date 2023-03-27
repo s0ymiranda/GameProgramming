@@ -47,6 +47,9 @@ require 'src/world/Doorway'
 require 'src/world/Dungeon'
 require 'src/world/Room'
 
+require 'src/world/Boss_Room'
+require 'src/ProgressBar'
+
 VIRTUAL_WIDTH = 384
 VIRTUAL_HEIGHT = 216
 
@@ -98,7 +101,10 @@ TEXTURES = {
     ['entities'] = love.graphics.newImage('graphics/entities.png'),
     ['character-pot-lift'] = love.graphics.newImage('graphics/character_pot_lift.png'),
     ['character-pot-walk'] = love.graphics.newImage('graphics/character_pot_walk.png'),
-    ['rotbow'] = love.graphics.newImage('graphics/rotbow_w_string.png')
+    ['rotbow'] = love.graphics.newImage('graphics/rotbow_w_string.png'),
+    ['boss_walk'] = love.graphics.newImage('graphics/boss_walk.png'),
+    ['test'] = love.graphics.newImage('graphics/test3.png'),
+    ['test_2'] = love.graphics.newImage('graphics/test3_2.png')
 }
 
 FRAMES = {
@@ -111,7 +117,10 @@ FRAMES = {
     ['entities'] = generateQuads(TEXTURES['entities'], 16, 16),
     ['character-pot-lift'] = generateQuads(TEXTURES['character-pot-lift'], 16, 32),
     ['character-pot-walk'] = generateQuads(TEXTURES['character-pot-walk'], 16, 32),
-    ['rotbow'] = generateQuads(TEXTURES['rotbow'], 20, 20)
+    ['rotbow'] = generateQuads(TEXTURES['rotbow'], 20, 20),
+    ['boss_walk'] = generateQuads(TEXTURES['boss_walk'], 75, 75),
+    ['test'] = generateQuads(TEXTURES['test'], 75, 75),
+    ['test_2'] = generateQuads(TEXTURES['test_2'], 75, 75)
 }
 
 FONTS = {
@@ -128,5 +137,6 @@ SOUNDS = {
     ['hit-player'] = love.audio.newSource('sounds/hit_player.wav', 'static'),
     ['door'] = love.audio.newSource('sounds/door.wav', 'static'),
     ['heart-taken'] = love.audio.newSource('sounds/heart_taken.wav', 'static'),
-    ['pot-wall'] = love.audio.newSource('sounds/pot_wall.wav', 'static')
+    ['pot-wall'] = love.audio.newSource('sounds/pot_wall.wav', 'static'),
+    ['boss-music'] = love.audio.newSource('sounds/boss_battle.mp3', 'static')
 }

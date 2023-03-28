@@ -82,6 +82,7 @@ function Boss_Room:update(dt)
     self.boss_bar:setValue(self.entities[1].health)
     self.boss_bar:setPosition(self.entities[1].x,self.entities[1].y-6)
 
+    self.entities[1].fire_ball:update()
     
     if self.entities[1].health == 0 then
         self.doorways[1].open = true
@@ -94,10 +95,6 @@ function Boss_Room:update(dt)
     -- remove entity from the table if health is <= 0
     if entity.health <= 0 then
         entity.dead = true
-        -- chance to drop a heart
-        if not entity.dropped and math.random(10) == 1 then
-            table.insert(self.objects, GameObject(GAME_OBJECT_DEFS['heart'], entity.x, entity.y))
-        end
         -- whether the entity dropped or not, it is assumed that it dropped
         entity.dropped = true
     elseif not entity.dead then
@@ -196,18 +193,18 @@ function Boss_Room:generateEntities()
     local y_boss = 0
     if self.player.direction == 'left' then
         x_boss = MAP_RENDER_OFFSET_X + TILE_SIZE
-        y_boss = VIRTUAL_HEIGHT/2 - 8
+        y_boss = VIRTUAL_HEIGHT/2 - 75
     elseif self.player.direction == 'right' then
-        x_boss = VIRTUAL_WIDTH - TILE_SIZE * 2 - 16
-        y_boss = VIRTUAL_HEIGHT/2 - 8
+        x_boss = VIRTUAL_WIDTH - TILE_SIZE * 2 - 75
+        y_boss = VIRTUAL_HEIGHT/2 - 75/2
     elseif self.player.direction == 'down' then
-        y_boss = VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE - 16
-        x_boss = VIRTUAL_WIDTH/2 - 8
+        y_boss = VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE - 75
+        x_boss = VIRTUAL_WIDTH/2 - 72/2
     else
         y_boss = MAP_RENDER_OFFSET_Y + TILE_SIZE
-        x_boss = VIRTUAL_WIDTH/2 - 8
+        x_boss = VIRTUAL_WIDTH/2 - 75/2
     end
-    table.insert(self.entities, Entity {
+    table.insert(self.entities, Boss {
         animations = ENTITY_DEFS[type].animations,
         walkSpeed = ENTITY_DEFS[type].walkSpeed or 20,
 
@@ -222,22 +219,23 @@ function Boss_Room:generateEntities()
         -- x = math.random(MAP_RENDER_OFFSET_X + TILE_SIZE,
         --     VIRTUAL_WIDTH - TILE_SIZE * 2 - 16),
 
-        width = 16,
-        height = 16,
+        width = 75,
+        height = 75,
 
         health = 200
     })
 
     self.entities[1].stateMachine = StateMachine {
-        ['walk'] = function() return EntityWalkState(self.entities[1]) end,
-        ['idle'] = function() return EntityIdleState(self.entities[1]) end
+        ['walk'] = function() return BossWalkState(self.entities[1]) end,
+        ['idle'] = function() return BossIdleState(self.entities[1]) end
     }
+
+    self.entities[1].fire_ball = Fireball(self.entities[1],self.player)
 
     self.entities[1]:changeState('walk')
 
     self.entities[1].invulnerable = true
-    self.entities[1].invulnerableDuration = 10000000
-
+    self.entities[1].invulnerableDuration = 10000000 
 end
 
 --[[
@@ -307,6 +305,11 @@ function Boss_Room:render()
 
     love.graphics.setStencilTest()
 
+    -- if not self.entities[1].fire_ball == nil then 
+    --     self.entities[1].fire_ball:render()
+    -- end
+
+    self.entities[1].fire_ball:render()
 
     -- Boss Bar
     if self.entities[1].health > 0 then

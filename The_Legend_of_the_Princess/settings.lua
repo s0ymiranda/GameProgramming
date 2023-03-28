@@ -50,6 +50,13 @@ require 'src/world/Room'
 require 'src/world/Boss_Room'
 require 'src/ProgressBar'
 
+require 'src/Boss'
+
+require 'src/states/entity/boss/BossIdleState'
+require 'src/states/entity/boss/BossWalkState'
+
+require 'src/world/Fireball'
+
 VIRTUAL_WIDTH = 384
 VIRTUAL_HEIGHT = 216
 
@@ -104,7 +111,8 @@ TEXTURES = {
     ['rotbow'] = love.graphics.newImage('graphics/rotbow_w_string.png'),
     ['boss_walk'] = love.graphics.newImage('graphics/boss_walk.png'),
     ['test'] = love.graphics.newImage('graphics/test3.png'),
-    ['test_2'] = love.graphics.newImage('graphics/test3_2.png')
+    ['test_2'] = love.graphics.newImage('graphics/test3_2.png'),
+    ['fire_ball'] = love.graphics.newImage('graphics/fire_ball.png')
 }
 
 FRAMES = {
@@ -120,7 +128,8 @@ FRAMES = {
     ['rotbow'] = generateQuads(TEXTURES['rotbow'], 20, 20),
     ['boss_walk'] = generateQuads(TEXTURES['boss_walk'], 75, 75),
     ['test'] = generateQuads(TEXTURES['test'], 75, 75),
-    ['test_2'] = generateQuads(TEXTURES['test_2'], 75, 75)
+    ['test_2'] = generateQuads(TEXTURES['test_2'], 75, 75),
+    ['fire_ball'] = generateQuads(TEXTURES['fire_ball'], 16, 16)
 }
 
 FONTS = {

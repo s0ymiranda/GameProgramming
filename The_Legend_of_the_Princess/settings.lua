@@ -112,7 +112,8 @@ TEXTURES = {
     ['boss_walk'] = love.graphics.newImage('graphics/boss_walk.png'),
     ['test'] = love.graphics.newImage('graphics/test3.png'),
     ['test_2'] = love.graphics.newImage('graphics/test3_2.png'),
-    ['fire_ball'] = love.graphics.newImage('graphics/fire_ball.png')
+    ['fire_ball'] = love.graphics.newImage('graphics/fire_ball.png'),
+    ['boss'] = love.graphics.newImage('graphics/skeleton_boss.png')
 }
 
 FRAMES = {
@@ -129,7 +130,8 @@ FRAMES = {
     ['boss_walk'] = generateQuads(TEXTURES['boss_walk'], 75, 75),
     ['test'] = generateQuads(TEXTURES['test'], 75, 75),
     ['test_2'] = generateQuads(TEXTURES['test_2'], 75, 75),
-    ['fire_ball'] = generateQuads(TEXTURES['fire_ball'], 16, 16)
+    ['fire_ball'] = generateQuads(TEXTURES['fire_ball'], 16, 16),
+    ['boss'] = generateQuads(TEXTURES['boss'], 32, 46)
 }
 
 FONTS = {

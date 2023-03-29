@@ -63,7 +63,7 @@ function Boss_Room:init(player)
     self.boss_bar = ProgressBar {
         x = 0,
         y = 0,
-        width = 16,
+        width = 32,
         height = 3,
         color = {r = 189, g = 32, b = 32},
         value = self.entities[1].health,
@@ -193,16 +193,16 @@ function Boss_Room:generateEntities()
     local y_boss = 0
     if self.player.direction == 'left' then
         x_boss = MAP_RENDER_OFFSET_X + TILE_SIZE
-        y_boss = VIRTUAL_HEIGHT/2 - 75
+        y_boss = VIRTUAL_HEIGHT/2 - 46
     elseif self.player.direction == 'right' then
-        x_boss = VIRTUAL_WIDTH - TILE_SIZE * 2 - 75
-        y_boss = VIRTUAL_HEIGHT/2 - 75/2
+        x_boss = VIRTUAL_WIDTH - TILE_SIZE * 2 - 32
+        y_boss = VIRTUAL_HEIGHT/2 - 46/2
     elseif self.player.direction == 'down' then
-        y_boss = VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE - 75
-        x_boss = VIRTUAL_WIDTH/2 - 72/2
+        y_boss = VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE - 46
+        x_boss = VIRTUAL_WIDTH/2 - 32/2
     else
         y_boss = MAP_RENDER_OFFSET_Y + TILE_SIZE
-        x_boss = VIRTUAL_WIDTH/2 - 75/2
+        x_boss = VIRTUAL_WIDTH/2 - 32/2
     end
     table.insert(self.entities, Boss {
         animations = ENTITY_DEFS[type].animations,
@@ -219,8 +219,8 @@ function Boss_Room:generateEntities()
         -- x = math.random(MAP_RENDER_OFFSET_X + TILE_SIZE,
         --     VIRTUAL_WIDTH - TILE_SIZE * 2 - 16),
 
-        width = 75,
-        height = 75,
+        width = 32,
+        height = 46,
 
         health = 200
     })

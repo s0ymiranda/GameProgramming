@@ -350,43 +350,43 @@ ENTITY_DEFS = {
     }
     ,
     ['BOSS'] = {
-        texture = 'test',
+        texture = 'boss',
         animations = {
             ['walk-left'] = {
-                frames = {3, 4, 5, 6, 5, 6, 5, 4, 3, 2, 1},
+                frames = {7,8,9,8},
                 interval = 0.2,
-                texture = 'test'
+                texture = 'boss'
             },
             ['walk-right'] = {
-                frames = {6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6},
+                frames = {4,5,6,5},
                 interval = 0.2,
-                texture = 'test_2'
+                texture = 'boss'
             },
             ['walk-down'] = {
-                frames = {1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1},
+                frames = {10,11,12,11},
                 interval = 0.2,
-                texture = 'test'
+                texture = 'boss'
             },
             ['walk-up'] = {
-                frames = {6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6},
+                frames = {1,2,3,2},
                 interval = 0.2,
-                texture = 'test_2'
+                texture = 'boss'
             },
             ['idle-left'] = {
-                frames = {1},
-                texture = 'test'
+                frames = {8},
+                texture = 'boss'
             },
             ['idle-right'] = {
-                frames = {1},
-                texture = 'test'
+                frames = {5},
+                texture = 'boss'
             },
             ['idle-down'] = {
-                frames = {1},
-                texture = 'test'
+                frames = {11},
+                texture = 'boss'
             },
             ['idle-up'] = {
-                frames = {1},
-                texture = 'test'
+                frames = {2},
+                texture = 'boss'
             }
         }
     }

@@ -9,6 +9,7 @@
 
     This file contains the class EntityIdleState.
 ]]
+
 EntityIdleState = Class{__includes = BaseState}
 
 function EntityIdleState:init(entity, dungeon)

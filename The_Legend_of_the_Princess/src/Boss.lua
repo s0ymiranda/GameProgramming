@@ -13,7 +13,6 @@ Boss = Class{__includes = Entity}
 
 function Boss:init(def)
     Entity.init(self, def)
-    -- self.have_bow = false
     self.fire_ball = nil
 end
 

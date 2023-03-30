@@ -127,7 +127,37 @@ GAME_OBJECT_DEFS = {
             player:take_bow()
             SOUNDS['heart-taken']:play()
         end
-    }
+    },
+    ['Fireball'] = {
+        type = 'fireball',
+        texture = 'fireball',
+        frame = 7,
+        width = 15,
+        height = 15,
+        solid = true,
+        defaultState = 'handAnim',
+        states = {
+            ['handAnim'] = {
+                frame = 1
+            },
+            ['handAnim2'] = {
+                frame = 2
+            },
+            ['handAnim3'] = {
+                frame = 3
+            },
+            ['shoot1'] = {
+                frame = 4
+            },
+            ['shoot2'] = {
+                frame = 5
+            },
+            ['shoot3'] = {
+                frame = 6
+            }           
+        }
+    },
     
 
 }
+

@@ -9,6 +9,7 @@
 
     This file contains the class Fireball.
 ]]
+
 Fireball = Class{}
 
 function Fireball:init(caster,target)

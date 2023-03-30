@@ -250,7 +250,6 @@ end
 function Boss_Room:render()
 
 
-
     for y = 1, self.height do
         for x = 1, self.width do
             local tile = self.tiles[y][x]

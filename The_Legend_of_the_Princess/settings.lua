@@ -109,11 +109,9 @@ TEXTURES = {
     ['character-pot-lift'] = love.graphics.newImage('graphics/character_pot_lift.png'),
     ['character-pot-walk'] = love.graphics.newImage('graphics/character_pot_walk.png'),
     ['rotbow'] = love.graphics.newImage('graphics/rotbow_w_string.png'),
-    ['boss_walk'] = love.graphics.newImage('graphics/boss_walk.png'),
-    ['test'] = love.graphics.newImage('graphics/test3.png'),
-    ['test_2'] = love.graphics.newImage('graphics/test3_2.png'),
     ['fire_ball'] = love.graphics.newImage('graphics/fire_ball.png'),
-    ['boss'] = love.graphics.newImage('graphics/skeleton_boss.png')
+    ['boss'] = love.graphics.newImage('graphics/skeleton_boss.png'),
+    ['fireball'] = love.graphics.newImage('graphics/FireBall.png')
 }
 
 FRAMES = {
@@ -127,11 +125,9 @@ FRAMES = {
     ['character-pot-lift'] = generateQuads(TEXTURES['character-pot-lift'], 16, 32),
     ['character-pot-walk'] = generateQuads(TEXTURES['character-pot-walk'], 16, 32),
     ['rotbow'] = generateQuads(TEXTURES['rotbow'], 20, 20),
-    ['boss_walk'] = generateQuads(TEXTURES['boss_walk'], 75, 75),
-    ['test'] = generateQuads(TEXTURES['test'], 75, 75),
-    ['test_2'] = generateQuads(TEXTURES['test_2'], 75, 75),
     ['fire_ball'] = generateQuads(TEXTURES['fire_ball'], 16, 16),
-    ['boss'] = generateQuads(TEXTURES['boss'], 32, 46)
+    ['boss'] = generateQuads(TEXTURES['boss'], 32, 46),
+    ['fireball'] = generateQuads(TEXTURES['fireball'], 15, 15)
 }
 
 FONTS = {

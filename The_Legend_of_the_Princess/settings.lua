@@ -19,9 +19,7 @@ require 'src/GameObject'
 require 'src/Hitbox'
 require 'src/Player'
 require 'src/Projectile'
-
 require 'src/FireBallProjectile'
-
 require 'src/StateMachine'
 
 require 'src/definitions/entity'
@@ -59,7 +57,6 @@ require 'src/states/entity/boss/BossIdleState'
 require 'src/states/entity/boss/BossWalkState'
 require 'src/states/entity/boss/BossShootFireballState'
 
-require 'src/world/Fireball'
 
 VIRTUAL_WIDTH = 384
 VIRTUAL_HEIGHT = 216
@@ -113,7 +110,6 @@ TEXTURES = {
     ['character-pot-lift'] = love.graphics.newImage('graphics/character_pot_lift.png'),
     ['character-pot-walk'] = love.graphics.newImage('graphics/character_pot_walk.png'),
     ['rotbow'] = love.graphics.newImage('graphics/rotbow_w_string.png'),
-    ['fire_ball'] = love.graphics.newImage('graphics/fire_ball.png'),
     ['boss'] = love.graphics.newImage('graphics/skeleton_boss.png'),
     ['fireball'] = love.graphics.newImage('graphics/FireBall.png')
 }
@@ -129,7 +125,6 @@ FRAMES = {
     ['character-pot-lift'] = generateQuads(TEXTURES['character-pot-lift'], 16, 32),
     ['character-pot-walk'] = generateQuads(TEXTURES['character-pot-walk'], 16, 32),
     ['rotbow'] = generateQuads(TEXTURES['rotbow'], 20, 20),
-    ['fire_ball'] = generateQuads(TEXTURES['fire_ball'], 16, 16),
     ['boss'] = generateQuads(TEXTURES['boss'], 32, 46),
     ['fireball'] = generateQuads(TEXTURES['fireball'], 15, 15)
 }

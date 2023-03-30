@@ -17,13 +17,9 @@ function BossWalkState:init(boss)
 
     self.entity:changeAnimation('walk-down')
 
-    -- self.dungeon = dungeon
-
-    -- used for AI control
     self.moveDuration = 0
     self.movementTimer = 0
 
-    -- keeps track of whether we just hit a wall
     self.bumped = false
 
 end

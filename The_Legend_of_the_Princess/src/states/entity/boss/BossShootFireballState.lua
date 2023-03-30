@@ -6,26 +6,8 @@ function BossShootFireballState:init(boss, projectiles, player)
     self.player = player
     self.projectiles = projectiles
     self.fireball = GameObject(
-        GAME_OBJECT_DEFS['Fireball'], self.boss.x -2, self.boss.y + self.boss.height/2
+        GAME_OBJECT_DEFS['Fireball'], self.boss.x -3, self.boss.y + self.boss.height/2
     )
-    -- self.fireball = GameObject(
-    --     GAME_OBJECT_DEFS['Fireball'], self.boss.x -20, self.boss.y -20
-    -- )
-    -- if player.direction == 'left' then
-    --     self.bow.state = 'left'
-    --     self.bow.x = self.player.x - self.player.width / 2
-    -- elseif player.direction == 'right' then
-    --     self.bow.state = 'right'
-    -- elseif player.direction == 'down' then
-    --     self.bow.state = 'down'
-    --     self.bow.x = self.player.x - 3
-    --     self.bow.y = self.player.y + self.player.height / 4
-    -- elseif player.direction == 'up' then
-    --     self.bow.state = 'up'
-    --     self.bow.x = self.player.x - 3
-    --     self.bow.y = self.player.y - self.player.height / 4
-    -- end
-
     self.boss:changeAnimation('idle-down')
     
     self.charging = true

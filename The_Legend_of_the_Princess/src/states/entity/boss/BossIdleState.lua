@@ -16,9 +16,12 @@ end
 function BossIdleState:processAI(params, dt)
     if self.waitDuration == 0 then
         self.waitDuration = math.random(5)
-        if not self.entity.fire_ball.active then 
-            self.entity.fire_ball:Shoot()
+        if math.random(3) < 4 then
+            self.entity:changeState('shoot_fireball')
         end
+            -- if not self.entity.fire_ball.active then 
+        --     self.entity.fire_ball:Shoot()
+        -- end
     else
         self.waitTimer = self.waitTimer + dt
 

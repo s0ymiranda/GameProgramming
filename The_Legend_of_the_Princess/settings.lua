@@ -19,6 +19,9 @@ require 'src/GameObject'
 require 'src/Hitbox'
 require 'src/Player'
 require 'src/Projectile'
+
+require 'src/FireBallProjectile'
+
 require 'src/StateMachine'
 
 require 'src/definitions/entity'
@@ -54,6 +57,7 @@ require 'src/Boss'
 
 require 'src/states/entity/boss/BossIdleState'
 require 'src/states/entity/boss/BossWalkState'
+require 'src/states/entity/boss/BossShootFireballState'
 
 require 'src/world/Fireball'
 

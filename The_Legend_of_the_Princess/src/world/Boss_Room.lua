@@ -82,7 +82,7 @@ function Boss_Room:update(dt)
     self.boss_bar:setValue(self.entities[1].health)
     self.boss_bar:setPosition(self.entities[1].x,self.entities[1].y-6)
 
-    self.entities[1].fire_ball:update()
+    --self.entities[1].fire_ball:update()
     
     if self.entities[1].health == 0 then
         self.doorways[1].open = true
@@ -123,8 +123,16 @@ function Boss_Room:update(dt)
             if projectile.dead then
                 break
             end
-
-            if not entity.dead and projectile:collides(entity) then
+            if projectile.obj.type == 'fireball' and projectile:collides(self.player) then
+                if not self.player.invulnerable then 
+                    self.player:damage(100000000000)
+                    SOUNDS['hit-player']:play()
+                    projectile.dead = true             
+                end       
+                if self.player.health < 0 then
+                    stateMachine:change('game-over')
+                end
+            elseif not entity.dead and projectile:collides(entity) and projectile.obj.type ~= 'fireball' then
                 if entity.invulnerable then 
                     Timer.after(3,function() entity.invulnerable = true entity.invulnerableDuration = 100000000 end)
                 end
@@ -227,10 +235,11 @@ function Boss_Room:generateEntities()
 
     self.entities[1].stateMachine = StateMachine {
         ['walk'] = function() return BossWalkState(self.entities[1]) end,
-        ['idle'] = function() return BossIdleState(self.entities[1]) end
+        ['idle'] = function() return BossIdleState(self.entities[1]) end,
+        ['shoot_fireball'] = function() return BossShootFireballState(self.entities[1],self.projectiles,self.player) end
     }
 
-    self.entities[1].fire_ball = Fireball(self.entities[1],self.player)
+    --self.entities[1].fire_ball = Fireball(self.entities[1],self.player)
 
     self.entities[1]:changeState('walk')
 
@@ -308,7 +317,7 @@ function Boss_Room:render()
     --     self.entities[1].fire_ball:render()
     -- end
 
-    self.entities[1].fire_ball:render()
+    --self.entities[1].fire_ball:render()
 
     -- Boss Bar
     if self.entities[1].health > 0 then

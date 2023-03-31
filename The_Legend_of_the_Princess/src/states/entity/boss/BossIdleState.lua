@@ -16,7 +16,9 @@ end
 function BossIdleState:processAI(params, dt)
     if self.waitDuration == 0 then
         self.waitDuration = math.random(5)
-        if math.random(3) == 1  then
+        if math.random(2) == 1  then
+            self.entity:changeState('shoot_fireball')
+        elseif self.entity.health < self.entity.max_health*0.3 and math.random(5) < 3  then
             self.entity:changeState('shoot_fireball')
         end
     else

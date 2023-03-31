@@ -157,7 +157,40 @@ GAME_OBJECT_DEFS = {
             }           
         }
     },
-    
+    ['arrow_x'] = {
+        type = 'arrow',
+        texture = 'arrow_x',
+        frame = 2,
+        width = 17,
+        height = 7,
+        solid = false,
+        defaultState = 'left',
+        states = {
+            ['left'] = {
+                frame = 2
+            },
+            ['right'] = {
+                frame = 1
+            }
+        }
+    },
+    ['arrow_y'] = {
+        type = 'arrow',
+        texture = 'arrow_y',
+        frame = 2,
+        width = 7,
+        height = 17,
+        solid = false,
+        defaultState = 'up',
+        states = {
+            ['up'] = {
+                frame = 1
+            },
+            ['down'] = {
+                frame = 2
+            }
+        }
+    }
 
 }
 

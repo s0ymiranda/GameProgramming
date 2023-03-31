@@ -22,12 +22,13 @@ function Boss_Room:init(player)
     self:generateWallsAndFloors()
 
     -- entities in the room
-    self.entities = {}
+    --self.entities = {}
+    self.boss = nil
     self:generateEntities()
 
     -- game objects in the room
-    -- self.objects = {}
-    -- self:generateObjects()
+    self.objects = {}
+    self:generateObjects()
 
     -- doorways that lead to other dungeon rooms
     self.doorways = {}
@@ -66,8 +67,8 @@ function Boss_Room:init(player)
         width = 32,
         height = 3,
         color = {r = 189, g = 32, b = 32},
-        value = self.entities[1].health,
-        max = self.entities[1].health
+        value = self.boss.health,
+        max = self.boss.health
     }
 
 end
@@ -79,19 +80,16 @@ function Boss_Room:update(dt)
     
     -- Boss Life Bar
 
-    self.boss_bar:setValue(self.entities[1].health)
-    self.boss_bar:setPosition(self.entities[1].x,self.entities[1].y-6)
-
-    --self.entities[1].fire_ball:update()
+    self.boss_bar:setValue(self.boss.health)
+    self.boss_bar:setPosition(self.boss.x,self.boss.y-6)
     
-    if self.entities[1].health == 0 then
+    if self.boss.health == 0 then
         self.doorways[1].open = true
-        SOUNDS['door']:play()
     end
 
     self.player:update(dt)
 
-    local entity = self.entities[1]
+    local entity = self.boss
 
     if entity.health < entity.max_health*0.3 and entity.walkSpeed ~= 50 then
         entity.walkSpeed = 50
@@ -125,7 +123,7 @@ function Boss_Room:update(dt)
         projectile:update(dt)
 
         -- check collision with entities
-        for e, entity in pairs(self.entities) do
+        --for e, entity in pairs(self.entities) do
             if projectile.dead then
                 break
             end
@@ -144,8 +142,17 @@ function Boss_Room:update(dt)
                 SOUNDS['hit-enemy']:play()
                 projectile.dead = true
             end
-        end
+        --end
 
+        -- if projectile.dead then
+        --     table.remove(self.projectiles, k)
+        -- end
+        -- if entity.dead and projectile.obj.type == 'fireball' then 
+        --     table.remove(self.projectiles, k)
+        -- end
+    end
+
+    for k, projectile in pairs(self.projectiles) do
         if projectile.dead then
             table.remove(self.projectiles, k)
         end
@@ -153,15 +160,6 @@ function Boss_Room:update(dt)
             table.remove(self.projectiles, k)
         end
     end
-
-    -- for k, projectile in pairs(self.projectiles) do
-    --     if projectile.dead then
-    --         table.remove(self.projectiles, k)
-    --     end
-    --     if entity.dead and projectile.obj.type == 'fireball' then 
-    --         table.remove(self.projectiles, k)
-    --     end
-    -- end
 
 end
 
@@ -226,7 +224,7 @@ function Boss_Room:generateEntities()
         y_boss = MAP_RENDER_OFFSET_Y + TILE_SIZE
         x_boss = VIRTUAL_WIDTH/2 - 32/2
     end
-    table.insert(self.entities, Boss {
+    self.boss = Boss {
         animations = ENTITY_DEFS[type].animations,
         walkSpeed = ENTITY_DEFS[type].walkSpeed or 20,
         x = x_boss,
@@ -234,20 +232,15 @@ function Boss_Room:generateEntities()
         width = 32,
         height = 46,
         health = 200
-    })
-
-    self.entities[1].stateMachine = StateMachine {
-        ['walk'] = function() return BossWalkState(self.entities[1]) end,
-        ['idle'] = function() return BossIdleState(self.entities[1]) end,
-        ['shoot_fireball'] = function() return BossShootFireballState(self.entities[1],self.projectiles,self.player) end
     }
 
-    --self.entities[1].fire_ball = Fireball(self.entities[1],self.player)
-
-    self.entities[1]:changeState('walk')
-
-    self.entities[1].invulnerable = true
-    --self.entities[1].invulnerableDuration = 10000000 
+    self.boss.stateMachine = StateMachine {
+        ['walk'] = function() return BossWalkState(self.boss) end,
+        ['idle'] = function() return BossIdleState(self.boss) end,
+        ['shoot_fireball'] = function() return BossShootFireballState(self.boss,self.projectiles,self.player) end
+    }
+    self.boss:changeState('walk')
+    self.boss.invulnerable = true
 end
 
 --[[
@@ -277,13 +270,11 @@ function Boss_Room:render()
         doorway:render(self.adjacentOffsetX, self.adjacentOffsetY)
     end
 
-    -- for k, object in pairs(self.objects) do
-    --     object:render(self.adjacentOffsetX, self.adjacentOffsetY)
-    -- end
+    for k, object in pairs(self.objects) do
+        object:render(self.adjacentOffsetX, self.adjacentOffsetY)
+    end
 
-    --for k, entity in pairs(self.entities) do
-        if not self.entities[1].dead then self.entities[1]:render(self.adjacentOffsetX, self.adjacentOffsetY) end
-    --end
+    if not self.boss.dead then self.boss:render(self.adjacentOffsetX, self.adjacentOffsetY) end
 
     -- stencil out the door arches so it looks like the player is going through
     love.graphics.stencil(function()
@@ -316,14 +307,8 @@ function Boss_Room:render()
 
     love.graphics.setStencilTest()
 
-    -- if not self.entities[1].fire_ball == nil then 
-    --     self.entities[1].fire_ball:render()
-    -- end
-
-    --self.entities[1].fire_ball:render()
-
     -- Boss Bar
-    if self.entities[1].health > 0 then
+    if self.boss.health > 0 then
         self.boss_bar:render()
     end
 end

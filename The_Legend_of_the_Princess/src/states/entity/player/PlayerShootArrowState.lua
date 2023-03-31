@@ -39,17 +39,41 @@ end
 
 function PlayerShootArrowState:update(dt)
     if not self.charging then
+        local arrow
+        -- if self.bow.state == "up" then
+        --     self.bow.state = "throw-up"
+        -- elseif self.bow.state == "right" then
+        --     self.bow.state = "throw-right"
+        -- elseif self.bow.state == "left" then
+        --     self.bow.state = "throw-left"
+        -- elseif self.bow.state == "down" then
+        --     self.bow.state = "throw-down"
+        -- end
+
         if self.bow.state == "up" then
-            self.bow.state = "throw-up"
+            arrow = GameObject(
+                GAME_OBJECT_DEFS['arrow_y'], self.player.x + self.player.width / 4.4, self.player.y
+            )
         elseif self.bow.state == "right" then
-            self.bow.state = "throw-right"
+            arrow = GameObject(
+                GAME_OBJECT_DEFS['arrow_x'], self.player.x + self.player.width / 4.4, self.player.y + 7
+            )
+            arrow.state = 'right'
         elseif self.bow.state == "left" then
-            self.bow.state = "throw-left"
+            arrow = GameObject(
+                GAME_OBJECT_DEFS['arrow_x'], self.player.x + self.player.width / 4.4, self.player.y  + 7
+            )
         elseif self.bow.state == "down" then
-            self.bow.state = "throw-down"
+            arrow = GameObject(
+                GAME_OBJECT_DEFS['arrow_y'], self.player.x + self.player.width / 4.4, self.player.y
+            )
+            arrow.state = 'down'
         end
-        table.insert(self.dungeon.currentRoom.projectiles, Projectile(self.bow, self.player.direction))
+
+        table.insert(self.dungeon.currentRoom.projectiles, Projectile(arrow, self.player.direction))
         self.player:changeState('idle')
+        --table.remove(self.dungeon.currentRoom.objects, self.bow)
+        self.bow = nil
     end
 end
 

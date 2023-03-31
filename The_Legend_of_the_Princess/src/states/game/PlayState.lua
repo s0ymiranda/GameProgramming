@@ -48,6 +48,7 @@ end
 
 function PlayState:exit()
     SOUNDS['dungeon-music']:stop()
+    SOUNDS['boss-music']:stop()
 end
 
 function PlayState:update(dt)

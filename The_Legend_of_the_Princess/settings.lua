@@ -111,7 +111,9 @@ TEXTURES = {
     ['character-pot-walk'] = love.graphics.newImage('graphics/character_pot_walk.png'),
     ['rotbow'] = love.graphics.newImage('graphics/rotbow_w_string.png'),
     ['boss'] = love.graphics.newImage('graphics/skeleton_boss.png'),
-    ['fireball'] = love.graphics.newImage('graphics/FireBall.png')
+    ['fireball'] = love.graphics.newImage('graphics/FireBall.png'),
+    ['arrow_x'] = love.graphics.newImage('graphics/arrow2.png'),
+    ['arrow_y'] = love.graphics.newImage('graphics/arrow1.png')
 }
 
 FRAMES = {
@@ -126,7 +128,9 @@ FRAMES = {
     ['character-pot-walk'] = generateQuads(TEXTURES['character-pot-walk'], 16, 32),
     ['rotbow'] = generateQuads(TEXTURES['rotbow'], 20, 20),
     ['boss'] = generateQuads(TEXTURES['boss'], 32, 46),
-    ['fireball'] = generateQuads(TEXTURES['fireball'], 15, 15)
+    ['fireball'] = generateQuads(TEXTURES['fireball'], 15, 15),
+    ['arrow_x'] = generateQuads(TEXTURES['arrow_x'],17,7),
+    ['arrow_y'] = generateQuads(TEXTURES['arrow_y'],7,17)
 }
 
 FONTS = {
@@ -144,5 +148,7 @@ SOUNDS = {
     ['door'] = love.audio.newSource('sounds/door.wav', 'static'),
     ['heart-taken'] = love.audio.newSource('sounds/heart_taken.wav', 'static'),
     ['pot-wall'] = love.audio.newSource('sounds/pot_wall.wav', 'static'),
-    ['boss-music'] = love.audio.newSource('sounds/boss_battle.mp3', 'static')
+    ['boss-music'] = love.audio.newSource('sounds/boss_battle.mp3', 'static'),
+    ['boss-scream'] = love.audio.newSource('sounds/boss_scream.mp3', 'static'),
+    ['flame'] = love.audio.newSource('sounds/flame.ogg', 'static')
 }

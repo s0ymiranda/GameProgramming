@@ -19,6 +19,7 @@ end
 function BossShootFireballState:update(dt)
     if not self.charging then
         table.insert(self.projectiles, FireBallProjectile(self.fireball, self.player))
+        SOUNDS['flame']:play()
         self.boss:changeState('idle')
     end
 end

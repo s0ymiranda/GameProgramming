@@ -95,7 +95,7 @@ function EntityWalkState:render()
     love.graphics.draw(TEXTURES[anim.texture], FRAMES[anim.texture][anim:getCurrentFrame()],
         math.floor(self.entity.x - self.entity.offsetX), math.floor(self.entity.y - self.entity.offsetY))
     
-    love.graphics.setColor(love.math.colorFromBytes(255, 0, 255, 255))
-    love.graphics.rectangle('line', self.entity.x, self.entity.y, self.entity.width, self.entity.height)
-    love.graphics.setColor(love.math.colorFromBytes(255, 255, 255, 255))
+    -- love.graphics.setColor(love.math.colorFromBytes(255, 0, 255, 255))
+    -- love.graphics.rectangle('line', self.entity.x, self.entity.y, self.entity.width, self.entity.height)
+    -- love.graphics.setColor(love.math.colorFromBytes(255, 255, 255, 255))
 end

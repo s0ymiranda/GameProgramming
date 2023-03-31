@@ -40,6 +40,9 @@ function ProgressBar:update()
 end
 
 function ProgressBar:render()
+    if self.x == 0 then
+        return 
+    end
     -- multiplier on width based on progress
     local renderWidth = (self.value / self.max) * self.width
 

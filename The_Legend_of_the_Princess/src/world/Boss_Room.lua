@@ -282,7 +282,10 @@ function Boss_Room:render()
     -- end
 
     --for k, entity in pairs(self.entities) do
-        if not self.entities[1].dead then self.entities[1]:render(self.adjacentOffsetX, self.adjacentOffsetY) end
+    if not self.entities[1].dead then 
+        self.entities[1]:render(self.adjacentOffsetX, self.adjacentOffsetY) 
+        self.boss_bar:render() 
+    end
     --end
 
     -- stencil out the door arches so it looks like the player is going through
@@ -323,7 +326,7 @@ function Boss_Room:render()
     --self.entities[1].fire_ball:render()
 
     -- Boss Bar
-    if self.entities[1].health > 0 then
-        self.boss_bar:render()
-    end
+    -- if self.entities[1].health > 0 then
+    --     self.boss_bar:render()
+    -- end
 end

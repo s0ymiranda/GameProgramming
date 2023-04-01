@@ -62,6 +62,7 @@ function Boss_Room:update(dt)
     if self.entities[1].health == 0 then
         self.doorways[1].open = true
         SOUNDS['door']:play()
+        SOUNDS['boss-scream']:play()
         SOUNDS['boss-music']:stop()
         SOUNDS['dungeon-music']:setLooping(true)
         SOUNDS['dungeon-music']:play()

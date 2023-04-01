@@ -1,14 +1,5 @@
---[[
-    ISPPJ1 2023
-    Study Case: The Legend of the Princess (ARPG)
 
-    Author: Colton Ogden
-    cogden@cs50.harvard.edu
 
-    Modified by Alejandro Mujica (alejandro.j.mujic4@gmail.com) for teaching purpose.
-
-    This file contains the class Boss.
-]]
 Boss = Class{__includes = Entity}
 
 function Boss:init(def)
@@ -25,7 +16,6 @@ function Boss:goVulnerable(duration)
 end
 
 function Boss:update(dt)
-    --Entity.update(self, dt)
 
     if not self.invulnerable then
         self.vulnerableTimer = self.vulnerableTimer + dt
@@ -34,7 +24,6 @@ function Boss:update(dt)
             self.invulnerable = true
             self.vulnerableTimer = 0
             self.vulnerableDuration = 0
-            -- self.flashTimer = 0
         end
     else
         self.flashTimer = self.flashTimer + dt
@@ -54,9 +43,3 @@ function Boss:collides(target)
                 selfY + selfHeight < target.y or selfY > target.y + target.height)
 end
 
--- function Boss:render()
---     Entity.render(self)
---     -- love.graphics.setColor(love.math.colorFromBytes(255, 0, 255, 255))
---     -- love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
---     -- love.graphics.setColor(love.math.colorFromBytes(255, 255, 255, 255))
--- end

@@ -238,10 +238,11 @@ function Room:generateObjects()
         end
     end
 
-    --Adding the chest
+    --Generating the chess in the Room 
+
     local is_there_a_chest = false
 
-    if math.random(100) < 130 and not self.player.have_bow then
+    if math.random(3) == 1 and not self.player.have_bow then
         
         is_there_a_chest = true
         

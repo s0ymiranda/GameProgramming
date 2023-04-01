@@ -134,49 +134,6 @@ ENTITY_DEFS = {
                 texture = 'character-pot-walk'
             }
 
-
-            --own try
-
-            -- ,
-            -- ['charge-walk-down'] = {
-            --     frames = {1, 2, 3, 4},
-            --     interval = 0.15,
-            --     texture = 'character-pot-walk'
-            -- },
-            -- ['charge-walk-right'] = {
-            --     frames = {5, 6, 7, 8},
-            --     interval = 0.15,
-            --     texture = 'character-pot-walk'
-            -- },
-            -- ['charge-walk-up'] = {
-            --     frames = {9, 10, 11, 12},
-            --     interval = 0.15,
-            --     texture = 'character-pot-walk'
-            -- },
-            -- ['charge-walk-left'] = {
-            --     frames = {13, 14, 15, 16},
-            --     interval = 0.15,
-            --     texture = 'character-pot-walk'
-            -- },
-            -- ['charge-idle-down'] = {
-            --     frames = {1},
-            --     texture = 'character-pot-walk'
-            -- },
-            -- ['charge-idle-right'] = {
-            --     frames = {5},
-            --     texture = 'character-pot-walk'
-            -- },
-            -- ['charge-idle-up'] = {
-            --     frames = {9},
-            --     texture = 'character-pot-walk'
-            -- },
-            -- ['charge-idle-left'] = {
-            --     frames = {13},
-            --     texture = 'character-pot-walk'
-            -- }
-
-
-
         }
     },
     ['skeleton'] = {

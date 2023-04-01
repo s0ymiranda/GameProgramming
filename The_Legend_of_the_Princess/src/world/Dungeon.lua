@@ -48,9 +48,8 @@ end
 ]]
 function Dungeon:beginShifting(shiftX, shiftY)
     self.shifting = true
-    if self.player.have_bow and math.random(10) < 15 then
+    if self.player.have_bow and math.random(3) == 1 then
         self.nextRoom = Boss_Room(self.player)
-        -- self.nextRoom = self.currentRoom
     else
         self.nextRoom = Room(self.player)
     end

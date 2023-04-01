@@ -39,16 +39,7 @@ end
 
 function PlayerShootArrowState:update(dt)
     if not self.charging then
-        local arrow
-        -- if self.bow.state == "up" then
-        --     self.bow.state = "throw-up"
-        -- elseif self.bow.state == "right" then
-        --     self.bow.state = "throw-right"
-        -- elseif self.bow.state == "left" then
-        --     self.bow.state = "throw-left"
-        -- elseif self.bow.state == "down" then
-        --     self.bow.state = "throw-down"
-        -- end
+        local arrow = nil
 
         if self.bow.state == "up" then
             arrow = GameObject(
@@ -72,7 +63,7 @@ function PlayerShootArrowState:update(dt)
 
         table.insert(self.dungeon.currentRoom.projectiles, Projectile(arrow, self.player.direction))
         self.player:changeState('idle')
-        --table.remove(self.dungeon.currentRoom.objects, self.bow)
+        
         self.bow = nil
     end
 end

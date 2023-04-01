@@ -81,7 +81,6 @@ GAME_OBJECT_DEFS = {
         end
     }
 
-    --own try
     ,
     ['bow'] = {
         type = 'bow',
@@ -108,22 +107,9 @@ GAME_OBJECT_DEFS = {
             },
             ['up'] = {
                 frame = 7
-            },
-            ['throw-left'] = {
-                frame = 13
-            },
-            ['throw-right'] = {
-                frame = 16
-            },
-            ['throw-down'] = {
-                frame = 14
-            },
-            ['throw-up'] = {
-                frame = 12
             }
         },
         onConsume = function(player)
-            --player:heal(2)
             player:take_bow()
             SOUNDS['heart-taken']:play()
         end
@@ -146,15 +132,9 @@ GAME_OBJECT_DEFS = {
             ['handAnim3'] = {
                 frame = 3
             },
-            ['shoot1'] = {
-                frame = 4
-            },
-            ['shoot2'] = {
-                frame = 5
-            },
-            ['shoot3'] = {
-                frame = 6
-            }           
+            ['shoot'] = {
+                frame = 7
+            }        
         }
     },
     ['arrow_x'] = {

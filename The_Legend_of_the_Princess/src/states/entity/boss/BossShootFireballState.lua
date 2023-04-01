@@ -12,6 +12,9 @@ function BossShootFireballState:init(boss, projectiles, player)
     
     self.charging = true
 
+    Timer.after(0.2,function() self.fireball.state = 'handAnim2' end)
+    Timer.after(0.4,function() self.fireball.state = 'handAnim3' end)
+    Timer.after(0.5,function() self.fireball.state = 'shoot' end)
     Timer.after(0.6,function() self.charging = false end)
 
 end
@@ -21,6 +24,7 @@ function BossShootFireballState:update(dt)
         table.insert(self.projectiles, FireBallProjectile(self.fireball, self.player))
         SOUNDS['flame']:play()
         self.boss:changeState('idle')
+        self.fireball = nil
     end
 end
 

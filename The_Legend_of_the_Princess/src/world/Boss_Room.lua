@@ -1,18 +1,8 @@
---[[
-    ISPPJ1 2023
-    Study Case: The Legend of the Princess (ARPG)
 
-    Author: Colton Ogden
-    cogden@cs50.harvard.edu
-
-    Modified by Alejandro Mujica (alejandro.j.mujic4@gmail.com) for teaching purpose.
-
-    This file contains the class Room.
-]]
 Boss_Room = Class{__includes = Room}
 
 function Boss_Room:init(player)
-    -- reference to player for collisions, etc.
+
     self.player = player
 
     self.width = MAP_WIDTH
@@ -21,15 +11,9 @@ function Boss_Room:init(player)
     self.tiles = {}
     self:generateWallsAndFloors()
 
-    -- entities in the room
     self.entities = {}
     self:generateEntities()
 
-    -- game objects in the room
-    -- self.objects = {}
-    -- self:generateObjects()
-
-    -- doorways that lead to other dungeon rooms
     self.doorways = {}
 
     if player.direction == 'left' then
@@ -42,15 +26,13 @@ function Boss_Room:init(player)
         table.insert(self.doorways, Doorway('bottom', false, self))
     end
 
-    -- used for centering the dungeon rendering
     self.renderOffsetX = MAP_RENDER_OFFSET_X
     self.renderOffsetY = MAP_RENDER_OFFSET_Y
 
-    -- used for drawing when this room is the next room, adjacent to the active
+
     self.adjacentOffsetX = 0
     self.adjacentOffsetY = 0
 
-    -- projectiles
     self.projectiles = {}
 
     SOUNDS['dungeon-music']:stop()
@@ -58,8 +40,6 @@ function Boss_Room:init(player)
     SOUNDS['boss-music']:setLooping(true)
     SOUNDS['boss-music']:play()
 
-
-    -- self.boss_bar = {}
     self.boss_bar = ProgressBar {
         x = 0,
         y = 0,
@@ -74,19 +54,17 @@ end
 
 function Boss_Room:update(dt)
 
-    -- don't update anything if we are sliding to another room (we have offsets)
     if self.adjacentOffsetX ~= 0 or self.adjacentOffsetY ~= 0 then return end
-    
-    -- Boss Life Bar
 
     self.boss_bar:setValue(self.entities[1].health)
     self.boss_bar:setPosition(self.entities[1].x,self.entities[1].y-6)
-
-    --self.entities[1].fire_ball:update()
     
     if self.entities[1].health == 0 then
         self.doorways[1].open = true
         SOUNDS['door']:play()
+        SOUNDS['boss-music']:stop()
+        SOUNDS['dungeon-music']:setLooping(true)
+        SOUNDS['dungeon-music']:play()
     end
 
     self.player:update(dt)
@@ -98,17 +76,13 @@ function Boss_Room:update(dt)
         SOUNDS['boss-scream']:play()
     end
 
-    -- remove entity from the table if health is <= 0
     if entity.health <= 0 then
         entity.dead = true
-        -- whether the entity dropped or not, it is assumed that it dropped
-        entity.dropped = true
     elseif not entity.dead then
         entity:processAI({room = self}, dt)
         entity:update(dt)
     end
 
-    -- collision between the player and entities in the room
     if not entity.dead and self.player:collides(entity) and not self.player.invulnerable then
         SOUNDS['hit-player']:play()
         self.player:damage(2)
@@ -119,19 +93,16 @@ function Boss_Room:update(dt)
         end
     end
 
-    --NOTA se removio la parte de procesamiento de objetos
-
     for k, projectile in pairs(self.projectiles) do
         projectile:update(dt)
 
-        -- check collision with entities
         for e, entity in pairs(self.entities) do
             if projectile.dead then
                 break
             end
             if projectile.obj.type == 'fireball' and projectile:collides(self.player) then
                 if not self.player.invulnerable then 
-                    self.player:damage(100000000000)
+                    self.player:damage(8)
                     SOUNDS['hit-player']:play()
                     projectile.dead = true          
                 end       
@@ -154,21 +125,9 @@ function Boss_Room:update(dt)
         end
     end
 
-    -- for k, projectile in pairs(self.projectiles) do
-    --     if projectile.dead then
-    --         table.remove(self.projectiles, k)
-    --     end
-    --     if entity.dead and projectile.obj.type == 'fireball' then 
-    --         table.remove(self.projectiles, k)
-    --     end
-    -- end
 
 end
 
---[[
-    Generates the walls and floors of the room, randomizing the various varieties
-    of said tiles for visual variety.
-]]
 function Boss_Room:generateWallsAndFloors()
     for y = 1, self.height do
         table.insert(self.tiles, {})
@@ -185,7 +144,7 @@ function Boss_Room:generateWallsAndFloors()
             elseif x == self.width and y == self.height then
                 id = TILE_BOTTOM_RIGHT_CORNER
             
-            -- random left-hand walls, right walls, top, bottom, and floors
+ 
             elseif x == 1 then
                 id = TILE_LEFT_WALLS[math.random(#TILE_LEFT_WALLS)]
             elseif x == self.width then
@@ -205,12 +164,11 @@ function Boss_Room:generateWallsAndFloors()
     end
 end
 
---[[
-    Randomly creates an assortment of enemies for the player to fight.
-]]
+
 function Boss_Room:generateEntities()
     
-    local type = 'BOSS'
+    --There is gonna be just the entity boss in the boss room
+
     local x_boss = 0
     local y_boss = 0
     if self.player.direction == 'left' then
@@ -227,8 +185,8 @@ function Boss_Room:generateEntities()
         x_boss = VIRTUAL_WIDTH/2 - 32/2
     end
     table.insert(self.entities, Boss {
-        animations = ENTITY_DEFS[type].animations,
-        walkSpeed = ENTITY_DEFS[type].walkSpeed or 20,
+        animations = ENTITY_DEFS['BOSS'].animations,
+        walkSpeed = ENTITY_DEFS['BOSS'].walkSpeed or 20,
         x = x_boss,
         y = y_boss,
         width = 32,
@@ -242,25 +200,19 @@ function Boss_Room:generateEntities()
         ['shoot_fireball'] = function() return BossShootFireballState(self.entities[1],self.projectiles,self.player) end
     }
 
-    --self.entities[1].fire_ball = Fireball(self.entities[1],self.player)
-
     self.entities[1]:changeState('walk')
 
     self.entities[1].invulnerable = true
-    --self.entities[1].invulnerableDuration = 10000000 
 end
 
---[[
-    Randomly creates an assortment of obstacles for the player to navigate around.
-]]
+
 function Boss_Room:generateObjects()
-   
+    --in this room there wwill not be any object
 end
 
 
 
 function Boss_Room:render()
-
 
     for y = 1, self.height do
         for x = 1, self.width do
@@ -271,24 +223,16 @@ function Boss_Room:render()
         end
     end
 
-    -- render doorways; stencils are placed where the arches are after so the player can
-    -- move through them convincingly
     for k, doorway in pairs(self.doorways) do
         doorway:render(self.adjacentOffsetX, self.adjacentOffsetY)
     end
 
-    -- for k, object in pairs(self.objects) do
-    --     object:render(self.adjacentOffsetX, self.adjacentOffsetY)
-    -- end
 
-    --for k, entity in pairs(self.entities) do
     if not self.entities[1].dead then 
         self.entities[1]:render(self.adjacentOffsetX, self.adjacentOffsetY) 
         self.boss_bar:render() 
     end
-    --end
 
-    -- stencil out the door arches so it looks like the player is going through
     love.graphics.stencil(function()
         -- left
         love.graphics.rectangle('fill', -TILE_SIZE - 6, MAP_RENDER_OFFSET_Y + (MAP_HEIGHT / 2) * TILE_SIZE - TILE_SIZE * 2,
@@ -319,14 +263,4 @@ function Boss_Room:render()
 
     love.graphics.setStencilTest()
 
-    -- if not self.entities[1].fire_ball == nil then 
-    --     self.entities[1].fire_ball:render()
-    -- end
-
-    --self.entities[1].fire_ball:render()
-
-    -- Boss Bar
-    -- if self.entities[1].health > 0 then
-    --     self.boss_bar:render()
-    -- end
 end

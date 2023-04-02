@@ -26,8 +26,6 @@ New Features
 
     -In sr/world/Dungeon.lua can be found the condition for when the NextRoom its gonna be a Boss_Room
 
-    -Added the needed things in settings.lua
-
     EXTRA: -When the boss is at the 30% of his life, it's played the sound boss scream, his WalkSpeed its aumented and the chances to shoot fireballs are incremented.
            -The player can move whit the keys 'a', 'w', 's', 'd'. 
 

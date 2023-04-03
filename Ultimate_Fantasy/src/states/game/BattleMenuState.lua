@@ -70,10 +70,8 @@ function BattleMenuState:init(battleState)
 end
 
 function BattleMenuState:update(dt)
-    for k, e in pairs(self.battleState.enemies) do
-        e:update(dt)
-    end
     self.battleMenu:update(dt)
+    self.battleState:update(dt)
 end
 
 function BattleMenuState:render()

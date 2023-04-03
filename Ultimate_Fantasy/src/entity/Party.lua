@@ -23,6 +23,7 @@ function Party:init(def)
             name = characterInfo[g].name,
             class = characterInfo.type,
             texture = characterInfo[g].texture,
+            restTime = characterInfo.properties.restTime,
             actions = characterInfo.actions,
             baseHP = characterInfo.properties.baseHP,
             baseAttack = characterInfo.properties.baseAttack,

@@ -24,9 +24,7 @@ function BattleMessageState:init(battleState, msg, onClose, canInput)
 end
 
 function BattleMessageState:update(dt)
-    for k, e in pairs(self.battleState.enemies) do
-        e:update(dt)
-    end
+    self.battleState:update(dt)
     if self.canInput then
         self.textbox:update(dt)
 

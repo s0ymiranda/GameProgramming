@@ -90,6 +90,7 @@ ENTITY_DEFS = {
             },
             properties = {
                 level = 1,
+                restTime = 15, 
                 baseHP = 40,
                 baseAttack = 10,
                 baseDefense = 10,
@@ -127,6 +128,7 @@ ENTITY_DEFS = {
             },
             properties = {
                 level = 1,
+                restTime = 15,
                 baseHP = 35,
                 baseAttack = 12,
                 baseDefense = 8,
@@ -179,6 +181,7 @@ ENTITY_DEFS = {
             },
             properties = {
                 level = 1,
+                restTime = 30,
                 baseHP = 25,
                 baseAttack = 2,
                 baseDefense = 5,
@@ -231,6 +234,7 @@ ENTITY_DEFS = {
             },
             properties = {
                 level = 1,
+                restTime = 25,
                 baseHP = 30,
                 baseAttack = 5,
                 baseDefense = 5,
@@ -284,6 +288,7 @@ ENTITY_DEFS = {
         north = {
             {
                 level = 1,
+                restTime = 10,
                 type = 'slime',
                 texture = 'slime',
                 width = 16,
@@ -316,6 +321,7 @@ ENTITY_DEFS = {
         south = {
             {
                 level = 2,
+                restTime = 8,
                 type = 'worm',
                 texture = 'small-worm',
                 width = 16,
@@ -348,6 +354,7 @@ ENTITY_DEFS = {
         east = {
             {
                 level = 3,
+                restTime = 10,
                 type = 'snake',
                 texture = 'snake',
                 width = 16,
@@ -380,6 +387,7 @@ ENTITY_DEFS = {
         west = {
             {
                 level = 4,
+                restTime = 7,
                 type = 'pumpking',
                 texture = 'pumpking',
                 width = 23,
@@ -411,6 +419,7 @@ ENTITY_DEFS = {
         },
         boss = {
             level = 10,
+            restTime = 5,
             type = 'boss',
             name = 'Man-Eater Flower',
             texture = 'man-eater-flower',

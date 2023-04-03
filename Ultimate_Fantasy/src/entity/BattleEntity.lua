@@ -30,6 +30,9 @@ function BattleEntity:init(def)
     self.magic = self.baseMagic
     
     self.currentHP = self.HP
+
+    self.restTime = def.restTime
+    self.currentRest = self.restTime
 end
 
 function BattleEntity:damage(amount)

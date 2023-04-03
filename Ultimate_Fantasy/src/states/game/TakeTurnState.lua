@@ -18,39 +18,64 @@ function TakeTurnState:init(battleState)
 end
 
 function TakeTurnState:update(dt)
-    for k, e in pairs(self.enemies) do
-        e:update(dt)
-    end
+    self.battleState:update(dt)
 end
 
 function TakeTurnState:enter(params)
-    self:takePartyTurn(1)
+    self:takePartyTurn(1)    
+end
+
+function TakeTurnState:everyone_cooldown()
+    for k, e in pairs(self.enemies) do
+        if not e.dead then
+            if e.currentRest >= e.restTime then
+                return false
+            end
+        end
+    end
+    for k, c in pairs(self.characters) do
+        if not c.dead then
+            if(c.currentRest >= c.restTime) then
+                return false
+            end
+        end
+    end
+    return true 
 end
 
 function TakeTurnState:takePartyTurn(i)
-    if i > #self.characters then
-        self:takeEnemyTurn(1)
-        return
-    end
-    local c = self.characters[i]
-
-    if c.dead then
-        self:takePartyTurn(i + 1)
+    if self:everyone_cooldown() then
+        stateStack:push(BattleMessageState(self.battleState,'Wait! Everyone is on cooldown',
+        function() 
+            stateStack:pop()
+            stateStack:push(TakeTurnState(self.battleState)) 
+        end) )
     else
-        stateStack:push(BattleMessageState(self.battleState, 'Turn for ' .. c.name .. '! Select an action.',
+
+        if i > #self.characters then
+            self:takeEnemyTurn(1)
+            return
+        end
+        local c = self.characters[i]
+
+        if c.dead or (c.currentRest < c.restTime) then
+            self:takePartyTurn(i + 1)
+        else
+            stateStack:push(BattleMessageState(self.battleState, 'Turn for ' .. c.name .. '! Select an action.',
             -- callback for when the battle message is closed
             function()
                 stateStack:push(SelectActionState(self.battleState, c,
-                
+
                 -- callback for when the action has been selected
                 function()
                     if self:checkAllDeath(self.enemies) then
                         self:victory()
-                    else
-                        self:takePartyTurn(i + 1)
-                    end
+                        else
+                            self:takePartyTurn(i + 1)
+                        end
+                    end))
                 end))
-            end))
+        end
     end
 end
 
@@ -62,32 +87,36 @@ function TakeTurnState:takeEnemyTurn(i)
 
     local e = self.enemies[i]
 
-    if e.dead then
+    if e.dead or (e.currentRest < e.restTime) then
         self:takeEnemyTurn(i + 1)
     else
         self.enemyAttacksInARow = self.enemyAttacksInARow + 1
-
+         
         local message = ''
 
         -- choose a randoms action
         local action = e.actions[math.random(#e.actions)]
+        e.currentRest = 0
+        Timer.tween(0.2, {
+            [self.battleState.restBars[e.name]] = {value = e.currentRest}
+        })
 
         local targets = action.target_type == 'enemy' and self.characters or self.enemies
 
         if action.require_target then
             local target_p = math.random(#targets)
-
+            
             while targets[target_p].dead do
                 target_p = math.random(#targets)
             end
-
+            
             local target = targets[target_p]
-
+            
             local amount = action.func(e, target)
-
+            
             SOUNDS[action.sound_effect]:stop()
             SOUNDS[action.sound_effect]:play()
-
+            
             Timer.tween(0.5, {
                 [self.battleState.energyBars[target.name]] = {value = target.currentHP}
             })
@@ -105,7 +134,7 @@ function TakeTurnState:takeEnemyTurn(i)
         end
 
         local gameOver = self:checkAllDeath(self.characters)
-
+        
         if gameOver then
             self:faint()
         else

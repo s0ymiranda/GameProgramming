@@ -33,13 +33,14 @@ function BattleState:init(party, region, onExit)
 
     self.energyBars = {}
     self.expBars = {}
+    self.restBars = {}
 
     -- add party energy and exp bars
     for k, c in pairs(self.party.characters) do
         if not c.dead then
             self.energyBars[c.name] = ProgressBar {
                 x = c.x - math.floor(c.width/4),
-                y = c.y - 8,
+                y = c.y - 11,
                 width = math.floor(c.width*1.5),
                 height = 3,
                 color = {r = 189, g = 32, b = 32},
@@ -48,12 +49,21 @@ function BattleState:init(party, region, onExit)
             }
             self.expBars[c.name] = ProgressBar {
                 x = c.x - math.floor(c.width/4),
-                y = c.y - 5,
+                y = c.y - 8,
                 width = math.floor(c.width*1.5),
                 height = 3,
                 color = {r = 32, g = 32, b = 189},
                 value = c.currentExp,
                 max = c.expToLevel
+            }
+            self.restBars[c.name] = ProgressBar {
+                x = c.x - math.floor(c.width/4),
+                y = c.y - 5,
+                width = math.floor(c.width*1.5),
+                height = 3,
+                color = {r = 32, g = 189, b = 32},
+                value = c.currentRest,
+                max = c.restTime
             }
         end
     end
@@ -63,12 +73,21 @@ function BattleState:init(party, region, onExit)
         if not e.dead then
             self.energyBars[e.name] = ProgressBar {
                 x = e.x - math.floor(e.width/4),
-                y = e.y - 5,
+                y = e.y - 8,
                 width = math.floor(e.width*1.5),
                 height = 3,
                 color = {r = 189, g = 32, b = 32},
                 value = e.currentHP,
                 max = e.HP
+            }
+            self.restBars[e.name] = ProgressBar {
+                x = e.x - math.floor(e.width/4),
+                y = e.y - 5,
+                width = math.floor(e.width*1.5),
+                height = 3,
+                color = {r = 32, g = 189, b = 32},
+                value = e.currentRest,
+                max = e.restTime
             }
         end
     end
@@ -83,6 +102,7 @@ function BattleState:createEnemies()
         local enemyInfo = ENTITY_DEFS.enemies.boss
         local enemy = Enemy({
             level = enemyInfo.level,
+            restTime = enemyInfo.restTime,
             name = enemyInfo.name,
             actions = enemyInfo.actions,
             class = enemyInfo.type,
@@ -111,6 +131,7 @@ function BattleState:createEnemies()
             local enemyInfo = enemySet[math.random(#enemySet)]
             local enemy = Enemy({
                 level = enemyInfo.level,
+                restTime = enemyInfo.restTime,
                 name = enemyInfo.type .. '-' .. i,
                 actions = enemyInfo.actions,
                 class = enemyInfo.type,
@@ -142,6 +163,7 @@ function BattleState:createEnemies()
             local enemyInfo = enemySet[math.random(#enemySet)]
             local enemy = Enemy({
                 level = enemyInfo.level,
+                restTime = enemyInfo.restTime,
                 name = enemyInfo.type .. '-' .. i,
                 actions = enemyInfo.actions,
                 class = enemyInfo.type,
@@ -202,10 +224,24 @@ function BattleState:update(dt)
     if not self.battleStarted then
         self:triggerStartingDialogue()
     end
+    for k, c in pairs(self.party.characters) do
+        if not c.dead and c.currentRest < c.restTime then
+            c.currentRest = c.currentRest + dt
+            Timer.tween(0.25, {
+                [self.restBars[c.name]] = {value = c.currentRest}
+            })
+        end
+    end
 
     for k, e in pairs(self.enemies) do
         if not e.dead then
             e:update(dt)
+        end
+        if not e.dead and e.currentRest < e.restTime then
+            e.currentRest = e.currentRest + dt
+            Timer.tween(0.25, {
+                [self.restBars[e.name]] = {value = e.currentRest}
+            })
         end
     end
 end
@@ -214,7 +250,7 @@ function BattleState:render()
     love.graphics.clear(0, 0, 0, 255)
     self.baseLayer:render()
     self.grassLayer:render()
-
+    
     -- render party
     self.party:render()
 
@@ -223,6 +259,7 @@ function BattleState:render()
         if not c.dead then
             self.energyBars[c.name]:render()
             self.expBars[c.name]:render()
+            self.restBars[c.name]:render()
         end
     end
 
@@ -231,6 +268,7 @@ function BattleState:render()
         if not e.dead then
             e:render()
             self.energyBars[e.name]:render()
+            self.restBars[e.name]:render()
         end
     end
 

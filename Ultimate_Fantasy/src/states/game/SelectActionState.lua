@@ -14,11 +14,16 @@ function SelectActionState:init(battleState, entity, onActionSelected)
     self.entity = entity
 
     local menuItems = {}
-
+    
     for k, a in pairs(self.entity.actions) do
         table.insert(menuItems, {
             text = a.name,
             onSelect = function()
+                entity.currentRest = 0
+                Timer.tween(0.2, {
+                    [self.battleState.restBars[entity.name]] = {value = entity.currentRest}
+                })
+                -- Apply action on targets
                 SOUNDS[a.sound_effect]:stop()
                 local targets = a.target_type == 'enemy' and self.battleState.enemies or self.battleState.party.characters
 
@@ -40,7 +45,6 @@ function SelectActionState:init(battleState, entity, onActionSelected)
                         end))
                     end))
                 else
-                    -- Apply action on targets
                     local amount = a.func(self.entity, targets, a.strength)
                     SOUNDS[a.sound_effect]:play()
 
@@ -63,6 +67,10 @@ function SelectActionState:init(battleState, entity, onActionSelected)
     table.insert(menuItems, {
         text = 'Nothing',
         onSelect = function()
+            entity.currentRest = 0
+            Timer.tween(0.2, {
+                [self.battleState.restBars[entity.name]] = {value = entity.currentRest}
+            })
             -- only pop select action menu
             stateStack:pop()
             onActionSelected()

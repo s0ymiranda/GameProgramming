@@ -19,7 +19,8 @@ function Menu:init(def)
         width = def.width,
         height = def.height,
         showCursor = def.showCursor,
-        font = def.font
+        font = def.font,
+        alpha = def.alpha
     }
 end
 

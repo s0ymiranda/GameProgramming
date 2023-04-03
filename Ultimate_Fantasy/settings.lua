@@ -59,6 +59,10 @@ require 'src/states/game/StatsMenuState'
 require 'src/states/game/TakeTurnState'
 require 'src/states/game/TheEndState'
 
+require 'src/states/game/WorldMenuState'
+require 'src/states/game/CharacterMenuState'
+require 'src/states/game/SelectPartyMemberState'
+
 -- World
 require 'src/world/Region'
 require 'src/world/Tile'

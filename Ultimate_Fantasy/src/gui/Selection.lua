@@ -28,10 +28,12 @@ function Selection:init(def)
     self.gapHeight = self.height / #self.items
 
     self.currentSelection = 1
+
+    self.alpha = def.alpha or 255
 end
 
 function Selection:update(dt)
-    if love.keyboard.wasPressed('up') then
+    if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('w') then
         if self.currentSelection == 1 then
             self.currentSelection = #self.items
         else
@@ -40,7 +42,7 @@ function Selection:update(dt)
         
         SOUNDS['blip']:stop()
         SOUNDS['blip']:play()
-    elseif love.keyboard.wasPressed('down') then
+    elseif love.keyboard.wasPressed('down') or love.keyboard.wasPressed('s') then
         if self.currentSelection == #self.items then
             self.currentSelection = 1
         else
@@ -69,8 +71,10 @@ function Selection:render()
             love.graphics.draw(TEXTURES['cursor-right'], math.max(self.width/3, self.x - 8), paddedY)
         end
 
+        love.graphics.setColor(love.math.colorFromBytes(255,255,255,self.alpha))
         love.graphics.printf(self.items[i].text, self.x, paddedY, self.width, 'center')
-
+        love.graphics.setColor(love.math.colorFromBytes(255,255,255,255))
+        --love.graphics.printf(self.alpha, self.x, paddedY+10, self.width, 'center')
         currentY = currentY + self.gapHeight
     end
 end

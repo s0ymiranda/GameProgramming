@@ -20,10 +20,10 @@ function Party:init(def)
         local characterInfo = ENTITY_DEFS.characters[k]
         local character = Character({
             level = characterInfo.properties.level,
+            restTime = characterInfo.properties.restTime,
             name = characterInfo[g].name,
             class = characterInfo.type,
             texture = characterInfo[g].texture,
-            restTime = characterInfo.properties.restTime,
             actions = characterInfo.actions,
             baseHP = characterInfo.properties.baseHP,
             baseAttack = characterInfo.properties.baseAttack,

@@ -132,6 +132,11 @@ function World:update(dt)
         end
     end
 
+    if love.keyboard.wasPressed('m') then
+        --local player = self.party:firstAlive()
+        -- look for npcs
+        stateStack:push(WorldMenuState(self.party))
+    end
 end
 
 function World:render()

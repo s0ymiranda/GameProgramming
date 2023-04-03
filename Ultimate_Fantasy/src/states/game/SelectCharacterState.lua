@@ -17,7 +17,7 @@ function SelectCharacterState:init(def)
 end
 
 function SelectCharacterState:update(dt)
-    if love.keyboard.wasPressed('right') or love.keyboard.wasPressed('left') then
+    if love.keyboard.wasPressed('right') or love.keyboard.wasPressed('d') or love.keyboard.wasPressed('left') or love.keyboard.wasPressed('a') then
         if self.selected == 'male' then
             self.selected = 'female'
         else

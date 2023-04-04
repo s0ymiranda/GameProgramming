@@ -46,10 +46,12 @@ end
 function TakeTurnState:takePartyTurn(i)
     if self:everyone_cooldown() then
         stateStack:push(BattleMessageState(self.battleState,'Wait! Everyone is on cooldown',
-        function() 
-            stateStack:pop()
-            stateStack:push(TakeTurnState(self.battleState)) 
-        end) )
+        function()
+            stateStack:pop() 
+            Timer.after(1, function () 
+            stateStack:push(TakeTurnState(self.battleState))
+            end) 
+        end,false ))
     else
 
         if i > #self.characters then
@@ -187,7 +189,7 @@ function TakeTurnState:incExp(i, opponentLevel)
         local exp = math.ceil((c.HPIV + c.attackIV + c.defenseIV + c.magicIV) * opponentLevel)
 
         stateStack:push(BattleMessageState(self.battleState, c.name .. ' earned ' .. tostring(exp) .. ' experience points!',
-        function() end, false))
+        function() end,false, false))
 
         Timer.after(1.5, function()
             SOUNDS['exp']:play()

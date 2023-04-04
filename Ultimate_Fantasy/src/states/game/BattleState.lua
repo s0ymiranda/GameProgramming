@@ -219,7 +219,7 @@ function BattleState:exit()
     self.onExit()
 end
 
-function BattleState:update(dt)
+function BattleState:update(dt,bms)
     -- this will trigger the first time this state is actively updating on the stack
     if not self.battleStarted then
         self:triggerStartingDialogue()
@@ -227,9 +227,7 @@ function BattleState:update(dt)
     for k, c in pairs(self.party.characters) do
         if not c.dead and c.currentRest < c.restTime then
             c.currentRest = c.currentRest + dt
-            Timer.tween(0.25, {
-                [self.restBars[c.name]] = {value = c.currentRest}
-            })
+            self.restBars[c.name].value = c.currentRest
         end
     end
 
@@ -239,13 +237,25 @@ function BattleState:update(dt)
         end
         if not e.dead and e.currentRest < e.restTime then
             e.currentRest = e.currentRest + dt
-            Timer.tween(0.25, {
-                [self.restBars[e.name]] = {value = e.currentRest}
-            })
+            self.restBars[e.name].value = e.currentRest
         end
     end
 end
 
+function BattleState:restDone()
+    for k, e in pairs(self.enemies) do
+        if not e.dead and e.currentRest >= e.restTime then
+            return true
+        end
+    end
+
+    for k, c in pairs(self.party.characters) do
+        if not c.dead and c.currentRest >= c.restTime then
+            return true
+        end
+    end
+    return false
+end
 function BattleState:render()
     love.graphics.clear(0, 0, 0, 255)
     self.baseLayer:render()

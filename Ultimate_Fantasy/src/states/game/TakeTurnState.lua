@@ -15,6 +15,7 @@ function TakeTurnState:init(battleState)
     self.characters = self.party.characters
     self.enemies = battleState.enemies
     self.enemyAttacksInARow = 0
+    self.entities_in_game = {}
 end
 
 function TakeTurnState:update(dt)
@@ -22,47 +23,61 @@ function TakeTurnState:update(dt)
 end
 
 function TakeTurnState:enter(params)
-    self:takePartyTurn(1)    
+    self:everyone_cooldown()
 end
+-- function TakeTurnState:everyone_cooldown2()
+--     for k, c in pairs(self.characters) do
+--         table.insert(self.entities_in_game, c)
+--     end
+--     for k, e in pairs(self.enemies) do
+--         table.insert(self.entities_in_game, e)
+--     end
 
+--     stateStack:push(BattleMessageState(self.battleState,'Wait! Everyone is on cooldown',
+--     function()
+--         stateStack:pop() 
+--         Timer.after(1, function () 
+--         stateStack:push(TakeTurnState(self.battleState))
+--         end) 
+--     end,false ))
+-- end
 function TakeTurnState:everyone_cooldown()
-    for k, e in pairs(self.enemies) do
-        if not e.dead then
-            if e.currentRest >= e.restTime then
-                return false
-            end
-        end
-    end
     for k, c in pairs(self.characters) do
         if not c.dead then
             if(c.currentRest >= c.restTime) then
-                return false
+                self:takePartyTurn(k)
+                return
             end
         end
     end
-    return true 
+    for k, e in pairs(self.enemies) do
+        if not e.dead then
+            if e.currentRest >= e.restTime then
+                self:takeEnemyTurn(k)
+                return
+            end
+        end
+    end
+
+    stateStack:push(BattleMessageState(self.battleState,'Wait! Everyone is on cooldown',
+    function()
+        stateStack:pop() 
+        Timer.after(1, function () 
+        stateStack:push(TakeTurnState(self.battleState))
+        end) 
+    end,false ))
 end
 
 function TakeTurnState:takePartyTurn(i)
-    if self:everyone_cooldown() then
-        stateStack:push(BattleMessageState(self.battleState,'Wait! Everyone is on cooldown',
-        function()
-            stateStack:pop() 
-            Timer.after(1, function () 
-            stateStack:push(TakeTurnState(self.battleState))
-            end) 
-        end,false ))
-    else
+    -- if self:everyone_cooldown() then
+    -- else
 
-        if i > #self.characters then
-            self:takeEnemyTurn(1)
-            return
-        end
+        -- if i > #self.characters then
+        --     self:takeEnemyTurn(1)
+        --     return
+        -- end
         local c = self.characters[i]
-
-        if c.dead or (c.currentRest < c.restTime) then
-            self:takePartyTurn(i + 1)
-        else
+       -- if e.currentRest >= e.restTime then 
             stateStack:push(BattleMessageState(self.battleState, 'Turn for ' .. c.name .. '! Select an action.',
             -- callback for when the battle message is closed
             function()
@@ -73,25 +88,27 @@ function TakeTurnState:takePartyTurn(i)
                     if self:checkAllDeath(self.enemies) then
                         self:victory()
                         else
-                            self:takePartyTurn(i + 1)
+                            self:everyone_cooldown()
                         end
                     end))
                 end))
-        end
+        -- else
+        --     self:everyone_cooldown()
+        -- end
     end
-end
+-- end
 
 function TakeTurnState:takeEnemyTurn(i)
-    if i > #self.enemies then
-        self:takePartyTurn(1)
-        return
-    end
+    -- if i > #self.enemies then
+    --     self:takePartyTurn(1)
+    --     return
+    -- end
 
     local e = self.enemies[i]
 
-    if e.dead or (e.currentRest < e.restTime) then
-        self:takeEnemyTurn(i + 1)
-    else
+    -- if e.dead or (e.currentRest < e.restTime) then
+    --     self:takeEnemyTurn(i + 1)
+    -- else
         self.enemyAttacksInARow = self.enemyAttacksInARow + 1
          
         local message = ''
@@ -148,11 +165,12 @@ function TakeTurnState:takeEnemyTurn(i)
                         self:takeEnemyTurn(i)
                     else
                         self.enemyAttacksInARow = 0
-                        self:takeEnemyTurn(i + 1)
+                        --self:takeEnemyTurn(i + 1)
+                        self:everyone_cooldown()
                     end
                 end))
         end
-    end
+    --end
 end
 
 function TakeTurnState:checkAllDeath(team)

@@ -9,13 +9,13 @@
 ]]
 BattleMessageState = Class{__includes = BaseState}
 
-function BattleMessageState:init(battleState, msg, onClose, canInput, still)
+function BattleMessageState:init(battleState, msg, onClose, canInput, onBattle)
     self.battleState = battleState
     self.textbox = Textbox(0, VIRTUAL_HEIGHT - 64, VIRTUAL_WIDTH, 64, msg, FONTS['medium'])
 
     -- function to be called once this message is popped
     self.onClose = onClose or function() end
-    self.onBattle = still
+    self.onBattle = onBattle
     -- whether we can detect input with this or not; true by default
     self.canInput = canInput
 
@@ -25,7 +25,9 @@ function BattleMessageState:init(battleState, msg, onClose, canInput, still)
 end
 
 function BattleMessageState:update(dt)
-    self.battleState:update(dt)
+    if self.onBattle then 
+        self.battleState:update(dt)
+    end
     if self.canInput then
         self.textbox:update(dt)
         if self.textbox:isClosed()then

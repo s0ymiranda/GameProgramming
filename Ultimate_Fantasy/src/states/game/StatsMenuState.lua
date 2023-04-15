@@ -12,11 +12,13 @@ StatsMenuState = Class{__includes = BaseState}
 function StatsMenuState:init(character, stats, onClose)
     self.character = character
     self.HPIncrease = stats.HPIncrease
+    self.restDecrease = stats.restDecrease
     self.attackIncrease = stats.attackIncrease
     self.defenseIncrease = stats.defenseIncrease
     self.magicIncrease = stats.magicIncrease
 
     self.previousHP = self.character.HP - self.HPIncrease
+    self.previousRest = self.character.restTime + self.restDecrease
     self.previousAttack = self.character.attack - self.attackIncrease
     self.previousDefense = self.character.defense - self.defenseIncrease
     self.previousMagic = self.character.magic - self.magicIncrease
@@ -33,6 +35,12 @@ function StatsMenuState:init(character, stats, onClose)
         items = {
             {
                 text = 'HP: ' .. self.previousHP .. ' + ' .. self.HPIncrease .. ' = ' .. self.character.HP,
+                onSelect = function()
+                    self:close()
+                end
+            },
+            {
+                text = 'Rest: ' .. self.previousRest .. ' - ' .. self.restDecrease .. ' = ' .. self.character.restTime,
                 onSelect = function()
                     self:close()
                 end

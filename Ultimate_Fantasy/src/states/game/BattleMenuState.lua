@@ -71,7 +71,6 @@ end
 
 function BattleMenuState:update(dt)
     self.battleMenu:update(dt)
-    self.battleState:update(dt)
 end
 
 function BattleMenuState:render()

@@ -21,7 +21,7 @@ function BattleMessageState:init(battleState, msg, onClose, canInput, onBattle)
 
     -- default input to true if nothing was passed in
     if self.canInput == nill then self.canInput = true end
-    if self.onBattle == nill then self.onBattle = true end
+    if self.onBattle == nill then self.onBattle = false end
 end
 
 function BattleMessageState:update(dt)

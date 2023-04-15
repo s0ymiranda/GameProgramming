@@ -27,7 +27,7 @@ function Selection:init(def)
     
     self.gapHeight = self.height / #self.items
 
-    self.currentSelection = 1
+    self.currentSelection = def.current_selection or 1
 
     self.alpha = def.alpha or 255
 end
@@ -74,7 +74,6 @@ function Selection:render()
         love.graphics.setColor(love.math.colorFromBytes(255,255,255,self.alpha))
         love.graphics.printf(self.items[i].text, self.x, paddedY, self.width, 'center')
         love.graphics.setColor(love.math.colorFromBytes(255,255,255,255))
-        --love.graphics.printf(self.alpha, self.x, paddedY+10, self.width, 'center')
         currentY = currentY + self.gapHeight
     end
 end

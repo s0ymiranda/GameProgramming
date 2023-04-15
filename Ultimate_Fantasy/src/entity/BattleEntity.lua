@@ -32,7 +32,7 @@ function BattleEntity:init(def)
     self.currentHP = self.HP
 
     self.restTime = def.restTime
-    self.currentRest = self.restTime
+    self.currentRest = 0
 end
 
 function BattleEntity:damage(amount)

@@ -25,59 +25,38 @@ end
 function TakeTurnState:enter(params)
     self:everyone_cooldown()
 end
--- function TakeTurnState:everyone_cooldown2()
---     for k, c in pairs(self.characters) do
---         table.insert(self.entities_in_game, c)
---     end
---     for k, e in pairs(self.enemies) do
---         table.insert(self.entities_in_game, e)
---     end
 
---     stateStack:push(BattleMessageState(self.battleState,'Wait! Everyone is on cooldown',
---     function()
---         stateStack:pop() 
---         Timer.after(1, function () 
---         stateStack:push(TakeTurnState(self.battleState))
---         end) 
---     end,false ))
--- end
 function TakeTurnState:everyone_cooldown()
-    for k, c in pairs(self.characters) do
-        if not c.dead then
-            if(c.currentRest >= c.restTime) then
+
+    local k = 1
+    while (k < 6) do
+        if k < 5 then
+            if (self.characters[k].currentRest >= self.characters[k].restTime) and not self.characters[k].dead then
                 self:takePartyTurn(k)
                 return
             end
         end
-    end
-    for k, e in pairs(self.enemies) do
-        if not e.dead then
-            if e.currentRest >= e.restTime then
+        if k <= #self.enemies then
+            if (self.enemies[k].currentRest >= self.enemies[k].restTime) and not self.enemies[k].dead  then
                 self:takeEnemyTurn(k)
                 return
             end
         end
+        k = k + 1
     end
 
-    stateStack:push(BattleMessageState(self.battleState,'Wait! Everyone is on cooldown',
+    stateStack:push(BattleMessageState(self.battleState,'Charging Energy Bars...',
     function()
         stateStack:pop() 
         Timer.after(1, function () 
         stateStack:push(TakeTurnState(self.battleState))
         end) 
-    end,false ))
+    end,false,true ))
 end
 
 function TakeTurnState:takePartyTurn(i)
-    -- if self:everyone_cooldown() then
-    -- else
 
-        -- if i > #self.characters then
-        --     self:takeEnemyTurn(1)
-        --     return
-        -- end
         local c = self.characters[i]
-       -- if e.currentRest >= e.restTime then 
             stateStack:push(BattleMessageState(self.battleState, 'Turn for ' .. c.name .. '! Select an action.',
             -- callback for when the battle message is closed
             function()
@@ -92,23 +71,14 @@ function TakeTurnState:takePartyTurn(i)
                         end
                     end))
                 end))
-        -- else
-        --     self:everyone_cooldown()
-        -- end
     end
 -- end
 
 function TakeTurnState:takeEnemyTurn(i)
-    -- if i > #self.enemies then
-    --     self:takePartyTurn(1)
-    --     return
-    -- end
 
     local e = self.enemies[i]
 
-    -- if e.dead or (e.currentRest < e.restTime) then
-    --     self:takeEnemyTurn(i + 1)
-    -- else
+
         self.enemyAttacksInARow = self.enemyAttacksInARow + 1
          
         local message = ''
@@ -165,12 +135,10 @@ function TakeTurnState:takeEnemyTurn(i)
                         self:takeEnemyTurn(i)
                     else
                         self.enemyAttacksInARow = 0
-                        --self:takeEnemyTurn(i + 1)
                         self:everyone_cooldown()
                     end
                 end))
         end
-    --end
 end
 
 function TakeTurnState:checkAllDeath(team)
@@ -207,7 +175,7 @@ function TakeTurnState:incExp(i, opponentLevel)
         local exp = math.ceil((c.HPIV + c.attackIV + c.defenseIV + c.magicIV) * opponentLevel)
 
         stateStack:push(BattleMessageState(self.battleState, c.name .. ' earned ' .. tostring(exp) .. ' experience points!',
-        function() end,false, false))
+        function() end,false))
 
         Timer.after(1.5, function()
             SOUNDS['exp']:play()
@@ -230,8 +198,9 @@ function TakeTurnState:incExp(i, opponentLevel)
 
                     -- set our exp to whatever the overlap is
                     c.currentExp = c.currentExp - c.expToLevel
+
                     local lastLevel = c.level
-                    local HPIncrease, attackIncrease, defenseIncrease, magicIncrease = c:levelUp()
+                    local HPIncrease, restDecrease, attackIncrease, defenseIncrease, magicIncrease = c:levelUp()
 
                     Timer.tween(0.5, {
                         [self.battleState.energyBars[c.name]] = {value = c.currentHP - HPIncrease}
@@ -243,6 +212,7 @@ function TakeTurnState:incExp(i, opponentLevel)
                         stateStack:push(StatsMenuState(c,
                             {
                                 HPIncrease = HPIncrease,
+                                restDecrease = restDecrease,
                                 attackIncrease = attackIncrease,
                                 defenseIncrease = defenseIncrease,
                                 magicIncrease = magicIncrease
@@ -261,6 +231,14 @@ function TakeTurnState:incExp(i, opponentLevel)
 end
 
 function TakeTurnState:victory()
+
+    for k, c in pairs(self.party.characters) do
+        if not c.dead then
+            c.currentRest = 0
+        else
+            c.currentHP = 0
+        end
+    end  
 
     -- play victory music
     SOUNDS['battle']:stop()

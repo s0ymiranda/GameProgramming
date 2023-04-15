@@ -321,7 +321,7 @@ ENTITY_DEFS = {
         south = {
             {
                 level = 2,
-                restTime = 8,
+                restTime = 9,
                 type = 'worm',
                 texture = 'small-worm',
                 width = 16,
@@ -354,7 +354,7 @@ ENTITY_DEFS = {
         east = {
             {
                 level = 3,
-                restTime = 10,
+                restTime = 8,
                 type = 'snake',
                 texture = 'snake',
                 width = 16,
@@ -419,7 +419,7 @@ ENTITY_DEFS = {
         },
         boss = {
             level = 10,
-            restTime = 5,
+            restTime = 6,
             type = 'boss',
             name = 'Man-Eater Flower',
             texture = 'man-eater-flower',

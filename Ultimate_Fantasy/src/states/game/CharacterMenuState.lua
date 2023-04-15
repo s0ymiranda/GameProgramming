@@ -9,18 +9,12 @@
 ]]
 CharacterMenuState = Class{__includes = BaseState}
 
-function CharacterMenuState:init(party,character,onClose)
+function CharacterMenuState:init(party,character,last_selection,onClose)
     self.character = character
     self.party = party
-    -- self.HPIncrease = stats.HPIncrease
-    -- self.attackIncrease = stats.attackIncrease
-    -- self.defenseIncrease = stats.defenseIncrease
-    -- self.magicIncrease = stats.magicIncrease
+    self.last_selection = last_selection or 1
 
-    -- self.previousHP = self.character.HP - self.HPIncrease
-    -- self.previousAttack = self.character.attack - self.attackIncrease
-    -- self.previousDefense = self.character.defense - self.defenseIncrease
-    -- self.previousMagic = self.character.magic - self.magicIncrease
+    self.textbox = nil
 
     self.onClose = onClose or function() end
     
@@ -45,47 +39,82 @@ function CharacterMenuState:init(party,character,onClose)
     self.on_render = true
 
     if #self.character.actions > 1 then
-        self.actionsMenu = Menu {
-            alpha = workingAlpha,
-            x = 48 + 160,
-            y = 48,
-            width = 64,
-            height = 48,
-            showCursor = workingShowCursor,
-            font = FONTS['small'],  
-            items = {
-                {
-                    text =  self.character.actions[1].name,
-                    onSelect = function()
-                        if self.character.class == 'healer' and not self.character.dead then
-                            self.on_render = false
-                            stateStack:push(SelectPartyMemberState(self.party,
-                                function(selectedTarget)
-                                    local amount = self.character.actions[1].func(self.character,selectedTarget,self.character.actions[1].strength)
-                                    SOUNDS[self.character.actions[1].sound_effect]:play()
-                                    stateStack:push(DialogueState(self.character.name .. ' healed ' .. amount .. ' of HP to ' .. selectedTarget.name,self:close()))
-                                end
+        if self.character.class == 'healer' then
+            self.actionsMenu = Menu {
+                alpha = workingAlpha,
+                x = 48 + 160,
+                y = 48,
+                width = 64,
+                height = 48,
+                showCursor = workingShowCursor,
+                font = FONTS['small'],  
+                items = {
+                    {
+                        text =  self.character.actions[1].name,
+                        onSelect = function()
+                            if self.character.class == 'healer' and not self.character.dead then
+                                self.on_render = false
+                                stateStack:push(SelectPartyMemberState(self.party,
+                                    function(selectedTarget)
+                                        local amount = self.character.actions[1].func(self.character,selectedTarget,self.character.actions[1].strength)
+                                        SOUNDS[self.character.actions[1].sound_effect]:play()
+                                        local text = self.character.name .. ' healed ' .. amount .. ' of HP to ' .. selectedTarget.name
+                                        self.textbox = Textbox(6, 6, VIRTUAL_WIDTH - 12, 64, text, FONTS['small'])
+                                    end
+                                    )
                                 )
-                            )
-                        else
+                            else
+                                self:close()
+                            end
+                        end
+                    },
+                    {
+                        text =  self.character.actions[2].name,
+                        onSelect = function()
+                            if self.character.class == 'healer' and not self.character.dead  then
+                                self.on_render = false
+                                local amount = self.character.actions[2].func(self.character,self.party.characters,self.character.actions[2].strength)
+                                SOUNDS[self.character.actions[2].sound_effect]:play()
+                                local text = self.character.name .. ' healed ' .. amount .. ' of HP to each party member.'
+                                self.textbox = Textbox(6, 6, VIRTUAL_WIDTH - 12, 64, text, FONTS['small'])
+                            else
+                                self:close()
+                            end
+                        end
+                    },
+                    {
+                        text =  "Close",
+                        onSelect = function()
                             self:close()
                         end
-                    end
-                },
-                {
-                    text =  self.character.actions[2].name,
-                    onSelect = function()
-                        if self.character.class == 'healer' and not self.character.dead  then
-                            local amount = self.character.actions[2].func(self.character,self.party.characters,self.character.actions[2].strength)
-                            SOUNDS[self.character.actions[2].sound_effect]:play()
-                            stateStack:push(DialogueState(self.character.name .. ' healed ' .. amount .. ' of HP to each party member.',self:close()))
-                        else
-                            self:close()
-                        end
-                    end
+                    }
                 }
             }
-        }
+        else
+            self.actionsMenu = Menu {
+                alpha = workingAlpha,
+                x = 48 + 160,
+                y = 48,
+                width = 64,
+                height = 48,
+                showCursor = workingShowCursor,
+                font = FONTS['small'],  
+                items = {
+                    {
+                        text =  self.character.actions[1].name,
+                        onSelect = function()
+                            self:close()
+                        end
+                    },
+                    {
+                        text =  self.character.actions[2].name,
+                        onSelect = function()
+                            self:close()
+                        end
+                    }
+                }
+            }
+        end
     else
         self.actionsMenu = Menu {
             alpha = workingAlpha,      
@@ -139,6 +168,12 @@ function CharacterMenuState:init(party,character,onClose)
                 end
             },
             {
+                text = 'Rest Time: '.. self.character.restTime,
+                onSelect = function()
+                    self:close()
+                end
+            },
+            {
                 text = 'Attack: ' ..self.character.attack,
                 onSelect = function()
                     self:close()
@@ -163,16 +198,25 @@ end
 function CharacterMenuState:close()
     stateStack:pop()
     self.onClose()
+    stateStack:push(WorldMenuState(self.party,self.last_selection))
 end
 
 function CharacterMenuState:update(dt)
-    --self.statsMenu:update(dt)
-    self.actionsMenu:update(dt)
+    if self.textbox ~= nil then
+        if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+            self:close()
+        end
+    else
+        self.actionsMenu:update(dt)
+    end
 end
 
 function CharacterMenuState:render()
     if self.on_render then
         self.statsMenu:render()
         self.actionsMenu:render()
+    end
+    if self.textbox ~= nil then
+        self.textbox:render()
     end
 end

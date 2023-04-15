@@ -11,43 +11,43 @@
 ]]
 WorldMenuState = Class{__includes = BaseState}
 
-function WorldMenuState:init(party)
-    -- self.battleState = battleState
+function WorldMenuState:init(party,last_selection)
+
     self.party = party
-    self.on_render = true
+    self.last_selection = last_selection or 1
     self.charactersMenu = Menu {
         x = VIRTUAL_WIDTH/2 - 128/2,
         y = VIRTUAL_HEIGHT/2 - 160/2,
         width = 128,
         height = 160,
+        current_selection = last_selection,
         items = {
             {
                 text = party.characters[1].name,
                 onSelect = function()
-                    --stateStack:pop()
-                    self.on_render = false
-                    stateStack:push(CharacterMenuState(self.party,self.party.characters[1],function() self.on_render = true end))
+                    stateStack:pop()
+                    stateStack:push(CharacterMenuState(self.party,self.party.characters[1],1))
                 end
             },
             {
                 text = party.characters[2].name,
                 onSelect = function()
-                    self.on_render = false
-                    stateStack:push(CharacterMenuState(self.party,self.party.characters[2],function() self.on_render = true end))
+                    stateStack:pop()
+                    stateStack:push(CharacterMenuState(self.party,self.party.characters[2],2))
                 end
             },
             {
                 text = party.characters[3].name,
                 onSelect = function()
-                    self.on_render = false
-                    stateStack:push(CharacterMenuState(self.party,self.party.characters[3],function() self.on_render = true end))
+                    stateStack:pop()
+                    stateStack:push(CharacterMenuState(self.party,self.party.characters[3],3))
                 end
             },
             {
                 text = party.characters[4].name,
                 onSelect = function()
-                    self.on_render = false
-                    stateStack:push(CharacterMenuState(self.party,self.party.characters[4],function() self.on_render = true end))
+                    stateStack:pop()
+                    stateStack:push(CharacterMenuState(self.party,self.party.characters[4],4))
                 end
             },
             {
@@ -61,14 +61,9 @@ function WorldMenuState:init(party)
 end
 
 function WorldMenuState:update(dt)
-    -- for k, e in pairs(self.battleState.enemies) do
-    --     e:update(dt)
-    -- end
     self.charactersMenu:update(dt)
 end
 
 function WorldMenuState:render()
-    if self.on_render then
-        self.charactersMenu:render()
-    end
+     self.charactersMenu:render()
 end

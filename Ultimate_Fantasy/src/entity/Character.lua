@@ -39,6 +39,17 @@ function Character:statsLevelUp()
     end
 
     self.currentHP = self.HP
+    
+    
+    local restDecrease = 0
+
+    for j = 1, 2 do
+        if math.random(6) <= 2 and self.restTime >= 6 then
+            self.restTime = self.restTime - 1
+            restDecrease = restDecrease + 1
+        end
+    end
+
 
     local attackIncrease = 0
 
@@ -66,8 +77,7 @@ function Character:statsLevelUp()
             magicIncrease = magicIncrease + 1
         end
     end
-
-    return HPIncrease, attackIncrease, defenseIncrease, magicIncrease
+    return HPIncrease, restDecrease, attackIncrease, defenseIncrease, magicIncrease
 end
 
 function Character:levelUp()

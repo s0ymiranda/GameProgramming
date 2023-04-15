@@ -20,7 +20,8 @@ function Menu:init(def)
         height = def.height,
         showCursor = def.showCursor,
         font = def.font,
-        alpha = def.alpha
+        alpha = def.alpha,
+        current_selection = def.current_selection
     }
 end
 

@@ -211,7 +211,7 @@ function BattleState:createMap()
 end
 
 function BattleState:enter(params)
-    
+     
 end
 
 function BattleState:exit()
@@ -288,7 +288,6 @@ end
 
 function BattleState:triggerStartingDialogue()
     self.battleStarted = true
-    --
     -- display a dialogue first for the pokemon that appeared, then the one being sent out
     stateStack:push(BattleMessageState(self, 'A wild creatures horde appeared!',
     
@@ -298,6 +297,7 @@ function BattleState:triggerStartingDialogue()
         for k, c in pairs(self.party.characters) do
             if not c.dead then
                 names = names .. c.name .. ', '
+                c.currentRest = 0
             end
         end
 
